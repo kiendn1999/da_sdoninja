@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "591279254697",
+    "project_id": "da-sdoninja",
+    "storage_bucket": "da-sdoninja.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591279254697:android:683acbd16ba1638f7c0db8",
+        "android_client_info": {
+          "package_name": "com.kienflutter.da_sdoninja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591279254697-ah8702p9qlqbiknp1d7oldff86g9vd8s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kienflutter.da_sdoninja",
+            "certificate_hash": "882bb972929fc9fb55e1646489337af3f40f6fd6"
+          }
+        },
+        {
+          "client_id": "591279254697-gi1r94mk02l61nffos1ib61b0p9kei00.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsZxyVxVlQ5M_basgGV6AERX72nl7XvSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591279254697-gi1r94mk02l61nffos1ib61b0p9kei00.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
