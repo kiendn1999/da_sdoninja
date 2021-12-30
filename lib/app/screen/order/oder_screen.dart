@@ -6,7 +6,8 @@ import 'package:da_sdoninja/app/constant/app_shadows.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/customer/customer_order_controller.dart';
 import 'package:da_sdoninja/app/data/model/demo/order_model.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
+import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/chip.dart';
 import 'package:flutter/material.dart';
@@ -126,11 +127,17 @@ class OrderScreen extends StatelessWidget {
           onPressed: () {},
         );
       case 6:
-        return _button(
-          lable: "review".tr,
-          color: AppColors.orange,
-          onPressed: () {},
-        );
+        return true
+            ? _button(
+                lable: "edit_review".tr,
+                color: AppColors.pink,
+                onPressed: () => Get.toNamed(Routes.writeReview),
+              )
+            : _button(
+                lable: "review".tr,
+                color: AppColors.orange,
+                onPressed: () => Get.toNamed(Routes.writeReview),
+              );
     }
     return const SizedBox.shrink();
   }
@@ -153,11 +160,17 @@ class OrderScreen extends StatelessWidget {
       children: [
         Row(
           children: [
-            SvgPicture.asset(
-              StringUtils.getSVGImageAssets(AppImages.icStoreSelected),
-              width: 22.w,
-              height: 22.h,
-              color: AppColors.pink,
+            ClipOval(
+              child: FadeInImage.assetNetwork(
+                placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
+                image: orderDemoList[index].storeAva,
+                imageErrorBuilder: (context, error, stackTrace) => const Icon(
+                  Icons.error,
+                ),
+                fit: BoxFit.cover,
+                width: 28.h,
+                height: 28.h,
+              ),
             ),
             Container(
               margin: EdgeInsets.only(left: 5.w),
@@ -193,7 +206,7 @@ class OrderScreen extends StatelessWidget {
           ],
         ),
         SvgPicture.asset(
-          StringUtils.getSVGImageAssets(AppImages.icOrderChat),
+          AppImages.icOrderChat.getSVGImageAssets,
           width: 22.w,
           height: 22.w,
         )
@@ -212,7 +225,7 @@ class OrderScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SvgPicture.asset(
-            StringUtils.getSVGImageAssets(pathImage),
+            pathImage.getSVGImageAssets,
             width: 22.w,
             height: 22.h,
             color: iconColor,

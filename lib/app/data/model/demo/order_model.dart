@@ -1,4 +1,8 @@
 class OrderDemo {
+   final String storeAva =
+      "https://libreshot.com/wp-content/uploads/2016/04/car-repair-shop-2.jpg";
+      final String userAva =
+      "https://thuthuatnhanh.com/wp-content/uploads/2019/06/anh-anime-nam.jpg";
   final String storeName = "Tiệm Cây Khế, Tiệm Cây Khế, Tiệm Cây Khế, Tiệm Cây Khế, Tiệm Cây Khế, Tiệm Cây Khế, ";
   final String customerName = "Nguyễn Văn A Lê Văn C Trần THị B Lò Văn Khế Đỗ Văn Hề Tống Văn Cù Trương Văn D";
   final String address = "31 Huỳnh Ngọc Huệ, Đà Nẵng";

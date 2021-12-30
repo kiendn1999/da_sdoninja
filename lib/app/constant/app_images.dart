@@ -45,4 +45,5 @@ class AppImages {
   static const icDone = "ic_done";
   static const icPen = "ic_pen";
   static const icTrash = "ic_trash";
+  static const icCall = "ic_call";
 }

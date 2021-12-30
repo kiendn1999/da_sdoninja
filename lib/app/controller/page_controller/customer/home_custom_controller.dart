@@ -1,18 +1,6 @@
+import 'package:da_sdoninja/app/controller/function_controller/drop_down_controller.dart';
 import 'package:get/get.dart';
 
-class HomeCustomerController extends GetxController {
-   final _dropdownDeviceValue = "all_devices".tr.obs;
-   final _dropdownFilterValue = "near_you".tr.obs;
+class HomeCustomerController extends GetxController with DropDownController {
 
-  String get dropdownFilterValue => _dropdownFilterValue.value;
-
-  set dropdownFilterValue(String dropdownFilterValue) {
-    _dropdownFilterValue.value = dropdownFilterValue;
-  }
-
-  String get dropdownDeviceValue => _dropdownDeviceValue.value;
-
-  set dropdownDeviceValue(String dropdownValue) {
-    _dropdownDeviceValue.value = dropdownValue;
-  }
 }

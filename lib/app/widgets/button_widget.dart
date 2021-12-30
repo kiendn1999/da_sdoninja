@@ -14,20 +14,15 @@ Widget buttonWithRadius10({
         builder: (context) => Container(
             margin: margin,
             child: AppShadow.lightShadow(
-                child: Card(
-              elevation: 0,
-               margin: const EdgeInsets.all(0.65),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10)),
-              child: ElevatedButton(
-                onPressed: onPressed,
-                child: child,
-                style: ElevatedButton.styleFrom(
-                  padding: padding,
-                  minimumSize: Size.zero,
-                  primary: color,
-                  fixedSize: fixedSize,
-                  visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
-                ),
+                child: ElevatedButton(
+              onPressed: onPressed,
+              child: child,
+              style: ElevatedButton.styleFrom(
+                padding: padding,
+                minimumSize: Size.zero,
+                primary: color,
+                fixedSize: fixedSize,
+                visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
               ),
             ))));
 
@@ -44,19 +39,14 @@ Widget buttonWithRadius90({
         builder: (context) => Container(
             margin: EdgeInsets.only(top: marginTop),
             child: AppShadow.lightShadow(
-                child: Card(
-              elevation: 0,
-               margin: const EdgeInsets.all(0.65),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius90)),
-              child: ElevatedButton(
-                onPressed: onPressed,
-                child: child,
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-                  fixedSize: fixedSize,
-                  primary: color,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius90)),
-                ),
+                child: ElevatedButton(
+              onPressed: onPressed,
+              child: child,
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+                fixedSize: fixedSize,
+                primary: color,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius90)),
               ),
             ))));
 
@@ -73,16 +63,11 @@ Widget outLineButtonWithRadius90({
         builder: (context) => Container(
             margin: EdgeInsets.only(top: marginTop),
             child: AppShadow.lightShadow(
-                child: Card(
-              elevation: 0,
-              margin: const EdgeInsets.all(0.65),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius90)),
-              child: OutlinedButton(
-                onPressed: onPressed,
-                child: child,
-                style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-                  fixedSize: fixedSize,
-                ),
+                child: OutlinedButton(
+              onPressed: onPressed,
+              child: child,
+              style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+                fixedSize: fixedSize,
               ),
             ))));

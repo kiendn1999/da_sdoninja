@@ -1,7 +1,7 @@
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/controller/page_controller/customer/customer_review_controller.dart';
 import 'package:da_sdoninja/app/data/model/demo/review_model.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/appbar.dart';
 import 'package:da_sdoninja/app/widgets/chip.dart';
 import 'package:da_sdoninja/app/widgets/drawer.dart';
@@ -33,7 +33,7 @@ class CustomerReviewScreen extends StatelessWidget {
                   _reviewController.currentIndex = index;
                 },
                 itemBuilder: (context, index) {
-                  return ReviewListCustomerSide(
+                  return ReviewList(
                     itemCount: reviewDemoList.length,
                     reviewDemo: reviewDemoList,
                     padding: EdgeInsets.only(top: 12.h, left: 10.w, right: 10.w),
@@ -55,7 +55,7 @@ class CustomerReviewScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 5.h),
               child: SvgPicture.asset(
-                StringUtils.getSVGImageAssets(AppImages.icStarSelected),
+               AppImages.icStarSelected.getSVGImageAssets,
                 width: 20.w,
                 height: 20.h,
               ),

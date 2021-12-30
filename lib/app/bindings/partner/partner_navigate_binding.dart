@@ -1,6 +1,9 @@
+import 'package:da_sdoninja/app/controller/function_controller/change_store_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/manage_order_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/manage_review_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/partner/my_store_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/partner_navigate_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/partner/schedule_controller.dart';
 import 'package:get/get.dart';
 
 class PartnerNavigationBinding implements Bindings {
@@ -12,8 +15,17 @@ class PartnerNavigationBinding implements Bindings {
     Get.lazyPut<ManageOrderController>(() {
       return ManageOrderController();
     });
+    Get.lazyPut<ScheduleController>(() {
+      return ScheduleController();
+    });
     Get.lazyPut<ManageReivewController>(() {
       return ManageReivewController();
+    });
+     Get.lazyPut<ChangeStoreController>(() {
+      return ChangeStoreController();
+    });
+      Get.lazyPut<MyStoreController>(() {
+      return MyStoreController();
     });
   }
 }

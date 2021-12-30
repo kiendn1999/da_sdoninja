@@ -3,11 +3,11 @@ import 'package:da_sdoninja/app/constant/app_radius.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/customer/customer_navigate_controller.dart';
 import 'package:da_sdoninja/app/data/model/item_bottombar_model.dart';
+import 'package:da_sdoninja/app/screen/chat/customer_chat_screen.dart';
 import 'package:da_sdoninja/app/screen/home/home_customer_screen.dart';
 import 'package:da_sdoninja/app/screen/map/map_screen.dart';
-import 'package:da_sdoninja/app/screen/messenger/message_list_screen.dart';
 import 'package:da_sdoninja/app/screen/order/oder_screen.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/bottombar.dart';
 import 'package:da_sdoninja/app/widgets/drawer.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
@@ -33,7 +33,7 @@ class CustomerNavigationFrame extends StatelessWidget {
             HomeCustomerScreen(),
             MapScreen(),
             OrderScreen(),
-            MessageListScreen(),
+            CustomerChatScreen(),
           ],
           onPageChanged: (index) {
             _navigateController.currentIndex = index;
@@ -49,14 +49,15 @@ class CustomerNavigationFrame extends StatelessWidget {
       automaticallyImplyLeading: false,
       titleSpacing: 0,
       centerTitle: true,
+      toolbarHeight: 55.h,
       title: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w),
         child: Row(
           children: [
             SvgPicture.asset(
-              StringUtils.getSVGImageAssets(AppImages.icLocation),
+              AppImages.icLocation.getSVGImageAssets,
               width: 35.w,
-              height: 35.w,
+              height: 35.h,
             ),
             Flexible(
                 child: Container(
@@ -65,8 +66,7 @@ class CustomerNavigationFrame extends StatelessWidget {
                         style: AppTextStyle.tex14Regular(),
                         radius: AppRadius.radius90,
                         textAlign: TextAlign.center,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.w),
-                       
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
                         hintText: "enter_your_location".tr))),
           ],
         ),
@@ -78,14 +78,14 @@ class CustomerNavigationFrame extends StatelessWidget {
               aspectRatio: 1 / 1,
               child: ClipOval(
                 child: FadeInImage.assetNetwork(
-                  placeholder: StringUtils.getPNGImageAssets(AppImages.imageDefautAvatar),
+                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
                   image: "https://thuthuatnhanh.com/wp-content/uploads/2019/06/anh-anime-nam.jpg",
                   imageErrorBuilder: (context, error, stackTrace) => const Icon(
                     Icons.error,
                   ),
                   fit: BoxFit.cover,
-                  width: 35.w,
-                  height: 35.w,
+                  width: 35.h,
+                  height: 35.h,
                 ),
               ),
             ))

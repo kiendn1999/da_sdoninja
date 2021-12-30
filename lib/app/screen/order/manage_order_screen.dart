@@ -6,7 +6,7 @@ import 'package:da_sdoninja/app/constant/app_shadows.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/manage_order_controller.dart';
 import 'package:da_sdoninja/app/data/model/demo/order_model.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/chip.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
@@ -236,12 +236,18 @@ class ManageOrderScreen extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              SvgPicture.asset(
-                StringUtils.getSVGImageAssets(AppImages.icUser),
-                width: 22.w,
-                height: 22.h,
-                color: AppColors.pink,
+              ClipOval(
+              child: FadeInImage.assetNetwork(
+                placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
+                image: orderDemoList[index].userAva,
+                imageErrorBuilder: (context, error, stackTrace) => const Icon(
+                  Icons.error,
+                ),
+                fit: BoxFit.cover,
+                width: 28.h,
+                height: 28.h,
               ),
+            ),
               Flexible(
                 child: Container(
                   margin: EdgeInsets.only(left: 5.w),
@@ -274,7 +280,7 @@ class ManageOrderScreen extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(left: 20.w),
           child: SvgPicture.asset(
-            StringUtils.getSVGImageAssets(AppImages.icOrderChat),
+           AppImages.icOrderChat.getSVGImageAssets,
             width: 22.w,
             height: 22.w,
           ),
@@ -315,7 +321,7 @@ class ManageOrderScreen extends StatelessWidget {
         crossAxisAlignment: crossAxisAlignment,
         children: [
           SvgPicture.asset(
-            StringUtils.getSVGImageAssets(pathImage),
+          pathImage.getSVGImageAssets,
             width: 22.w,
             height: 22.h,
             color: iconColor,
@@ -349,7 +355,7 @@ class ManageOrderScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SvgPicture.asset(
-            StringUtils.getSVGImageAssets(pathImage),
+           pathImage.getSVGImageAssets,
             width: 22.w,
             height: 22.h,
             color: iconColor,

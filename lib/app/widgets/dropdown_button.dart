@@ -19,32 +19,28 @@ Widget dropDownButton(
               child: Container(
                   width: width,
                   margin: EdgeInsets.only(top: marginTop),
-                  child: Card(
-                    elevation: 0,
-                      margin: const EdgeInsets.all(0.65),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10)),
-                    child: DropdownButtonFormField(
-                      style: AppTextStyle.tex18Regular(color: Get.isDarkMode ? AppColors.white : AppColors.black),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: contentPaddingHorizontal, vertical: contentPaddingVertical),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor),
-                              borderRadius: BorderRadius.circular(AppRadius.radius10))),
-                      isDense: true,
-                      onChanged: onChanged,
-                      isExpanded: true,
-                      value: value,
-                      alignment: AlignmentDirectional.bottomEnd,
-                      menuMaxHeight: menuMaxHeight,
-                      items: itemList.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                  child: DropdownButtonFormField(
+                    style: AppTextStyle.tex18Regular(color: Get.isDarkMode ? AppColors.white : AppColors.black),
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: contentPaddingHorizontal, vertical: contentPaddingVertical),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor),
+                            borderRadius: BorderRadius.circular(AppRadius.radius10))),
+                    isDense: true,
+                    onChanged: onChanged,
+                    isExpanded: true,
+                    
+                    value: value,
+                    alignment: AlignmentDirectional.bottomEnd,
+                    menuMaxHeight: menuMaxHeight,
+                    items: itemList.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                        ),
+                      );
+                    }).toList(),
                   )),
             ));
 

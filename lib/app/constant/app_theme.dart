@@ -8,6 +8,16 @@ class Apptheme {
       appBarTheme: const AppBarTheme(color: AppColors.primaryLightModeColor),
       elevatedButtonTheme: AppButtonTheme.elevatedButtonPrimaryLightTheme,
       outlinedButtonTheme: AppButtonTheme.outlineButtonPrimaryLightTheme,
+
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.all(AppColors.primaryLightModeColor),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: AppColors.primaryLightModeColor),
+      timePickerTheme: const TimePickerThemeData(
+          dialHandColor: AppColors.primaryLightModeColor,
+          entryModeIconColor: AppColors.primaryLightModeColor,
+          hourMinuteTextColor: AppColors.primaryLightModeColor,
+          dayPeriodTextColor: AppColors.primaryLightModeColor),
       textTheme: AppTextStyle.textFontApp,
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: AppColors.primaryLightModeColor,
@@ -16,17 +26,23 @@ class Apptheme {
           filled: true,
           fillColor: AppColors.white,
           isDense: true,
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryLightModeColor)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryLightModeColor))));
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.primaryLightModeColor)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.primaryLightModeColor))));
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
       appBarTheme: const AppBarTheme(color: AppColors.primaryDarkModeColor),
       elevatedButtonTheme: AppButtonTheme.elevatedButtonPrimaryDarkTheme,
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.all(AppColors.primaryDarkModeColor),
+      ),
+      timePickerTheme: const TimePickerThemeData(
+          dialHandColor: AppColors.primaryDarkModeColor,
+          entryModeIconColor: AppColors.primaryDarkModeColor,
+          hourMinuteTextColor: AppColors.primaryDarkModeColor,
+          dayPeriodTextColor: AppColors.primaryDarkModeColor),
       outlinedButtonTheme: AppButtonTheme.outlineButtonPrimaryDarkTheme,
-      textTheme: AppTextStyle.textFontApp
-          .apply(displayColor: AppColors.white, bodyColor: AppColors.white),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: AppColors.primaryDarkModeColor),
+      textTheme: AppTextStyle.textFontApp.apply(displayColor: AppColors.white, bodyColor: AppColors.white),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: AppColors.primaryDarkModeColor,
       ),
@@ -34,8 +50,6 @@ class Apptheme {
           filled: true,
           fillColor: AppColors.black1,
           isDense: true,
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryDarkModeColor)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryDarkModeColor))));
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.primaryDarkModeColor)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.primaryDarkModeColor))));
 }

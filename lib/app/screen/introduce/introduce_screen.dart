@@ -1,7 +1,7 @@
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,7 +48,7 @@ class IntroduceScreeen extends StatelessWidget {
       );
 
   Image _introduceImage() => Image.asset(
-        StringUtils.getPNGImageAssets(AppImages.imageIntroduce),
+        AppImages.imageIntroduce.getPNGImageAssets,
         width: 393.w,
         height: 289.h,
       );

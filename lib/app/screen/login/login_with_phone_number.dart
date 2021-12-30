@@ -4,7 +4,7 @@ import 'package:da_sdoninja/app/constant/app_radius.dart';
 import 'package:da_sdoninja/app/constant/app_shadows.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/appbar.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
@@ -62,7 +62,7 @@ class LoginWithPhoneNumber extends StatelessWidget {
   Widget _image(BuildContext context) {
     return AppShadow.lightShadow(
         child: Image.asset(
-      StringUtils.getPNGImageAssets(AppImages.imageLoginWithNumber),
+     AppImages.imageLoginWithNumber.getPNGImageAssets,
       width: 324.w,
       height: 318.h,
       color: context.isDarkMode ? AppColors.primaryDarkModeColor : null,

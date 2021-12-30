@@ -1,10 +1,10 @@
 import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/data/model/item_bottombar_model.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
 
 Widget bottomBarHomeScreen(
         {required List<ItemBottomBar> items,
@@ -18,11 +18,9 @@ Widget bottomBarHomeScreen(
                   currentIndex: currentIndex,
                   type: BottomNavigationBarType.shifting,
                   selectedFontSize: 14.sp,
-                  items: items
-                      .map((element) => BottomNavigationBarItem(
+                  items: List.generate(items.length, (index) => BottomNavigationBarItem(
                           icon: SvgPicture.asset(
-                            StringUtils.getSVGImageAssets(
-                                element.pathIconUnSelected),
+                           items[index].pathIconUnSelected.getSVGImageAssets,
                             width: 35.w,
                             height: 35.h,
                             color: context.isDarkMode
@@ -30,14 +28,13 @@ Widget bottomBarHomeScreen(
                                 : AppColors.primaryLightModeColor,
                           ),
                           activeIcon: SvgPicture.asset(
-                            StringUtils.getSVGImageAssets(
-                                element.pathIconSelected),
+                                                          items[index].pathIconSelected.getSVGImageAssets,
                             width: 35.w,
                             height: 35.h,
                             color: context.isDarkMode
                                 ? AppColors.primaryDarkModeColor
                                 : AppColors.primaryLightModeColor,
                           ),
-                          label: element.lable))
-                      .toList()),
+                          label: items[index].lable))
+                  ),
             ));

@@ -2,14 +2,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/controller/function_controller/change_store_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/partner_navigate_controller.dart';
 import 'package:da_sdoninja/app/data/model/item_bottombar_model.dart';
-import 'package:da_sdoninja/app/screen/messenger/partner_message_screen.dart';
+import 'package:da_sdoninja/app/routes/app_routes.dart';
+import 'package:da_sdoninja/app/screen/chat/partner_chat_screen.dart';
 import 'package:da_sdoninja/app/screen/order/manage_order_screen.dart';
 import 'package:da_sdoninja/app/screen/reviews/manage_review_screen.dart';
 import 'package:da_sdoninja/app/screen/schedule/schedule_screen.dart';
 import 'package:da_sdoninja/app/screen/store_info/my_store_screen.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/bottombar.dart';
 import 'package:da_sdoninja/app/widgets/drawer.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ import 'package:marquee/marquee.dart';
 class PartnerNavigationFrame extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _navigateController = Get.find<PartnerNavigateController>();
+  final _changeStoreController = Get.find<ChangeStoreController>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,17 +34,22 @@ class PartnerNavigationFrame extends StatelessWidget {
         endDrawer: const DrawerApp(),
         body: PageView(
           controller: _navigateController.pageController,
-          children: [
-            ManageOrderScreen(),
-            ScheduleScreen(),
-            ManageReviewScreen(),
-            PartnerMessageScreen(),
-            MyStoreScreen()
-          ],
+          children: [ManageOrderScreen(), ScheduleScreen(), ManageReviewScreen(), PartnerChatScreen(), MyStoreScreen()],
           onPageChanged: (index) {
             _navigateController.currentIndex = index;
           },
         ),
+        floatingActionButton: Obx(() => AnimatedContainer(
+              duration: const Duration(milliseconds: 350),
+              alignment: _navigateController.currentIndex == 4 ? const AlignmentDirectional(1, 0.85) : const AlignmentDirectional(1, 1.5),
+              child: Transform.scale(
+                scale: 1.h,
+                child: FloatingActionButton.small(
+                  child: const Icon(Icons.edit_outlined),
+                  onPressed: () {},
+                ),
+              ),
+            )),
         bottomNavigationBar: _bottomItems(),
       ),
     );
@@ -50,49 +58,56 @@ class PartnerNavigationFrame extends StatelessWidget {
   AppBar _appBar() {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: Row(
-        children: [
-          SvgPicture.asset(
-            StringUtils.getSVGImageAssets(AppImages.icStoreSelected),
-            color: AppColors.white,
-            width: 25.w,
-            height: 25.h,
-          ),
-          Flexible(
-            child: Container(
-              margin: EdgeInsets.only(left: 10.w),
-              child: AutoSizeText(
-                "Tiệm Điện Cơ - 31 Huỳnh Ngọc Huệ, Đà Nẵng",
-                maxLines: 1,
-                minFontSize: 20,
-                style: AppTextStyle.tex18Medium(),
-                overflowReplacement: SizedBox(
-                  height: 25.h,
-                  child: Marquee(
-                    text: "Tiệm Điện Cơ - 31 Huỳnh Ngọc Huệ, Đà Nẵng",
-                    scrollAxis: Axis.horizontal,
-                    blankSpace: 10.0,
-                    velocity: 100.0,
-                    style: AppTextStyle.tex18Medium(),
-                    pauseAfterRound: const Duration(seconds: 1),
-                    accelerationDuration: const Duration(seconds: 1),
-                    accelerationCurve: Curves.linear,
-                    decelerationDuration: const Duration(milliseconds: 500),
-                    decelerationCurve: Curves.easeOut,
-                  ),
+      toolbarHeight: 55.h,
+      title: InkWell(
+        onTap: () => Get.toNamed(Routes.manageStore),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20.h),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                AppImages.icStoreSelected.getSVGImageAssets,
+                color: AppColors.white,
+                width: 25.w,
+                height: 25.h,
+              ),
+              Flexible(
+                child: Container(
+                  margin: EdgeInsets.only(left: 10.w),
+                  child: Obx(() => AutoSizeText(
+                        _changeStoreController.storeSelected.storeName,
+                        maxLines: 1,
+                        minFontSize: 20,
+                        style: AppTextStyle.tex18Medium(),
+                        overflowReplacement: SizedBox(
+                          height: 25.h,
+                          child: Marquee(
+                            text: _changeStoreController.storeSelected.storeName,
+                            scrollAxis: Axis.horizontal,
+                            blankSpace: 10.0,
+                            velocity: 100.0,
+                            style: AppTextStyle.tex18Medium(),
+                            pauseAfterRound: const Duration(seconds: 1),
+                            accelerationDuration: const Duration(seconds: 1),
+                            accelerationCurve: Curves.linear,
+                            decelerationDuration: const Duration(milliseconds: 500),
+                            decelerationCurve: Curves.easeOut,
+                          ),
+                        ),
+                      )),
                 ),
               ),
-            ),
+              Container(
+                margin: EdgeInsets.only(left: 10.w),
+                child: SvgPicture.asset(
+                  AppImages.icChervonRight.getSVGImageAssets,
+                  width: 20.w,
+                  height: 20.h,
+                ),
+              )
+            ],
           ),
-          Container(
-            margin: EdgeInsets.only(left: 10.w),
-            child: SvgPicture.asset(
-              StringUtils.getSVGImageAssets(AppImages.icChervonRight),
-              width: 20.w,
-              height: 20.h,
-            ),
-          )
-        ],
+        ),
       ),
       actions: [
         IconButton(
@@ -101,14 +116,14 @@ class PartnerNavigationFrame extends StatelessWidget {
               aspectRatio: 1 / 1,
               child: ClipOval(
                 child: FadeInImage.assetNetwork(
-                  placeholder: StringUtils.getPNGImageAssets(AppImages.imageDefautAvatar),
+                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
                   image: "https://thuthuatnhanh.com/wp-content/uploads/2019/06/anh-anime-nam.jpg",
                   imageErrorBuilder: (context, error, stackTrace) => const Icon(
                     Icons.error,
                   ),
                   fit: BoxFit.cover,
-                  width: 35.w,
-                  height: 35.w,
+                  width: 35.h,
+                  height: 35.h,
                 ),
               ),
             ))

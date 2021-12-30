@@ -2,7 +2,7 @@ import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/manage_review_controller.dart';
 import 'package:da_sdoninja/app/data/model/demo/review_model.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/chip.dart';
 import 'package:da_sdoninja/app/widgets/review_list.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,7 @@ class ManageReviewScreen extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(left: 7.w),
                     child: SvgPicture.asset(
-                      StringUtils.getSVGImageAssets(AppImages.icStarSelected),
+                    AppImages.icStarSelected.getSVGImageAssets,
                       width: 20.w,
                       height: 20.h,
                     ),
@@ -55,7 +55,7 @@ class ManageReviewScreen extends StatelessWidget {
                 _manageReviewController.currentIndex = index;
               },
               itemBuilder: (context, index) {
-                return ReviewListCustomerSide(
+                return ReviewList(
                   itemCount: reviewDemoList.length,
                   reviewDemo: reviewDemoList,
                   isManageReviewList: true,

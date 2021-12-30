@@ -3,7 +3,7 @@ import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_radius.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/appbar.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
@@ -98,7 +98,7 @@ class OtpVerificationScreen extends StatelessWidget {
 
   Image _image(BuildContext context) {
     return Image.asset(
-      StringUtils.getPNGImageAssets(AppImages.imageOtpVerification),
+     AppImages.imageOtpVerification.getPNGImageAssets,
       width: 322.w,
       height: 250.h,
       color: context.isDarkMode ? AppColors.primaryDarkModeColor : null,

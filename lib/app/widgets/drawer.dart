@@ -2,8 +2,8 @@ import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/constant/app_theme.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,11 +15,7 @@ class DrawerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: Apptheme.lightTheme.copyWith(
-          canvasColor: (context.isDarkMode
-                  ? AppColors.primaryDarkModeColor
-                  : AppColors.primaryLightModeColor)
-              .withOpacity(0.70)),
+      data: Apptheme.lightTheme.copyWith(canvasColor: (context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor).withOpacity(0.70)),
       child: SizedBox(
         width: 250.w,
         child: Drawer(
@@ -30,10 +26,11 @@ class DrawerApp extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                   _listTile(
-                      leading: AppImages.icSearch,
-                      title: "search_repair_shop".tr, onTap: () => Get.offAllNamed(Routes.customerNavigation),),
-                  _listTile(
-                      leading: AppImages.icStore, title: "my_repair_shop".tr, onTap: ()=>Get.offAllNamed(Routes.partnerNavigation)),
+                    leading: AppImages.icSearch,
+                    title: "search_repair_shop".tr,
+                    onTap: () => Get.offAllNamed(Routes.customerNavigation),
+                  ),
+                  _listTile(leading: AppImages.icStore, title: "my_repair_shop".tr, onTap: () => Get.offAllNamed(Routes.partnerNavigation)),
                   _listTile(leading: AppImages.icGlobe, title: "language".tr),
                   _listTile(
                       leading: AppImages.icMoon,
@@ -45,12 +42,9 @@ class DrawerApp extends StatelessWidget {
                               activeColor: AppColors.primaryDarkModeColor,
                               activeTrackColor: AppColors.white4,
                               onChanged: (value) {
-                                Get.changeTheme(value
-                                    ? Apptheme.darkTheme
-                                    : Apptheme.lightTheme);
+                                Get.changeTheme(value ? Apptheme.darkTheme : Apptheme.lightTheme);
                               }))),
                   _listTile(leading: AppImages.icLogOut, title: "log_out".tr),
-
                 ],
               )
             ],
@@ -60,11 +54,10 @@ class DrawerApp extends StatelessWidget {
     );
   }
 
-  ListTile _listTile(
-      {required String leading, required String title, Widget? trailing, void Function()? onTap}) {
+  ListTile _listTile({required String leading, required String title, Widget? trailing, void Function()? onTap}) {
     return ListTile(
         leading: SvgPicture.asset(
-          StringUtils.getSVGImageAssets(leading),
+          leading.getSVGImageAssets,
           height: 22.h,
           width: 22.w,
           color: AppColors.white,
@@ -104,22 +97,20 @@ class DrawerApp extends StatelessWidget {
 
   GestureDetector _nameAndAva() {
     return GestureDetector(
-      onTap: () {},
+      onTap: ()=> Get.toNamed(Routes.profile),
       child: Column(
         children: [
           ClipOval(
             child: FadeInImage.assetNetwork(
-              placeholder:
-                  StringUtils.getPNGImageAssets(AppImages.imageDefautAvatar),
-              image:
-                  "https://thuthuatnhanh.com/wp-content/uploads/2019/06/anh-anime-nam.jpg",
+              placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
+              image: "https://thuthuatnhanh.com/wp-content/uploads/2019/06/anh-anime-nam.jpg",
               imageErrorBuilder: (context, error, stackTrace) => const Icon(
                 Icons.error,
                 color: AppColors.white,
               ),
               fit: BoxFit.cover,
-              width: 100.w,
-              height: 100.w,
+              width: 100.h,
+              height: 100.h,
             ),
           ),
           Container(

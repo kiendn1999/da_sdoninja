@@ -3,13 +3,12 @@ import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_shadows.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,8 +19,7 @@ class LoginScreen extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage(StringUtils.getPNGImageAssets(
-                    AppImages.imageBackgroundLogin)),
+                image: AssetImage( AppImages.imageBackgroundLogin.getPNGImageAssets),
                 fit: BoxFit.cover)),
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -66,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: SvgPicture.asset(
-                      StringUtils.getSVGImageAssets(imageAsset),
+                     imageAsset.getSVGImageAssets,
                       width: 42.w,
                       height: 42.h,
                     ),
@@ -117,7 +115,7 @@ class LoginScreen extends StatelessWidget {
           WidgetSpan(
             child: AppShadow.boldShadow(
                 child: Image.asset(
-              StringUtils.getPNGImageAssets(AppImages.icLogoLogin),
+             AppImages.icLogoLogin.getPNGImageAssets,
               width: 66.w,
               height: 61.h,
             )),

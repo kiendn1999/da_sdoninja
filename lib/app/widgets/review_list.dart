@@ -3,7 +3,7 @@ import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_radius.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/data/model/demo/review_model.dart';
-import 'package:da_sdoninja/app/utils/string_utils.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class ReviewListCustomerSide extends StatelessWidget {
+class ReviewList extends StatelessWidget {
   late final List<ReviewDemo> reviewDemo;
   late final int itemCount;
   late final bool isManageReviewList;
@@ -20,7 +20,7 @@ class ReviewListCustomerSide extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final TextEditingController _replyTextFieldController = TextEditingController();
 
-  ReviewListCustomerSide({required this.reviewDemo, required this.itemCount, this.physics, this.padding, this.isManageReviewList = false});
+  ReviewList({required this.reviewDemo, required this.itemCount, this.physics, this.padding, this.isManageReviewList = false});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class ReviewListCustomerSide extends StatelessWidget {
                         _showReplyDialog(context, buttonTitle: "save".tr, dialogTitle: "edit_reply_to".trParams({"name": reviewDemo[index].name}), onPressed: () {});
                       },
                       child: SvgPicture.asset(
-                        StringUtils.getSVGImageAssets(AppImages.icPen),
+                        AppImages.icPen.getSVGImageAssets,
                         width: 22.w,
                         height: 22.h,
                       ),
@@ -86,7 +86,7 @@ class ReviewListCustomerSide extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(left: 40.w),
                       child: SvgPicture.asset(
-                        StringUtils.getSVGImageAssets(AppImages.icTrash),
+                        AppImages.icTrash.getSVGImageAssets,
                         width: 22.w,
                         height: 22.h,
                       ),
@@ -145,7 +145,7 @@ class ReviewListCustomerSide extends StatelessWidget {
                 child: Container(
               margin: EdgeInsets.only(left: 5.w, right: 10.w),
               child: SvgPicture.asset(
-                StringUtils.getSVGImageAssets(AppImages.icStarSelected),
+                AppImages.icStarSelected.getSVGImageAssets,
                 height: 17.h,
                 width: 17.w,
               ),
@@ -229,14 +229,14 @@ class ReviewListCustomerSide extends StatelessWidget {
   ClipOval _avatarImage(int index) {
     return ClipOval(
       child: FadeInImage.assetNetwork(
-        placeholder: StringUtils.getPNGImageAssets(AppImages.imageDefautAvatar),
+        placeholder: AppImages.imageDefautAvatar.getSVGImageAssets,
         image: reviewDemo[index].image,
         imageErrorBuilder: (context, error, stackTrace) => const Icon(
           Icons.error,
         ),
         fit: BoxFit.cover,
-        width: 30.w,
-        height: 30.w,
+        width: 30.h,
+        height: 30.h,
       ),
     );
   }

@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-AppBar appBarTransparent(
-        {Widget? title,
-        Color? backIconButtonColor,
-        Color? primaryBackButtonColor}) =>
-    AppBar(
+AppBar appBarTransparent({Widget? title, Color? backIconButtonColor, Color? primaryBackButtonColor}) => AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -29,17 +25,20 @@ AppBar appBarTransparent(
       ),
     );
 
-AppBar appBarPopular(
-    {bool? centerTitle,
-    double? titleSpacing,
-    Widget? title,
-    List<Widget>? actions}) {
+AppBar appBarPopular({bool? centerTitle, double? titleSpacing, Widget? title, List<Widget>? actions}) {
   return AppBar(
     leading: IconButton(
-      icon: const Icon(Icons.arrow_back_ios),
+      icon: Transform.scale(
+        scale: 1.h,
+        child: const Icon(
+          Icons.arrow_back_ios,
+          size: 23,
+        ),
+      ),
       onPressed: () => Get.back(),
     ),
     title: title,
+    toolbarHeight: 50.h,
     titleTextStyle: AppTextStyle.tex20Regular(),
     toolbarTextStyle: AppTextStyle.tex20Regular(),
     centerTitle: centerTitle,

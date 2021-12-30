@@ -1,7 +1,7 @@
-import 'package:da_sdoninja/app/bindings/initial_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'app/bindings/common/initial_binding.dart';
 import 'app/constant/app_theme.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
