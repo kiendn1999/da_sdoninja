@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.da_sdoninja">
+    package="com.kienflutter.da_sdoninja">
    <application
         android:label="da_sdoninja"
         android:icon="@mipmap/ic_launcher">
