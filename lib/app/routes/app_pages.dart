@@ -27,7 +27,7 @@ import 'app_routes.dart';
 class AppPages {
   static final pages = [
     GetPage(name: Routes.introduce, page: () => const IntroduceScreeen()),
-    GetPage(name: Routes.login, page: () => const LoginScreen(), binding: LoginBinding()),
+    GetPage(name: Routes.login, page: () =>  LoginScreen(), binding: LoginBinding()),
     GetPage(name: Routes.loginWithPhoneNumber, page: () => const LoginWithPhoneNumber(), binding: LoginBinding()),
     GetPage(name: Routes.otpVerification, page: () => const OtpVerificationScreen()),
     GetPage(name: Routes.customerNavigation, page: () =>  CustomerNavigationFrame(), binding: CustomerNavigationBinding()),

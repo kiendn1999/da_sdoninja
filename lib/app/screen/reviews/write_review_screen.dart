@@ -24,7 +24,7 @@ class WriteReviewScreen extends StatelessWidget {
         child: Scaffold(
       appBar: _appBar(),
       extendBody: true,
-      endDrawer: const DrawerApp(),
+      endDrawer:  DrawerApp(),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),

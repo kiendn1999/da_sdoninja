@@ -26,7 +26,7 @@ class CustomerNavigationFrame extends StatelessWidget {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: _appBar(),
-        endDrawer: const DrawerApp(),
+        endDrawer:  DrawerApp(),
         body: PageView(
           controller: _navigateController.pageController,
           children: [

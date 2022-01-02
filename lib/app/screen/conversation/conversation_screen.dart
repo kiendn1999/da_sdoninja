@@ -17,7 +17,7 @@ class ConversationScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: _appBar(context),
-      endDrawer: const DrawerApp(),
+      endDrawer:  DrawerApp(),
     ));
   }
 

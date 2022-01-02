@@ -33,7 +33,7 @@ class ManageStoreScreen extends StatelessWidget {
                   size: 30,
                 )))
       ]),
-      endDrawer: const DrawerApp(),
+      endDrawer:  DrawerApp(),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w),
         child: Column(

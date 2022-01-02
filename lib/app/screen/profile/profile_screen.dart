@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: _appBar(),
-      endDrawer: const DrawerApp(),
+      endDrawer:  DrawerApp(),
       body: SingleChildScrollView(
         child: Obx(() => AbsorbPointer(
               absorbing: !_profileController.isEdit,

@@ -19,7 +19,7 @@ class CustomerReviewScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: _appBar(),
-      endDrawer: const DrawerApp(),
+      endDrawer:  DrawerApp(),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

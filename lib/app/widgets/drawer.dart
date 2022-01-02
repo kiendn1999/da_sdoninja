@@ -2,6 +2,7 @@ import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/constant/app_theme.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/login_controller.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class DrawerApp extends StatelessWidget {
-  const DrawerApp({Key? key}) : super(key: key);
+  final _authenController = Get.find<AuthenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,12 @@ class DrawerApp extends StatelessWidget {
                               onChanged: (value) {
                                 Get.changeTheme(value ? Apptheme.darkTheme : Apptheme.lightTheme);
                               }))),
-                  _listTile(leading: AppImages.icLogOut, title: "log_out".tr),
+                  _listTile(
+                      leading: AppImages.icLogOut,
+                      title: "log_out".tr,
+                      onTap: ()  {
+                         _authenController.signOUt();
+                      }),
                 ],
               )
             ],
@@ -97,7 +103,7 @@ class DrawerApp extends StatelessWidget {
 
   GestureDetector _nameAndAva() {
     return GestureDetector(
-      onTap: ()=> Get.toNamed(Routes.profile),
+      onTap: () => Get.toNamed(Routes.profile),
       child: Column(
         children: [
           ClipOval(
