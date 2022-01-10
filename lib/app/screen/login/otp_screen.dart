@@ -2,6 +2,7 @@ import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_radius.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/authen_controller.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/appbar.dart';
@@ -11,8 +12,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class OtpVerificationScreen extends StatelessWidget {
-  const OtpVerificationScreen({Key? key}) : super(key: key);
+class OtpVerificationScreen extends StatefulWidget {
+  OtpVerificationScreen({Key? key}) : super(key: key);
+
+  @override
+  State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
+}
+
+class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
+  final _authenController = Get.find<AuthController>();
+
+  final TextEditingController _otpTextFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +65,9 @@ class OtpVerificationScreen extends StatelessWidget {
 
   Widget _buttonConfirm() {
     return buttonWithRadius90(
-        onPressed: () => Get.toNamed(Routes.customerNavigation),
+        onPressed: () => _authenController.signInWithPhoneNumber(otpCode: _otpTextFieldController.text),
         child: Text(
-          "confirm".tr,
+          "sign_in".tr,
           style: AppTextStyle.tex25Bold(),
         ),
         horizontalPadding: 45.w,
@@ -76,8 +86,9 @@ class OtpVerificationScreen extends StatelessWidget {
   Widget _textFiledEnterOTP() {
     return textFormFieldApp(
       hintText: "enter_otp".tr,
-    
       style: AppTextStyle.tex24Regular(),
+      controller: _otpTextFieldController,
+      keyboardType: TextInputType.number,
       textAlign: TextAlign.center,
       radius: AppRadius.radius90,
       marginTop: 18.h,
@@ -98,10 +109,17 @@ class OtpVerificationScreen extends StatelessWidget {
 
   Image _image(BuildContext context) {
     return Image.asset(
-     AppImages.imageOtpVerification.getPNGImageAssets,
+      AppImages.imageOtpVerification.getPNGImageAssets,
       width: 322.w,
       height: 250.h,
       color: context.isDarkMode ? AppColors.primaryDarkModeColor : null,
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _otpTextFieldController.dispose();
+    super.dispose();
   }
 }

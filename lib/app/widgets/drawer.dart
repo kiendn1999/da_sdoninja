@@ -2,7 +2,9 @@ import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/constant/app_theme.dart';
-import 'package:da_sdoninja/app/controller/page_controller/common/login_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/authen_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
+import 'package:da_sdoninja/app/data/hive/hive_helper.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class DrawerApp extends StatelessWidget {
-  final _authenController = Get.find<AuthenController>();
+  final _authenController = Get.find<AuthController>();
+  final _profileController = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +47,9 @@ class DrawerApp extends StatelessWidget {
                               activeTrackColor: AppColors.white4,
                               onChanged: (value) {
                                 Get.changeTheme(value ? Apptheme.darkTheme : Apptheme.lightTheme);
+                                HiveHelper.saveThemeModeInMemory(value);
                               }))),
-                  _listTile(
-                      leading: AppImages.icLogOut,
-                      title: "log_out".tr,
-                      onTap: ()  {
-                         _authenController.signOUt();
-                      }),
+                  _listTile(leading: AppImages.icLogOut, title: "log_out".tr, onTap: () async => await _authenController.signOUt()),
                 ],
               )
             ],
@@ -104,30 +103,32 @@ class DrawerApp extends StatelessWidget {
   GestureDetector _nameAndAva() {
     return GestureDetector(
       onTap: () => Get.toNamed(Routes.profile),
-      child: Column(
-        children: [
-          ClipOval(
-            child: FadeInImage.assetNetwork(
-              placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-              image: "https://thuthuatnhanh.com/wp-content/uploads/2019/06/anh-anime-nam.jpg",
-              imageErrorBuilder: (context, error, stackTrace) => const Icon(
-                Icons.error,
-                color: AppColors.white,
+      child: Obx(() => Column(
+            children: [
+              ClipOval(
+                child: FadeInImage.assetNetwork(
+                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
+                  image: _profileController.avaURL.toString(),
+                  imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                    AppImages.imageDefautAvatar.getPNGImageAssets,
+                    fit: BoxFit.cover,
+                    width: 100.h,
+                    height: 100.h,
+                  ),
+                  fit: BoxFit.cover,
+                  width: 100.h,
+                  height: 100.h,
+                ),
               ),
-              fit: BoxFit.cover,
-              width: 100.h,
-              height: 100.h,
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 17.h),
-            child: Text(
-              "Kiên Nguyễn",
-              style: AppTextStyle.tex20Medium(color: AppColors.white),
-            ),
-          ),
-        ],
-      ),
+              Container(
+                margin: EdgeInsets.only(top: 17.h),
+                child: Text(
+                  _profileController.displayName.toString(),
+                  style: AppTextStyle.tex20Medium(color: AppColors.white),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

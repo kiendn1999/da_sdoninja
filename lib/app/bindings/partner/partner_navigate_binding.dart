@@ -1,4 +1,5 @@
 import 'package:da_sdoninja/app/controller/function_controller/change_store_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/manage_order_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/manage_review_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/my_store_controller.dart';
@@ -26,6 +27,9 @@ class PartnerNavigationBinding implements Bindings {
     });
       Get.lazyPut<MyStoreController>(() {
       return MyStoreController();
+    });
+     Get.lazyPut<ProfileController>(() {
+      return ProfileController();
     });
   }
 }

@@ -81,7 +81,7 @@ class WriteReviewScreen extends StatelessWidget {
             hintText: "enter_a_review".tr,
             style: AppTextStyle.tex18Regular(),
             controller: _writeReviewTextFieldController,
-            minLines: 15,
+            maxLines: 15,
             contentPadding: EdgeInsets.fromLTRB(10.w, 10.h, 25.w, 10.h),
           ),
           GestureDetector(

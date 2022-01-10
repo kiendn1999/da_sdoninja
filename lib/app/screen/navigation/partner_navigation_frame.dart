@@ -3,6 +3,7 @@ import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/function_controller/change_store_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/partner_navigate_controller.dart';
 import 'package:da_sdoninja/app/data/model/item_bottombar_model.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
@@ -23,7 +24,8 @@ import 'package:marquee/marquee.dart';
 class PartnerNavigationFrame extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _navigateController = Get.find<PartnerNavigateController>();
-  final _changeStoreController = Get.find<ChangeStoreController>();
+  final _changeStoreController = Get.find<ChangeStoreController>(); 
+  final _profileController = Get.find<ProfileController>(); 
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +119,7 @@ class PartnerNavigationFrame extends StatelessWidget {
               child: ClipOval(
                 child: FadeInImage.assetNetwork(
                   placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                  image: "https://thuthuatnhanh.com/wp-content/uploads/2019/06/anh-anime-nam.jpg",
+                  image: _profileController.avaURL.toString(),
                   imageErrorBuilder: (context, error, stackTrace) => const Icon(
                     Icons.error,
                   ),

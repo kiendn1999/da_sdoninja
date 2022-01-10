@@ -8,7 +8,7 @@ class Apptheme {
       appBarTheme: const AppBarTheme(color: AppColors.primaryLightModeColor),
       elevatedButtonTheme: AppButtonTheme.elevatedButtonPrimaryLightTheme,
       outlinedButtonTheme: AppButtonTheme.outlineButtonPrimaryLightTheme,
-
+      snackBarTheme: SnackBarThemeData(backgroundColor: AppColors.primaryLightModeColor),
       checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateProperty.all(AppColors.primaryLightModeColor),
       ),

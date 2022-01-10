@@ -1,5 +1,4 @@
 import 'package:da_sdoninja/app/constant/app_colors.dart';
-import 'package:da_sdoninja/app/constant/app_shadows.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,23 +9,24 @@ Widget textFormFieldApp(
         Widget? suffixIcon,
         double radius = 10,
         TextEditingController? controller,
+        void Function(String?)? onSaved,
         int? maxLines,
-         int? minLines,
         double iconHeight = 0.0,
         TextAlign textAlign = TextAlign.start,
         TextStyle? style,
+        TextStyle? errorStyle,
         TextInputType? keyboardType,
         String? Function(String?)? validator}) =>
     Builder(
       builder: (context) => Container(
         margin: EdgeInsets.only(top: marginTop),
-        child: AppShadow.lightShadow(
-            child: TextFormField(
+        child: TextFormField(
           textAlign: textAlign,
           validator: validator,
+          onSaved: onSaved,
           controller: controller,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           maxLines: maxLines,
-          minLines: minLines,
           style: style,
           keyboardType: keyboardType,
           decoration: InputDecoration(
@@ -35,12 +35,16 @@ Widget textFormFieldApp(
             hintText: hintText,
             suffixIconConstraints: BoxConstraints(minHeight: iconHeight),
             suffixIcon: suffixIcon,
-          
+            errorStyle: errorStyle,
             hintStyle: style,
             contentPadding: contentPadding,
+            errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+            focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
           ),
-        )),
+        ),
       ),
     );
