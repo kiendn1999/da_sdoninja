@@ -229,7 +229,7 @@ class ReviewList extends StatelessWidget {
   ClipOval _avatarImage(int index) {
     return ClipOval(
       child: FadeInImage.assetNetwork(
-        placeholder: AppImages.imageDefautAvatar.getSVGImageAssets,
+        placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
         image: reviewDemo[index].image,
         imageErrorBuilder: (context, error, stackTrace) => const Icon(
           Icons.error,

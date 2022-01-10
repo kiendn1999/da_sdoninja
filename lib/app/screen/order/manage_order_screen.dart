@@ -237,17 +237,17 @@ class ManageOrderScreen extends StatelessWidget {
           child: Row(
             children: [
               ClipOval(
-              child: FadeInImage.assetNetwork(
-                placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                image: orderDemoList[index].userAva,
-                imageErrorBuilder: (context, error, stackTrace) => const Icon(
-                  Icons.error,
+                child: FadeInImage.assetNetwork(
+                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
+                  image: orderDemoList[index].userAva,
+                  imageErrorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.error,
+                  ),
+                  fit: BoxFit.cover,
+                  width: 28.h,
+                  height: 28.h,
                 ),
-                fit: BoxFit.cover,
-                width: 28.h,
-                height: 28.h,
               ),
-            ),
               Flexible(
                 child: Container(
                   margin: EdgeInsets.only(left: 5.w),
@@ -280,7 +280,7 @@ class ManageOrderScreen extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(left: 20.w),
           child: SvgPicture.asset(
-           AppImages.icOrderChat.getSVGImageAssets,
+            AppImages.icOrderChat.getSVGImageAssets,
             width: 22.w,
             height: 22.w,
           ),
@@ -321,7 +321,7 @@ class ManageOrderScreen extends StatelessWidget {
         crossAxisAlignment: crossAxisAlignment,
         children: [
           SvgPicture.asset(
-          pathImage.getSVGImageAssets,
+            pathImage.getSVGImageAssets,
             width: 22.w,
             height: 22.h,
             color: iconColor,
@@ -331,7 +331,6 @@ class ManageOrderScreen extends StatelessWidget {
                 margin: EdgeInsets.only(left: 5.w),
                 child: textFormFieldApp(
                     contentPadding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 10.w),
-                    
                     maxLines: maxLines,
                     textAlign: textAlign,
                     keyboardType: keyboardType,
@@ -355,7 +354,7 @@ class ManageOrderScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SvgPicture.asset(
-           pathImage.getSVGImageAssets,
+            pathImage.getSVGImageAssets,
             width: 22.w,
             height: 22.h,
             color: iconColor,

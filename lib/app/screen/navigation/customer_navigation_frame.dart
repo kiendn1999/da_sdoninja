@@ -1,6 +1,7 @@
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_radius.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/customer/customer_navigate_controller.dart';
 import 'package:da_sdoninja/app/data/model/item_bottombar_model.dart';
 import 'package:da_sdoninja/app/screen/chat/customer_chat_screen.dart';
@@ -19,6 +20,7 @@ import 'package:get/get.dart';
 class CustomerNavigationFrame extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _navigateController = Get.find<CustomerNavigateController>();
+  final _profileController = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class CustomerNavigationFrame extends StatelessWidget {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: _appBar(),
-        endDrawer: const DrawerApp(),
+        endDrawer: DrawerApp(),
         body: PageView(
           controller: _navigateController.pageController,
           children: [
@@ -79,9 +81,12 @@ class CustomerNavigationFrame extends StatelessWidget {
               child: ClipOval(
                 child: FadeInImage.assetNetwork(
                   placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                  image: "https://thuthuatnhanh.com/wp-content/uploads/2019/06/anh-anime-nam.jpg",
-                  imageErrorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.error,
+                  image: _profileController.avaURL.toString(),
+                  imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                    AppImages.imageDefautAvatar.getPNGImageAssets,
+                    fit: BoxFit.cover,
+                    width: 35.h,
+                    height: 35.h,
                   ),
                   fit: BoxFit.cover,
                   width: 35.h,

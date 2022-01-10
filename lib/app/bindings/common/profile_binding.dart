@@ -1,3 +1,4 @@
+import 'package:da_sdoninja/app/controller/page_controller/common/form_fileld_profile_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
@@ -8,6 +9,9 @@ class ProfileBinding implements Bindings {
   void dependencies() {
     Get.lazyPut<ProfileController>(() { 
       return ProfileController();
+    });
+    Get.lazyPut<FormFieldProfileController>(() { 
+      return FormFieldProfileController();
     });
   }
 }

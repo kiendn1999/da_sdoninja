@@ -44,8 +44,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.kienflutter.da_sdoninja"
-        minSdkVersion 16
+        applicationId "com.kienflutter.sdoninja"
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

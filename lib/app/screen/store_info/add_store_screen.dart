@@ -12,7 +12,7 @@ class AddStoreScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: appBarPopular(centerTitle: true, title: Text("add_a_new_store".tr)),
-      endDrawer: const DrawerApp(),
+      endDrawer:  DrawerApp(),
       body: MyStoreScreen(isAddStoreScreen: true,),
     ));
   }

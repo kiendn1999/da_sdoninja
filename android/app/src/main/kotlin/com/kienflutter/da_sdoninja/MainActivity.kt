@@ -1,4 +1,4 @@
-package com.kienflutter.da_sdoninja
+package com.kienflutter.sdoninja
 
 import io.flutter.embedding.android.FlutterActivity
 

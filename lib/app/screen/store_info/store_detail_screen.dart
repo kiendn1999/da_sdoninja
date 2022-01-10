@@ -1,6 +1,7 @@
 import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/controller/page_controller/customer/store_detail_controller.dart';
 import 'package:da_sdoninja/app/data/model/demo/review_model.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
@@ -14,12 +15,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class StoreDetailScreen extends StatelessWidget {
+  final _storeDetailController = Get.find<StoreDetailController>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        endDrawer: const DrawerApp(),
+        endDrawer:  DrawerApp(),
         appBar: appBarTransparent(backIconButtonColor: AppColors.white, primaryBackButtonColor: AppColors.black.withOpacity(0.25)),
         body: SingleChildScrollView(
           child: Column(

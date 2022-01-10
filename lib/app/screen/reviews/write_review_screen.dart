@@ -24,7 +24,7 @@ class WriteReviewScreen extends StatelessWidget {
         child: Scaffold(
       appBar: _appBar(),
       extendBody: true,
-      endDrawer: const DrawerApp(),
+      endDrawer:  DrawerApp(),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
@@ -81,7 +81,7 @@ class WriteReviewScreen extends StatelessWidget {
             hintText: "enter_a_review".tr,
             style: AppTextStyle.tex18Regular(),
             controller: _writeReviewTextFieldController,
-            minLines: 15,
+            maxLines: 15,
             contentPadding: EdgeInsets.fromLTRB(10.w, 10.h, 25.w, 10.h),
           ),
           GestureDetector(
