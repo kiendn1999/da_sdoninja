@@ -86,7 +86,7 @@ class AuthController extends GetxController {
         codeSent: (String verificationId, [int? forceResendingToken]) async {
           snackBar(message: 'please_check_your_phone'.tr);
           _verificationId = verificationId;
-          Get.toNamed(Routes.otpVerification);
+          Get.toNamed(Routes.otpVerification, arguments: [phoneNumber, 1]);
           EasyLoading.dismiss();
         },
       );

@@ -35,8 +35,8 @@ class _CircularProgessAppState extends State<CircularProgessApp> with SingleTick
       child: Image.asset(
         AppImages.icLogoLogin.getPNGImageAssets,
         width: widget.width ?? 30.h,
-        height: widget.height ?? 30.h ,
-        color: widget.color ?? (context.isDarkMode?AppColors.primaryDarkModeColor:AppColors.primaryLightModeColor),
+        height: widget.height ?? 30.h,
+        color: widget.color ?? (context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor),
       ),
     );
   }
@@ -46,7 +46,5 @@ class _CircularProgessAppState extends State<CircularProgessApp> with SingleTick
     // TODO: implement dispose
     _controller.dispose();
     super.dispose();
-    
-    
   }
 }

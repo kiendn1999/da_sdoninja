@@ -40,6 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Form(
                         key: _formFiledProfileController.updateProfileFormKey,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _infoTextField(
                               lable: "my_name".tr,
@@ -56,6 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               controller: _formFiledProfileController.phomeNumberTextFieldController,
                               validator: (value) => _formFiledProfileController.validatePhoneNumber(value!),
                             ),
+                            _autoEnterCurrentPhoneNumberButton()
                           ],
                         ))
                   ],
@@ -64,6 +66,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )),
       ),
     ));
+  }
+
+  TextButton _autoEnterCurrentPhoneNumberButton() {
+    return TextButton(
+        onPressed: () async => _formFiledProfileController.phomeNumberTextFieldController.text = (await _formFiledProfileController.autoFill.hint)!,
+        child: Text(
+          "get_current_number".tr,
+          style: AppTextStyle.tex16Regular(color: AppColors.green),
+        ));
   }
 
   _infoTextField(
@@ -120,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: FadeInImage.assetNetwork(
                   placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
                   image: _profileController.avaURL.toString(),
-                  imageErrorBuilder: (context, error, stackTrace) =>  Image.asset(
+                  imageErrorBuilder: (context, error, stackTrace) => Image.asset(
                     AppImages.imageDefautAvatar.getPNGImageAssets,
                     fit: BoxFit.cover,
                     width: 150.h,
@@ -156,8 +167,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       preferredSize: Size.fromHeight(55.h),
       child: Obx(() => appBarPopular(title: _formFiledProfileController.isEdit ? Text("edit_my_profile".tr) : Text("my_profile".tr), centerTitle: true, actions: [
             IconButton(
-                onPressed: () async =>
-                    _formFiledProfileController.checkInvalidForm ? await _profileController.updateProfile(_formFiledProfileController.userNameTextFieldController.text) : null,
+                onPressed: () async => _formFiledProfileController.checkInvalidForm
+                    ? await _profileController.updateProfile(
+                        _formFiledProfileController.userNameTextFieldController.text, _formFiledProfileController.phomeNumberTextFieldController.text)
+                    : null,
                 icon: Icon(
                   _formFiledProfileController.isEdit ? Icons.done : Icons.edit,
                   size: 25.h,

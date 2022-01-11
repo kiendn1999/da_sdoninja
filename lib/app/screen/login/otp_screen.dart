@@ -3,6 +3,7 @@ import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_radius.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/common/authen_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/appbar.dart';
@@ -13,16 +14,32 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
-  OtpVerificationScreen({Key? key}) : super(key: key);
+  const OtpVerificationScreen({Key? key}) : super(key: key);
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
-  final _authenController = Get.find<AuthController>();
+  late final _authenController;
+  late final _profileController;
 
   final TextEditingController _otpTextFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    switch (Get.arguments[1]) {
+      case 1:
+        _authenController = Get.find<AuthController>();
+        break;
+      case 2:
+        _profileController = Get.find<ProfileController>();
+        break;
+      default:
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +82,19 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   Widget _buttonConfirm() {
     return buttonWithRadius90(
-        onPressed: () => _authenController.signInWithPhoneNumber(otpCode: _otpTextFieldController.text),
+        onPressed: () {
+          switch (Get.arguments[1]) {
+            case 1:
+              _authenController.signInWithPhoneNumber(otpCode: _otpTextFieldController.text);
+              break;
+            case 2:
+              _profileController.updatePhoneNumber(otpCode: _otpTextFieldController.text);
+              break;
+            default:
+          }
+        },
         child: Text(
-          "sign_in".tr,
+          "confirm".tr,
           style: AppTextStyle.tex25Bold(),
         ),
         horizontalPadding: 45.w,
@@ -100,7 +127,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return Container(
       margin: EdgeInsets.only(top: 20.h),
       child: Text(
-        "otp_warning".trParams({'number': '0898225231'}),
+        "otp_warning".trParams({'number': Get.arguments[0]}),
         style: AppTextStyle.tex22Medium(),
         textAlign: TextAlign.justify,
       ),

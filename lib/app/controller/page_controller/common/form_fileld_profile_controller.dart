@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class FormFieldProfileController extends GetxController {
   final GlobalKey<FormState> updateProfileFormKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late TextEditingController userNameTextFieldController;
   late TextEditingController phomeNumberTextFieldController;
+  final SmsAutoFill autoFill = SmsAutoFill();
   final RxBool _isEdit = false.obs;
   bool _isValid = true;
-  bool _isFirst = true;
   bool get isEdit => _isEdit.value;
 
   @override
@@ -41,14 +42,12 @@ class FormFieldProfileController extends GetxController {
 
   bool get checkInvalidForm {
     _isValid = updateProfileFormKey.currentState!.validate();
-    if (_isValid || _isFirst) {
+    if (_isValid && _isEdit.value) {
+      FocusManager.instance.primaryFocus?.unfocus();
       _isEdit.value = !_isEdit.value;
-      _isFirst = false;
+      return true;
     }
-    if (!_isValid) {
-      return false;
-    }
-    FocusManager.instance.primaryFocus?.unfocus();
-    return true;
+    if(_isEdit.value==false)_isEdit.value =  !_isEdit.value;
+    return false;
   }
 }

@@ -35,7 +35,7 @@ class _LoginWithPhoneNumberScreenState extends State<LoginWithPhoneNumberScreen>
           child: Container(
             margin: EdgeInsets.only(top: 60.h, right: 35.w, left: 35.h),
             child: Column(
-              children: [_image(context), _textFileldEnterNumber(), _buttonResendOTP(), _buttonSend()],
+              children: [_image(context), _textFileldEnterNumber(), _autoEnterCurrentPhoneNumberButton(), _buttonSend()],
             ),
           ),
         ),
@@ -43,7 +43,7 @@ class _LoginWithPhoneNumberScreenState extends State<LoginWithPhoneNumberScreen>
     );
   }
 
-  Container _buttonResendOTP() {
+  Container _autoEnterCurrentPhoneNumberButton() {
     return Container(
       margin: EdgeInsets.only(top: 5.h),
       child: TextButton(
