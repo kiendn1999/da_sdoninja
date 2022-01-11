@@ -58,7 +58,8 @@ class AuthController extends GetxController {
       );
 
       await _auth.signInWithCredential(credential);
-      Get.toNamed(Routes.customerNavigation);
+      HiveHelper.saveIsFirstLogin(false);
+      Get.offAllNamed(Routes.customerNavigation);
       snackBar(message: "logged_in_successfully".tr);
     } catch (e) {
       snackBar(message: "login_failed".tr);
@@ -73,8 +74,9 @@ class AuthController extends GetxController {
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
           await _auth.signInWithCredential(phoneAuthCredential);
+          HiveHelper.saveIsFirstLogin(false);
           snackBar(message: "phone_number_automatically_verified".tr);
-          Get.toNamed(Routes.customerNavigation);
+          Get.offAllNamed(Routes.customerNavigation);
         },
         verificationFailed: (FirebaseAuthException authException) {
           snackBar(message: 'phone_number_verification_failed'.tr);
