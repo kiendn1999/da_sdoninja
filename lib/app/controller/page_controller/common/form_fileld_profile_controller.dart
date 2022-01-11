@@ -44,7 +44,7 @@ class FormFieldProfileController extends GetxController {
     _isValid = updateProfileFormKey.currentState!.validate();
     if (_isValid && _isEdit.value) {
       FocusManager.instance.primaryFocus?.unfocus();
-      _isEdit.value = !_isEdit.value;
+      _isEdit.value = !_isValid;
       return true;
     }
     if(_isEdit.value==false)_isEdit.value =  !_isEdit.value;
