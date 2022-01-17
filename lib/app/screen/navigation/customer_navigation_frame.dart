@@ -68,7 +68,8 @@ class CustomerNavigationFrame extends StatelessWidget {
                         style: AppTextStyle.tex14Regular(),
                         radius: AppRadius.radius90,
                         textAlign: TextAlign.center,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 11.h),
                         hintText: "enter_your_location".tr))),
           ],
         ),
@@ -101,10 +102,22 @@ class CustomerNavigationFrame extends StatelessWidget {
   Widget _bottomItems() {
     return Obx(() => bottomBarHomeScreen(
             items: [
-              ItemBottomBar(pathIconSelected: AppImages.icHomeSelected, pathIconUnSelected: AppImages.icHome, lable: "home".tr),
-              ItemBottomBar(pathIconSelected: AppImages.icMapSelected, pathIconUnSelected: AppImages.icMap, lable: "map".tr),
-              ItemBottomBar(pathIconSelected: AppImages.icOrdersSelected, pathIconUnSelected: AppImages.icOrders, lable: "repair_order".tr),
-              ItemBottomBar(pathIconSelected: AppImages.icChatSelected, pathIconUnSelected: AppImages.icChat, lable: "message".tr),
+              ItemBottomBar(
+                  pathIconSelected: AppImages.icHomeSelected,
+                  pathIconUnSelected: AppImages.icHome,
+                  lable: "home".tr),
+              ItemBottomBar(
+                  pathIconSelected: AppImages.icMapSelected,
+                  pathIconUnSelected: AppImages.icMap,
+                  lable: "map".tr),
+              ItemBottomBar(
+                  pathIconSelected: AppImages.icOrdersSelected,
+                  pathIconUnSelected: AppImages.icOrders,
+                  lable: "repair_order".tr),
+              ItemBottomBar(
+                  pathIconSelected: AppImages.icChatSelected,
+                  pathIconUnSelected: AppImages.icChat,
+                  lable: "message".tr),
             ],
             currentIndex: _navigateController.currentIndex,
             onTap: (index) {
