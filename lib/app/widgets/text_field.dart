@@ -31,7 +31,11 @@ Widget textFormFieldApp(
           keyboardType: keyboardType,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+                borderRadius: BorderRadius.circular(radius),
+                borderSide: BorderSide(
+                    color: context.isDarkMode
+                        ? AppColors.primaryDarkModeColor
+                        : AppColors.primaryLightModeColor)),
             hintText: hintText,
             suffixIconConstraints: BoxConstraints(minHeight: iconHeight),
             suffixIcon: suffixIcon,
@@ -39,11 +43,23 @@ Widget textFormFieldApp(
             hintStyle: style,
             contentPadding: contentPadding,
             errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+                borderRadius: BorderRadius.circular(radius),
+                borderSide: BorderSide(
+                    color: context.isDarkMode
+                        ? AppColors.primaryDarkModeColor
+                        : AppColors.primaryLightModeColor)),
             focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+                borderRadius: BorderRadius.circular(radius),
+                borderSide: BorderSide(
+                    color: context.isDarkMode
+                        ? AppColors.primaryDarkModeColor
+                        : AppColors.primaryLightModeColor)),
             focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+                borderRadius: BorderRadius.circular(radius),
+                borderSide: BorderSide(
+                    color: context.isDarkMode
+                        ? AppColors.primaryDarkModeColor
+                        : AppColors.primaryLightModeColor)),
           ),
         ),
       ),

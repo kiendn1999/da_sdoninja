@@ -1,7 +1,7 @@
 import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
-import 'package:da_sdoninja/app/controller/page_controller/partner/my_store_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/common/form_fileld_store_register_controller.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
@@ -11,26 +11,26 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class MyStoreScreen extends StatelessWidget {
-  //const MyStoreScreen({Key? key}) : super(key: key);
   final bool isAddStoreScreen;
-  MyStoreScreen({this.isAddStoreScreen = false});
+  MyStoreScreen({Key? key, this.isAddStoreScreen = false}) : super(key: key);
   final List<String> _storeTypeList = [
-    "motorcycle".tr,
-    "car".tr,
-    "computer".tr,
-    "mobile_phone".tr,
-    "electronic_device".tr,
-    "refrigeration_device".tr,
-    "electrical_equipment".tr
+    "motorcycle",
+    "car",
+    "computer",
+    "mobile_phone",
+    "electronic_device",
+    "refrigeration_device",
+    "electrical_equipment"
   ];
-  final _myStoreContorller = Get.find<MyStoreController>();
+  final _registerController = Get.find<FormFieldStoreRegisterController>();
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AbsorbPointer(
-        absorbing: false,
+        absorbing: !isAddStoreScreen,
         child: Form(
+          key: _registerController.formKey,
           child: Column(
             children: [
               _shopImageAva(context),
@@ -40,17 +40,29 @@ class MyStoreScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     _infoTextField(
+                        textEditingController:
+                            _registerController.nameController,
                         lable: "store_name".tr,
                         hintText: "enter_store_name".tr,
-                        imagePath: AppImages.icStoreSelected),
+                        imagePath: AppImages.icStoreSelected,
+                        validate: (value) =>
+                            _registerController.validateStoreName(value)),
                     _infoTextField(
+                        textEditingController:
+                            _registerController.addressController,
                         lable: "address".tr,
                         hintText: "enter_address".tr,
-                        imagePath: AppImages.icMapSelected),
+                        imagePath: AppImages.icMapSelected,
+                        validate: (value) =>
+                            _registerController.validateStoreAddress(value)),
                     _infoTextField(
+                        textEditingController:
+                            _registerController.phoneController,
                         lable: "phone_number".tr,
                         hintText: "enter_your_phone_number".tr,
-                        imagePath: AppImages.icCall),
+                        imagePath: AppImages.icCall,
+                        validate: (value) =>
+                            _registerController.validateStorePhone(value)),
                     _storeTypeCheckBoxGridView(),
                     _introduce(),
                     _termAndPolicyCheckBox(),
@@ -69,7 +81,12 @@ class MyStoreScreen extends StatelessWidget {
     return Visibility(
       visible: isAddStoreScreen,
       child: buttonWithRadius10(
-          onPressed: () {},
+          onPressed: () {
+            _registerController.summitInfo(
+                _registerController.nameController.text,
+                _registerController.addressController.text,
+                _registerController.phoneController.text);
+          },
           child: Text(
             "send".tr,
             style: AppTextStyle.tex18Medium(),
@@ -242,7 +259,7 @@ class MyStoreScreen extends StatelessWidget {
                         children: [
                           Checkbox(value: false, onChanged: (value) {}),
                           Text(
-                            _storeTypeList[index],
+                            _storeTypeList[index].tr,
                             style: AppTextStyle.tex16Regular(),
                           ),
                         ],
@@ -255,9 +272,11 @@ class MyStoreScreen extends StatelessWidget {
   }
 
   _infoTextField(
-      {required String lable,
+      {required TextEditingController textEditingController,
+      required String lable,
       required String hintText,
-      required String imagePath}) {
+      required String imagePath,
+      required String? Function(String?)? validate}) {
     return Builder(
         builder: (context) => Container(
               margin: EdgeInsets.only(top: 15.h),
@@ -269,23 +288,26 @@ class MyStoreScreen extends StatelessWidget {
                     style: AppTextStyle.tex18Regular(),
                   ),
                   textFormFieldApp(
-                      hintText: hintText,
-                      style: AppTextStyle.tex18Regular(),
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 10.h, horizontal: 15.w),
-                      iconHeight: 25.h,
-                      marginTop: 5.h,
-                      suffixIcon: Container(
-                        margin: EdgeInsets.only(right: 15.w),
-                        child: SvgPicture.asset(
-                          imagePath.getSVGImageAssets,
-                          width: 25.w,
-                          height: 25.h,
-                          color: context.isDarkMode
-                              ? AppColors.primaryDarkModeColor
-                              : AppColors.primaryLightModeColor,
-                        ),
-                      ))
+                    controller: textEditingController,
+                    hintText: hintText,
+                    style: AppTextStyle.tex18Regular(),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                    iconHeight: 25.h,
+                    marginTop: 5.h,
+                    suffixIcon: Container(
+                      margin: EdgeInsets.only(right: 15.w),
+                      child: SvgPicture.asset(
+                        imagePath.getSVGImageAssets,
+                        width: 25.w,
+                        height: 25.h,
+                        color: context.isDarkMode
+                            ? AppColors.primaryDarkModeColor
+                            : AppColors.primaryLightModeColor,
+                      ),
+                    ),
+                    validator: validate,
+                  )
                 ],
               ),
             ));
