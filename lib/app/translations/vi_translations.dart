@@ -131,5 +131,6 @@ final Map<String, String> vi = {
   "phone_number_update_successful":"Đã cập nhật số điện thoại thành công",
   "the_otp_code_is_not_correct":"Mã OTP không đúng",
   "name_update_failed":"Cập nhật tên thất bại!",
-  "phone_number_update_failed":"Cập nhật số điện thoại thất bại"
+  "phone_number_update_failed":"Cập nhật số điện thoại thất bại",
+  "no_name":"Không tên"
 };

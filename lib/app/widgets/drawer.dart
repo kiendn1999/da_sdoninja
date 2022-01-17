@@ -123,7 +123,7 @@ class DrawerApp extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(top: 17.h),
                 child: Text(
-                  _profileController.displayName.toString(),
+                  _profileController.displayName??"no_name".tr,
                   style: AppTextStyle.tex20Medium(color: AppColors.white),
                 ),
               ),
