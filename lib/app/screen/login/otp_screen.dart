@@ -21,8 +21,8 @@ class OtpVerificationScreen extends StatefulWidget {
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
-  late final _authenController;
-  late final _profileController;
+  late final AuthController _authenController;
+  late final ProfileController  _profileController;
 
   final TextEditingController _otpTextFieldController = TextEditingController();
 
@@ -88,7 +88,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               _authenController.signInWithPhoneNumber(otpCode: _otpTextFieldController.text);
               break;
             case 2:
-              _profileController.updatePhoneNumber(otpCode: _otpTextFieldController.text);
+              _profileController.updatePhoneNumber(otpCode: _otpTextFieldController.text, phoneNumber: Get.arguments[0]);
               break;
             default:
           }

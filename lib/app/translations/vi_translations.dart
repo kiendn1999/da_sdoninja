@@ -129,5 +129,7 @@ final Map<String, String> vi = {
   "invalid_username": "Tên người dùng không hợp lệ",
   "do_not_leave_the_name_blank": "Không để trống tên",
   "phone_number_update_successful":"Đã cập nhật số điện thoại thành công",
-  "the_otp_code_is_not_correct":"Mã OTP không đúng"
+  "the_otp_code_is_not_correct":"Mã OTP không đúng",
+  "name_update_failed":"Cập nhật tên thất bại!",
+  "phone_number_update_failed":"Cập nhật số điện thoại thất bại"
 };

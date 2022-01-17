@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/widgets/circular_progess.dart';
 import 'package:da_sdoninja/app/widgets/snackbar.dart';
@@ -16,15 +17,20 @@ class ProfileController extends GetxController {
   updateProfile(String name, String phoneNumber) async {
     EasyLoading.show(indicator: const CircularProgessApp());
     if (phoneNumber.substring(0, 3) != "+84") phoneNumber = "+84" + phoneNumber.substring(1);
-    if (name != displayName) await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
+    if (name != displayName) {
+      await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
+      await _saveUserNameIntoDB(name);
+    }
     if (phoneNumber != this.phoneNumber) {
       try {
         await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: phoneNumber,
           verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
-            await FirebaseAuth.instance.currentUser!.updatePhoneNumber(phoneAuthCredential);
-            snackBar(message: "phone_number_update_successful".tr);
-            Get.back();
+            await FirebaseAuth.instance.currentUser!.updatePhoneNumber(phoneAuthCredential).whenComplete(() async {
+              await _savePhoneNumberIntoDB(phoneNumber);
+              snackBar(message: "phone_number_update_successful".tr);
+              Get.back();
+            });
           },
           verificationFailed: (FirebaseAuthException authException) {
             snackBar(message: 'phone_number_verification_failed'.tr);
@@ -46,19 +52,33 @@ class ProfileController extends GetxController {
     EasyLoading.dismiss();
   }
 
-  Future<void> updatePhoneNumber({required String otpCode}) async {
+  Future<void> updatePhoneNumber({required String otpCode, required String phoneNumber}) async {
     try {
       final PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: _verificationId.toString(),
         smsCode: otpCode,
       );
 
-      await FirebaseAuth.instance.currentUser!.updatePhoneNumber(credential);
-      Get.back();
-      snackBar(message: "phone_number_update_successful".tr);
+      await FirebaseAuth.instance.currentUser!.updatePhoneNumber(credential).whenComplete(() async {
+         await _savePhoneNumberIntoDB(phoneNumber);
+        Get.back();
+        snackBar(message: "phone_number_update_successful".tr);
+      });
     } catch (e) {
       snackBar(message: "the_otp_code_is_not_correct".tr);
     }
+  }
+
+  _saveUserNameIntoDB(String name) async {
+    await FirebaseFirestore.instance.collection('User').doc(_firebaseUser.value!.uid).update({"user_name": name}).catchError((error) {
+      snackBar(message: "updatename_failed".tr);
+    });
+  }
+
+  _savePhoneNumberIntoDB(String phoneNumber) async {
+    await FirebaseFirestore.instance.collection('User').doc(_firebaseUser.value!.uid).update({"phone_number": phoneNumber}).catchError((error) {
+      snackBar(message: "phone_number_update_failed".tr);
+    });
   }
 
   @override
