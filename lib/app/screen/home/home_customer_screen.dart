@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:da_sdoninja/app/constant/app_colors.dart';
 import 'package:da_sdoninja/app/constant/app_images.dart';
 import 'package:da_sdoninja/app/constant/app_radius.dart';
@@ -5,7 +6,6 @@ import 'package:da_sdoninja/app/constant/app_shadows.dart';
 import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/customer/home_custom_controller.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
-import 'package:da_sdoninja/app/data/model/demo/store_model.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/dropdown_button.dart';
@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:marquee/marquee.dart';
 
 class HomeCustomerScreen extends StatelessWidget {
   final _homeCustomerController = Get.find<HomeCustomerController>();
@@ -57,16 +58,16 @@ class HomeCustomerScreen extends StatelessWidget {
   Expanded _shopsListView() => Expanded(
         child: Container(
           margin: EdgeInsets.only(top: 17.h),
-          child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) => SizedBox(
-              height: 7.h,
-            ),
-            itemCount: shopDemoList.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return _shopsItem(index);
-            },
-          ),
+          child: Obx(() => ListView.separated(
+                separatorBuilder: (BuildContext context, int index) => SizedBox(
+                  height: 7.h,
+                ),
+                itemCount: _homeCustomerController.stores.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return _shopsItem(index);
+                },
+              )),
         ),
       );
 
@@ -135,7 +136,7 @@ class HomeCustomerScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 8.w),
               child: Text(
-                "${shopDemoList[index].distance} km",
+                "${1} km",
                 style: AppTextStyle.tex18Regular(),
               ),
             )
@@ -155,7 +156,7 @@ class HomeCustomerScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 8.w),
               child: Text(
-                "${shopDemoList[index].rate} (${shopDemoList[index].quantity})",
+                "${_homeCustomerController.stores[index].rating!} (${_homeCustomerController.stores[index].ratingQuantity!})",
                 style: AppTextStyle.tex18Regular(),
               ),
             )
@@ -163,25 +164,40 @@ class HomeCustomerScreen extends StatelessWidget {
         ),
       );
 
-  Text _shopName(int index) => Text(
-        shopDemoList[index].name,
+  _shopName(int index) => AutoSizeText(
+        _homeCustomerController.stores[index].storeName!,
+        maxLines: 1,
+        minFontSize: 20,
         style: AppTextStyle.tex18Regular(),
+        overflowReplacement: SizedBox(
+          height: 25.h,
+          child: Marquee(
+            text: _homeCustomerController.stores[index].storeName!,
+            scrollAxis: Axis.horizontal,
+            blankSpace: 10.0,
+            velocity: 100.0,
+            style: AppTextStyle.tex18Regular(),
+            pauseAfterRound: const Duration(seconds: 1),
+            accelerationDuration: const Duration(seconds: 1),
+            accelerationCurve: Curves.linear,
+            decelerationDuration: const Duration(milliseconds: 500),
+            decelerationCurve: Curves.easeOut,
+          ),
+        ),
       );
 
   FadeInImage _shopsAvatar(int index) => FadeInImage.assetNetwork(
       width: 120.w,
       height: 145.h,
       fit: BoxFit.cover,
-      imageErrorBuilder: (context, error, stackTrace) => SizedBox(
-            width: 120.w,
+      imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+            AppImages.imageAvaShopDefault.getPNGImageAssets,
+            fit: BoxFit.cover,
+            width: 120.h,
             height: 145.h,
-            child: const Icon(
-              Icons.image_not_supported_outlined,
-              size: 35,
-            ),
           ),
       placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
-      image: shopDemoList[index].image);
+      image: _homeCustomerController.stores[index].avaUrl!);
 
   Widget _searchStoreTextField(BuildContext context) => textFormFieldApp(
         marginTop: 17.h,

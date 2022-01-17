@@ -33,7 +33,7 @@ class ManageStoreScreen extends StatelessWidget {
                   size: 30,
                 )))
       ]),
-       endDrawer:  DrawerApp(),
+      endDrawer: DrawerApp(),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w),
         child: Column(
@@ -47,14 +47,14 @@ class ManageStoreScreen extends StatelessWidget {
     return Expanded(
         child: Container(
       margin: EdgeInsets.only(top: 20.h),
-      child: ListView.separated(
+      child: Obx(() => ListView.separated(
           itemBuilder: (context, index) => _storeItem(index),
-          itemCount: storeManagerList.length,
+          itemCount: _manageStoreController.stores.length,
           shrinkWrap: true,
           separatorBuilder: (context, index) => const Divider(
                 height: 0,
                 thickness: 1.5,
-              )),
+              ))),
     ));
   }
 
@@ -67,25 +67,26 @@ class ManageStoreScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
         child: Row(
           children: [
-            Flexible(
+            Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    storeManagerList[index].storeName,
+                    _manageStoreController.stores[index].storeName!,
                     style: AppTextStyle.tex18Medium(),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Container(
                       margin: EdgeInsets.only(top: 10.h),
                       child: Text(
-                        storeManagerList[index].storeAddress,
+                        _manageStoreController.stores[index].addreess!,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyle.tex16Regular(),
                       ))
                 ],
               ),
             ),
-            Obx(() => Visibility(
+            Visibility(
                   visible: _changeStoreController.currendIndex == index,
                   child: Container(
                     margin: EdgeInsets.only(left: 10.w),
@@ -95,7 +96,7 @@ class ManageStoreScreen extends StatelessWidget {
                       height: 35.h,
                     ),
                   ),
-                ))
+                )
           ],
         ),
       ),

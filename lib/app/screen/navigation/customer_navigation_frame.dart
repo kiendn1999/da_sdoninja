@@ -81,7 +81,7 @@ class CustomerNavigationFrame extends StatelessWidget {
               child: ClipOval(
                 child: FadeInImage.assetNetwork(
                   placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                  image: _profileController.avaURL.toString(),
+                  image: _profileController.avaURL!,
                   imageErrorBuilder: (context, error, stackTrace) => Image.asset(
                     AppImages.imageDefautAvatar.getPNGImageAssets,
                     fit: BoxFit.cover,

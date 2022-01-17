@@ -128,5 +128,7 @@ final Map<String, String> en = {
   "invalid_phone_number":"Invalid phone number",
   "do_not_leave_the_name_blank":"Do not leave the name blank",
   "phone_number_update_successful":"Phone number update successful",
-  "the_otp_code_is_not_correct":"The OTP code is not correct"
+  "the_otp_code_is_not_correct":"The OTP code is not correct",
+  "name_update_failed":"Name update failed!",
+  "phone_number_update_failed":"Phone number update failed"
 };
