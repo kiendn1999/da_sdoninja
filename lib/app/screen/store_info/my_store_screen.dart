@@ -14,7 +14,15 @@ class MyStoreScreen extends StatelessWidget {
   //const MyStoreScreen({Key? key}) : super(key: key);
   final bool isAddStoreScreen;
   MyStoreScreen({this.isAddStoreScreen = false});
-  final List<String> _storeTypeList = ["motorcycle".tr, "car".tr, "computer".tr, "mobile_phone".tr, "electronic_device".tr, "refrigeration_device".tr, "electrical_equipment".tr];
+  final List<String> _storeTypeList = [
+    "motorcycle".tr,
+    "car".tr,
+    "computer".tr,
+    "mobile_phone".tr,
+    "electronic_device".tr,
+    "refrigeration_device".tr,
+    "electrical_equipment".tr
+  ];
   final _myStoreContorller = Get.find<MyStoreController>();
 
   @override
@@ -22,25 +30,36 @@ class MyStoreScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: AbsorbPointer(
         absorbing: false,
-        child: Column(
-          children: [
-            _shopImageAva(context),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.w),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _infoTextField(lable: "store_name".tr, hintText: "enter_store_name".tr, imagePath: AppImages.icStoreSelected),
-                  _infoTextField(lable: "address".tr, hintText: "enter_address".tr, imagePath: AppImages.icMapSelected),
-                  _infoTextField(lable: "phone_number".tr, hintText: "enter_your_phone_number".tr, imagePath: AppImages.icCall),
-                  _storeTypeCheckBoxGridView(),
-                  _introduce(),
-                  _termAndPolicyCheckBox(),
-                  _sendButton()
-                ],
-              ),
-            )
-          ],
+        child: Form(
+          child: Column(
+            children: [
+              _shopImageAva(context),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _infoTextField(
+                        lable: "store_name".tr,
+                        hintText: "enter_store_name".tr,
+                        imagePath: AppImages.icStoreSelected),
+                    _infoTextField(
+                        lable: "address".tr,
+                        hintText: "enter_address".tr,
+                        imagePath: AppImages.icMapSelected),
+                    _infoTextField(
+                        lable: "phone_number".tr,
+                        hintText: "enter_your_phone_number".tr,
+                        imagePath: AppImages.icCall),
+                    _storeTypeCheckBoxGridView(),
+                    _introduce(),
+                    _termAndPolicyCheckBox(),
+                    _sendButton()
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -85,7 +104,8 @@ class MyStoreScreen extends StatelessWidget {
                       onTap: () {},
                       child: Text(
                         "the_terms_and_policies".tr,
-                        style: AppTextStyle.tex16Regular(color: AppColors.blue2),
+                        style:
+                            AppTextStyle.tex16Regular(color: AppColors.blue2),
                       ),
                     )),
                     TextSpan(text: "of_sdoninja".tr),
@@ -105,7 +125,11 @@ class MyStoreScreen extends StatelessWidget {
       margin: EdgeInsets.only(top: 5.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [_introduceTitle(), _introduceTextField(), _checkBoxIntroduce()],
+        children: [
+          _introduceTitle(),
+          _introduceTextField(),
+          _checkBoxIntroduce()
+        ],
       ),
     );
   }
@@ -120,7 +144,8 @@ class MyStoreScreen extends StatelessWidget {
             hintText: "enter_referrals".tr,
             style: AppTextStyle.tex18Regular(),
             maxLines: 20,
-            contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
           ),
           GestureDetector(
             onTap: () {
@@ -152,7 +177,8 @@ class MyStoreScreen extends StatelessWidget {
                 Checkbox(
                   value: false,
                   onChanged: (value) {},
-                  visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
+                  visualDensity:
+                      const VisualDensity(horizontal: -2, vertical: -2),
                   materialTapTargetSize: MaterialTapTargetSize.padded,
                 ),
                 Text(
@@ -169,7 +195,8 @@ class MyStoreScreen extends StatelessWidget {
                 Checkbox(
                   value: false,
                   onChanged: (value) {},
-                  visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
+                  visualDensity:
+                      const VisualDensity(horizontal: -2, vertical: -2),
                   materialTapTargetSize: MaterialTapTargetSize.padded,
                 ),
                 Text(
@@ -227,7 +254,10 @@ class MyStoreScreen extends StatelessWidget {
     );
   }
 
-  _infoTextField({required String lable, required String hintText, required String imagePath}) {
+  _infoTextField(
+      {required String lable,
+      required String hintText,
+      required String imagePath}) {
     return Builder(
         builder: (context) => Container(
               margin: EdgeInsets.only(top: 15.h),
@@ -241,7 +271,8 @@ class MyStoreScreen extends StatelessWidget {
                   textFormFieldApp(
                       hintText: hintText,
                       style: AppTextStyle.tex18Regular(),
-                      contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.h, horizontal: 15.w),
                       iconHeight: 25.h,
                       marginTop: 5.h,
                       suffixIcon: Container(
@@ -250,7 +281,9 @@ class MyStoreScreen extends StatelessWidget {
                           imagePath.getSVGImageAssets,
                           width: 25.w,
                           height: 25.h,
-                          color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
+                          color: context.isDarkMode
+                              ? AppColors.primaryDarkModeColor
+                              : AppColors.primaryLightModeColor,
                         ),
                       ))
                 ],
@@ -275,11 +308,13 @@ class MyStoreScreen extends StatelessWidget {
                   ),
                 ),
             placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
-            image: "https://libreshot.com/wp-content/uploads/2016/04/car-repair-shop-2.jpg"),
+            image:
+                "https://libreshot.com/wp-content/uploads/2016/04/car-repair-shop-2.jpg"),
         Card(
           shape: const CircleBorder(),
           margin: EdgeInsets.only(top: 5.h, right: 5.w),
-          color: (context.isDarkMode ? AppColors.black : AppColors.white).withOpacity(0.5),
+          color: (context.isDarkMode ? AppColors.black : AppColors.white)
+              .withOpacity(0.5),
           child: IconButton(
             iconSize: 25.h,
             onPressed: () {},
@@ -287,7 +322,9 @@ class MyStoreScreen extends StatelessWidget {
             constraints: BoxConstraints(minHeight: 35.h, minWidth: 35.w),
             icon: Icon(
               Icons.camera_enhance,
-              color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
+              color: context.isDarkMode
+                  ? AppColors.primaryDarkModeColor
+                  : AppColors.primaryLightModeColor,
             ),
           ),
         )
