@@ -1,5 +1,5 @@
-import 'package:da_sdoninja/app/constant/app_images.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/constant/theme/app_images.dart';
+import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
 import 'package:da_sdoninja/app/data/model/demo/chat_model.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';

@@ -1,7 +1,7 @@
-import 'package:da_sdoninja/app/constant/app_colors.dart';
-import 'package:da_sdoninja/app/constant/app_images.dart';
-import 'package:da_sdoninja/app/constant/app_shadows.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
+import 'package:da_sdoninja/app/constant/theme/app_images.dart';
+import 'package:da_sdoninja/app/constant/theme/app_shadows.dart';
+import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/function_controller/review_chip_controller.dart';
 import 'package:da_sdoninja/app/controller/function_controller/text_chip_controller.dart';
 import 'package:da_sdoninja/app/data/model/demo/review_model.dart';

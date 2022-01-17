@@ -1,6 +1,6 @@
-import 'package:da_sdoninja/app/constant/app_colors.dart';
-import 'package:da_sdoninja/app/constant/app_images.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
+import 'package:da_sdoninja/app/constant/theme/app_images.dart';
+import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/my_store_controller.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
@@ -30,35 +30,38 @@ class MyStoreScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: AbsorbPointer(
         absorbing: false,
-        child: Form(
-          child: Column(
-            children: [
-              _shopImageAva(context),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10.w),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _infoTextField(
-                        lable: "store_name".tr,
-                        hintText: "enter_store_name".tr,
-                        imagePath: AppImages.icStoreSelected),
-                    _infoTextField(
-                        lable: "address".tr,
-                        hintText: "enter_address".tr,
-                        imagePath: AppImages.icMapSelected),
-                    _infoTextField(
-                        lable: "phone_number".tr,
-                        hintText: "enter_your_phone_number".tr,
-                        imagePath: AppImages.icCall),
-                    _storeTypeCheckBoxGridView(),
-                    _introduce(),
-                    _termAndPolicyCheckBox(),
-                    _sendButton()
-                  ],
-                ),
-              )
-            ],
+        child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Form(
+            child: Column(
+              children: [
+                _shopImageAva(context),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _infoTextField(
+                          lable: "store_name".tr,
+                          hintText: "enter_store_name".tr,
+                          imagePath: AppImages.icStoreSelected),
+                      _infoTextField(
+                          lable: "address".tr,
+                          hintText: "enter_address".tr,
+                          imagePath: AppImages.icMapSelected),
+                      _infoTextField(
+                          lable: "phone_number".tr,
+                          hintText: "enter_your_phone_number".tr,
+                          imagePath: AppImages.icCall),
+                      _storeTypeCheckBoxGridView(),
+                      _introduce(),
+                      _termAndPolicyCheckBox(),
+                      _sendButton()
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

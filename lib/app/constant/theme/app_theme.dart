@@ -1,7 +1,7 @@
-import 'package:da_sdoninja/app/constant/app_button_theme.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'app_button_theme.dart';
 import 'app_colors.dart';
+import 'app_text_style.dart';
 
 class Apptheme {
   static final ThemeData lightTheme = ThemeData.light().copyWith(

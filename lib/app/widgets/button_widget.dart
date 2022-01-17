@@ -1,5 +1,5 @@
-import 'package:da_sdoninja/app/constant/app_radius.dart';
-import 'package:da_sdoninja/app/constant/app_shadows.dart';
+import 'package:da_sdoninja/app/constant/theme/app_radius.dart';
+import 'package:da_sdoninja/app/constant/theme/app_shadows.dart';
 import 'package:flutter/material.dart';
 
 Widget buttonWithRadius10({

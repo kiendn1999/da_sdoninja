@@ -1,18 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:da_sdoninja/app/constant/app_colors.dart';
-import 'package:da_sdoninja/app/constant/app_images.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
+import 'package:da_sdoninja/app/constant/theme/app_images.dart';
+import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/function_controller/change_store_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/partner_navigate_controller.dart';
 import 'package:da_sdoninja/app/data/model/item_bottombar_model.dart';
+import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/screen/chat/partner_chat_screen.dart';
 import 'package:da_sdoninja/app/screen/order/manage_order_screen.dart';
 import 'package:da_sdoninja/app/screen/reviews/manage_review_screen.dart';
 import 'package:da_sdoninja/app/screen/schedule/schedule_screen.dart';
 import 'package:da_sdoninja/app/screen/store_info/my_store_screen.dart';
-import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/widgets/bottombar.dart';
 import 'package:da_sdoninja/app/widgets/drawer.dart';
 import 'package:flutter/material.dart';
@@ -120,8 +120,11 @@ class PartnerNavigationFrame extends StatelessWidget {
                 child: FadeInImage.assetNetwork(
                   placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
                   image: _profileController.avaURL.toString(),
-                  imageErrorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.error,
+                  imageErrorBuilder: (context, error, stackTrace) =>  Image.asset(
+                    AppImages.imageDefautAvatar.getPNGImageAssets,
+                    fit: BoxFit.cover,
+                    width: 35.h,
+                    height: 35.h,
                   ),
                   fit: BoxFit.cover,
                   width: 35.h,

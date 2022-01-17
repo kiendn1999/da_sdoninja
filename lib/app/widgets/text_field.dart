@@ -1,4 +1,4 @@
-import 'package:da_sdoninja/app/constant/app_colors.dart';
+import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
