@@ -2,14 +2,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
 import 'package:da_sdoninja/app/constant/theme/app_images.dart';
 import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
-import 'package:da_sdoninja/app/controller/function_controller/change_store_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/partner/change_store_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/partner_navigate_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/partner/update_store_controller.dart';
 import 'package:da_sdoninja/app/data/model/item_bottombar_model.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/screen/chat/partner_chat_screen.dart';
-import 'package:da_sdoninja/app/screen/order/manage_order_screen.dart';
+import 'package:da_sdoninja/app/screen/order/partner_order_screen.dart';
 import 'package:da_sdoninja/app/screen/reviews/manage_review_screen.dart';
 import 'package:da_sdoninja/app/screen/schedule/schedule_screen.dart';
 import 'package:da_sdoninja/app/screen/store_info/my_store_screen.dart';
@@ -23,9 +24,10 @@ import 'package:marquee/marquee.dart';
 
 class PartnerNavigationFrame extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _navigateController = Get.find<PartnerNavigateController>();
-  final _changeStoreController = Get.find<ChangeStoreController>(); 
-  final _profileController = Get.find<ProfileController>(); 
+  final PartnerNavigateController _navigateController = Get.find();
+  final ChangeStoreController _changeStoreController = Get.find();
+  final ProfileController _profileController = Get.find();
+  final UpdateStoreController _updateStoreController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -33,22 +35,40 @@ class PartnerNavigationFrame extends StatelessWidget {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: _appBar(),
-        endDrawer:  DrawerApp(),
-        body: PageView(
-          controller: _navigateController.pageController,
-          children: [ManageOrderScreen(), ScheduleScreen(), ManageReviewScreen(), PartnerChatScreen(), MyStoreScreen()],
-          onPageChanged: (index) {
-            _navigateController.currentIndex = index;
-          },
-        ),
+        endDrawer: DrawerApp(),
+        body: Obx(() => _changeStoreController.stores.isEmpty
+              ? Center(
+                  child: Image.asset(
+                    AppImages.imageLoad.getGIFImageAssets,
+                    width: Get.width,
+                    height: 400.h,
+                  ),
+                )
+              : PageView(
+                    controller: _navigateController.pageController,
+                    children: [
+                      PartnerOrderScreen(currentStoreID: _changeStoreController.currentStoreID.value),
+                      ScheduleScreen(),
+                      ManageReviewScreen(),
+                      PartnerChatScreen(),
+                      MyStoreScreen(
+                        currentStore: _changeStoreController.currentStore.value,
+                        controller: _updateStoreController,
+                      )
+                    ],
+                    onPageChanged: (index) {
+                      _navigateController.currentIndex = index;
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                  )),
         floatingActionButton: Obx(() => AnimatedContainer(
               duration: const Duration(milliseconds: 350),
               alignment: _navigateController.currentIndex == 4 ? const AlignmentDirectional(1, 0.85) : const AlignmentDirectional(1, 1.5),
               child: Transform.scale(
                 scale: 1.h,
                 child: FloatingActionButton.small(
-                  child: const Icon(Icons.edit_outlined),
-                  onPressed: () {},
+                  child: Icon(_updateStoreController.isEdit ? Icons.done : Icons.edit_outlined),
+                  onPressed: () => _updateStoreController.updateWithInfo(_changeStoreController.currentStore.value),
                 ),
               ),
             )),
@@ -76,27 +96,32 @@ class PartnerNavigationFrame extends StatelessWidget {
               Flexible(
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w),
-                  child: Obx(() => AutoSizeText(
-                        _changeStoreController.storeSelected.storeName,
-                        maxLines: 1,
-                        minFontSize: 20,
-                        style: AppTextStyle.tex18Medium(),
-                        overflowReplacement: SizedBox(
-                          height: 25.h,
-                          child: Marquee(
-                            text: _changeStoreController.storeSelected.storeName,
-                            scrollAxis: Axis.horizontal,
-                            blankSpace: 10.0,
-                            velocity: 100.0,
-                            style: AppTextStyle.tex18Medium(),
-                            pauseAfterRound: const Duration(seconds: 1),
-                            accelerationDuration: const Duration(seconds: 1),
-                            accelerationCurve: Curves.linear,
-                            decelerationDuration: const Duration(milliseconds: 500),
-                            decelerationCurve: Curves.easeOut,
+                  child: Obx(() => _changeStoreController.stores.isEmpty
+                      ? Text(
+                          "summoning".tr,
+                          style: AppTextStyle.tex18Medium(),
+                        )
+                      : AutoSizeText(
+                          _changeStoreController.currentStore.value.storeName!,
+                          maxLines: 1,
+                          minFontSize: 20,
+                          style: AppTextStyle.tex18Medium(),
+                          overflowReplacement: SizedBox(
+                            height: 25.h,
+                            child: Marquee(
+                              text: _changeStoreController.currentStore.value.storeName!,
+                              scrollAxis: Axis.horizontal,
+                              blankSpace: 10.0,
+                              velocity: 100.0,
+                              style: AppTextStyle.tex18Medium(),
+                              pauseAfterRound: const Duration(seconds: 1),
+                              accelerationDuration: const Duration(seconds: 1),
+                              accelerationCurve: Curves.linear,
+                              decelerationDuration: const Duration(milliseconds: 500),
+                              decelerationCurve: Curves.easeOut,
+                            ),
                           ),
-                        ),
-                      )),
+                        )),
                 ),
               ),
               Container(
@@ -119,8 +144,8 @@ class PartnerNavigationFrame extends StatelessWidget {
               child: ClipOval(
                 child: FadeInImage.assetNetwork(
                   placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                  image: _profileController.avaURL.toString(),
-                  imageErrorBuilder: (context, error, stackTrace) =>  Image.asset(
+                  image: "${_profileController.avaURL}",
+                  imageErrorBuilder: (context, error, stackTrace) => Image.asset(
                     AppImages.imageDefautAvatar.getPNGImageAssets,
                     fit: BoxFit.cover,
                     width: 35.h,

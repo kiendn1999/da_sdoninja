@@ -1,3 +1,4 @@
+import 'package:da_sdoninja/app/constant/string/string_array.dart';
 import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
 import 'package:da_sdoninja/app/constant/theme/app_images.dart';
 import 'package:da_sdoninja/app/constant/theme/app_shadows.dart';
@@ -26,43 +27,43 @@ class ReviewChipChoice extends StatelessWidget {
             margin: EdgeInsets.only(right: 15.w),
             child: AppShadow.lightShadow(
               child: Obx(() => ChoiceChip(
-                label: index == 5
-                    ? Text("all".trParams({"count": reviewCountList[index].toString()}))
-                    : Row(
-                        children: [
-                          Text((index + 1).toString()),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: SvgPicture.asset(
-                              AppImages.icStarSelected.getSVGImageAssets,
-                              width: 17.w,
-                              height: 17.h,
-                            ),
+                    label: index == 5
+                        ? Text("all".trParams({"count": "${reviewCountList[index]}"}))
+                        : Row(
+                            children: [
+                              Text("${(index + 1)}"),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                child: SvgPicture.asset(
+                                  AppImages.icStarSelected.getSVGImageAssets,
+                                  width: 17.w,
+                                  height: 17.h,
+                                ),
+                              ),
+                              Text("(${reviewCountList[index]})")
+                            ],
                           ),
-                          Text("(${reviewCountList[index]})")
-                        ],
-                      ),
-                selected: index == _reviewChipController.currentIndex,
-                disabledColor: null,
-                selectedColor: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
-                elevation: 0,
-                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 5.w),
-                visualDensity: const VisualDensity(vertical: -4),
-                pressElevation: 0,
-                onSelected: (value) {
-                  _reviewChipController.currentIndex = index;
-                  _reviewChipController.pageController.animateToPage(
-                    index,
-                    duration: const Duration(
-                      milliseconds: 200,
-                    ),
-                    curve: Curves.easeIn,
-                  );
-                },
-                labelStyle: AppTextStyle.tex17Medium(color: _reviewChipController.currentIndex == index ? AppColors.white : null),
-                side: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor, width: 2),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              )),
+                    selected: index == _reviewChipController.currentIndex,
+                    disabledColor: null,
+                    selectedColor: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
+                    elevation: 0,
+                    padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 5.w),
+                    visualDensity: const VisualDensity(vertical: -4),
+                    pressElevation: 0,
+                    onSelected: (value) {
+                      _reviewChipController.currentIndex = index;
+                      _reviewChipController.pageController.animateToPage(
+                        index,
+                        duration: const Duration(
+                          milliseconds: 200,
+                        ),
+                        curve: Curves.easeIn,
+                      );
+                    },
+                    labelStyle: AppTextStyle.tex17Medium(color: _reviewChipController.currentIndex == index ? AppColors.white : null),
+                    side: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor, width: 2),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  )),
             ),
           )
       ]),
@@ -74,25 +75,17 @@ class TextChipChoice extends StatelessWidget {
   final TextChipController _textChipController;
   TextChipChoice(this._textChipController);
 
-  final List<String> _stageList = [
-    "cancelled".tr,
-    "checking".tr,
-    "checked".tr,
-    "waiting_to_fix".tr,
-    "fixing".tr,
-    "fixed".tr,
-    "paid".tr,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 35.h,
       child: ListView.separated(
-        itemCount: _stageList.length,
+        itemCount: stageList.length,
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        padding: EdgeInsets.symmetric(
+          horizontal: 10.w,
+        ),
         separatorBuilder: (context, index) => SizedBox(
           width: 23.w,
         ),
@@ -101,7 +94,7 @@ class TextChipChoice extends StatelessWidget {
                 onTap: () {
                   _textChipController.currentIndex = index;
                   _textChipController.pageController.animateToPage(
-                    index,
+                    _textChipController.currentIndex,
                     duration: const Duration(
                       milliseconds: 200,
                     ),
@@ -119,7 +112,7 @@ class TextChipChoice extends StatelessWidget {
                           : null),
                   duration: const Duration(milliseconds: 300),
                   child: Text(
-                    _stageList[index],
+                    stageList[index].tr,
                     style: _textChipController.currentIndex == index
                         ? AppTextStyle.tex18Bold(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)
                         : AppTextStyle.tex18Regular(),

@@ -5,10 +5,11 @@ class HiveHelper {
   static const String _darkModeKey = "darkMode";
   static const String _isFirstLoginKey = "isFirstLogin";
   static const String _langeuageKey = "language";
+  static const String _currentStoreKey = "currentStoreID";
+  static const String _isPartnerKey = "isPartner";
   static final _boxApp = Hive.box(_boxAppKey);
 
    static initHive() async {
-   // Hive.registerAdapter(UserModelAdapter());
     //command line
     //flutter pub run build_runner build
     await  Hive.initFlutter();
@@ -30,6 +31,19 @@ class HiveHelper {
    static  saveIsFirstLogin(bool isFirstLogin)  {
     return  _boxApp.put(_isFirstLoginKey, isFirstLogin);
   }
+
+  static String get currentStoreID  => _boxApp.get(_currentStoreKey, defaultValue: "");
+
+   static  saveCurrentStoreID(String currentStoreID)  {
+    return  _boxApp.put(_currentStoreKey, currentStoreID);
+  }
+
+   static bool get isPartner  => _boxApp.get(_isPartnerKey, defaultValue: false);
+
+   static  saveIsPartner(bool isPartner)  {
+    return  _boxApp.put(_isPartnerKey, isPartner);
+  }
+
 
   // static  deleteKeyUser() async {
   //    boxApp.delete(keyUser);

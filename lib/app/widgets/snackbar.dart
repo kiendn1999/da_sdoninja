@@ -6,8 +6,7 @@ import 'package:get/get.dart';
 
 snackBar({required String message}) {
   return Get.rawSnackbar(
-      messageText: Builder(builder: (context) {
-        return Container(
+      messageText: Container(
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
           child: Center(
             child: Text(
@@ -16,9 +15,8 @@ snackBar({required String message}) {
               style: AppTextStyle.tex14Regular(color: AppColors.white),
             ),
           ),
-          color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
-        );
-      }),
+          color: Get.context!.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
+        ),
       duration: const Duration(seconds: 5),
       padding: EdgeInsets.zero);
 }

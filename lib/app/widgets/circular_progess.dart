@@ -35,7 +35,7 @@ class _CircularProgessAppState extends State<CircularProgessApp> with SingleTick
         AppImages.icLogoLogin.getPNGImageAssets,
         width: widget.width ?? 30.h,
         height: widget.height ?? 30.h,
-        color: widget.color ?? (context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor),
+        color: widget.color ?? AppColors.primaryDarkModeColor,
       ),
     );
   }

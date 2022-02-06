@@ -1,11 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:da_sdoninja/app/constant/string/string_array.dart';
 import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
 import 'package:da_sdoninja/app/constant/theme/app_images.dart';
 import 'package:da_sdoninja/app/constant/theme/app_radius.dart';
 import 'package:da_sdoninja/app/constant/theme/app_shadows.dart';
 import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/customer/customer_order_controller.dart';
-import 'package:da_sdoninja/app/data/model/demo/order_model.dart';
+import 'package:da_sdoninja/app/data/model/order_model.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
@@ -16,8 +17,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:marquee/marquee.dart';
 
-class OrderScreen extends StatelessWidget {
+class CustomerOrderScreen extends StatefulWidget {
+  @override
+  State<CustomerOrderScreen> createState() => _CustomerOrderScreenState();
+}
+
+class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
   final _orderController = Get.find<CustomerOrderController>();
+
+    @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _orderController.getOrdersOfAllStageOfStore();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +45,11 @@ class OrderScreen extends StatelessWidget {
               margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
               child: PageView.builder(
                 controller: _orderController.pageController,
-                itemCount: 7,
+                itemCount: stageList.length,
                 onPageChanged: (index) {
                   _orderController.currentIndex = index;
                 },
-                itemBuilder: (context, stageIndex) => _orderListView(stageIndex),
+                itemBuilder: (context, stageIndex) => Obx(()=>_orderListView(_orderController.listOfListOrder[stageIndex], stageIndex)),
               ),
             ),
           )
@@ -45,9 +58,17 @@ class OrderScreen extends StatelessWidget {
     );
   }
 
-  ListView _orderListView(int stageIndex) {
-    return ListView.separated(
-      itemCount: orderDemoList.length,
+   _orderListView(List<OrderModel> orders, int stageIndex) {
+    return  orders.isEmpty
+            ? Center(
+                child: Image.asset(
+                  AppImages.imageLoad.getGIFImageAssets,
+                  width: Get.width,
+                  height: 400.h,
+                ),
+              )
+            : ListView.separated(
+      itemCount: orders.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return AppShadow.lightShadow(
@@ -58,17 +79,23 @@ class OrderScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               child: Column(
                 children: [
-                  _storeNameAndChat(index),
+                  _storeNameAndChat(orders[index]),
                   _listTileWithIconLeading(
-                      pathImage: AppImages.icClockSelected, iconColor: AppColors.black2, title: "request_date".trParams({"date": orderDemoList[index].requestDate})),
-                  _listTileWithIconLeading(pathImage: AppImages.icDevice, title: "device_name".tr + ": ${orderDemoList[index].deviceName}"),
-                  _listTileWithIconLeading(pathImage: AppImages.icBrokenCause, title: "broken_cause".tr + ": ${orderDemoList[index].brokenCause}"),
-                  _listTileWithIconLeading(pathImage: AppImages.icRepairCost, title: "repair_cost".tr + ": ${orderDemoList[index].repairCost} VND"),
-                  _listTileWithIconLeading(
-                      pathImage: AppImages.icRepairedDate,
-                      title: stageIndex < 4
-                          ? "estimated_completion_time".tr + ": ${orderDemoList[index].repairedTime} " + "day".tr
-                          : "repair_completed_date".trParams({"date": orderDemoList[index].repairedDate})),
+                      pathImage: AppImages.icClockSelected, iconColor: AppColors.black2, title: "request_date".trParams({"date": orders[index].requestDate!})),
+                  stageIndex == 1
+                      ? const SizedBox.shrink()
+                      : Column(
+                          children: [
+                            _listTileWithIconLeading(pathImage: AppImages.icDevice, title: "device_name".tr + ": ${orders[index].deviceName}"),
+                            _listTileWithIconLeading(pathImage: AppImages.icBrokenCause, title: "broken_cause".tr + ": ${orders[index].brokenCause}"),
+                            _listTileWithIconLeading(pathImage: AppImages.icRepairCost, title: "repair_cost".tr + ": ${orders[index].repairCost} VND"),
+                            _listTileWithIconLeading(
+                                pathImage: AppImages.icRepairedDate,
+                                title: stageIndex < 5
+                                    ? "estimated_completion_time".tr + ": ${orders[index].estimatedCompletionTime} " + "day".tr
+                                    : "repair_completed_date".trParams({"date": orders[index].repairCompletedDate!})),
+                          ],
+                        ),
                   _buttonInStages(stageIndex)
                 ],
               ),
@@ -87,16 +114,22 @@ class OrderScreen extends StatelessWidget {
       case 0:
         return _button(
           lable: "find_another_repair_shop".tr,
-          color: AppColors.red,
+          color: AppColors.green,
           onPressed: () {},
         );
       case 1:
+        return _button(
+          lable: "cancel_request".tr,
+          color: AppColors.red,
+          onPressed: () {},
+        );
+      case 2:
         return _button(
           lable: "cancel_repair".tr,
           color: AppColors.red,
           onPressed: () {},
         );
-      case 2:
+      case 3:
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -112,21 +145,21 @@ class OrderScreen extends StatelessWidget {
             ),
           ],
         );
-      case 3:
+      case 4:
         return _button(
           lable: "cancel_repair".tr,
           color: AppColors.red,
           onPressed: () {},
         );
-      case 4:
-        return const SizedBox.shrink();
       case 5:
+        return const SizedBox.shrink();
+      case 6:
         return _button(
           lable: "pay".tr,
           color: AppColors.green,
           onPressed: () {},
         );
-      case 6:
+      case 7:
         return true
             ? _button(
                 lable: "edit_review".tr,
@@ -154,7 +187,7 @@ class OrderScreen extends StatelessWidget {
         color: color);
   }
 
-  Row _storeNameAndChat(int index) {
+  Row _storeNameAndChat(OrderModel order) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -163,7 +196,7 @@ class OrderScreen extends StatelessWidget {
             ClipOval(
               child: FadeInImage.assetNetwork(
                 placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
-                image: orderDemoList[index].storeAva,
+                image: order.storeAva!,
                 imageErrorBuilder: (context, error, stackTrace) => const Icon(
                   Icons.error,
                 ),
@@ -176,14 +209,14 @@ class OrderScreen extends StatelessWidget {
               margin: EdgeInsets.only(left: 5.w),
               constraints: BoxConstraints(maxWidth: 250.w),
               child: AutoSizeText(
-                orderDemoList[index].storeName,
+                order.storeName!,
                 maxLines: 1,
                 minFontSize: 17,
                 style: AppTextStyle.tex17Regular(),
                 overflowReplacement: SizedBox(
                   height: 25.h,
                   child: Marquee(
-                    text: orderDemoList[index].storeName,
+                    text: order.storeName!,
                     scrollAxis: Axis.horizontal,
                     blankSpace: 10,
                     velocity: 100.0,

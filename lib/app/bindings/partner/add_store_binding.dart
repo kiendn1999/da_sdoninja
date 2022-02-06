@@ -1,6 +1,7 @@
-import 'package:da_sdoninja/app/controller/page_controller/common/form_fileld_store_register_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/my_store_controller.dart';
 import 'package:get/get.dart';
+
+import '../../controller/page_controller/partner/add_store_controller.dart';
 
 class AddStoreBinding implements Bindings {
   @override
@@ -8,8 +9,8 @@ class AddStoreBinding implements Bindings {
     Get.lazyPut<MyStoreController>(() {
       return MyStoreController();
     });
-    Get.lazyPut<FormFieldStoreRegisterController>(() {
-      return FormFieldStoreRegisterController();
+    Get.lazyPut<AddStoreController>(() {
+      return AddStoreController();
     });
   }
 }

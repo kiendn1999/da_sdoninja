@@ -19,11 +19,7 @@ class DrawerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: Apptheme.lightTheme.copyWith(
-          canvasColor: (context.isDarkMode
-                  ? AppColors.primaryDarkModeColor
-                  : AppColors.primaryLightModeColor)
-              .withOpacity(0.70)),
+      data: Apptheme.lightTheme.copyWith(canvasColor: (context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor).withOpacity(0.70)),
       child: SizedBox(
         width: 250.w,
         child: Drawer(
@@ -36,12 +32,18 @@ class DrawerApp extends StatelessWidget {
                   _listTile(
                     leading: AppImages.icSearch,
                     title: "search_repair_shop".tr,
-                    onTap: () => Get.offAllNamed(Routes.customerNavigation),
+                    onTap: () {
+                      HiveHelper.saveIsPartner(false);
+                      Get.offAllNamed(Routes.customerNavigation);
+                    },
                   ),
                   _listTile(
                       leading: AppImages.icStore,
                       title: "my_repair_shop".tr,
-                      onTap: () => Get.offAllNamed(Routes.partnerNavigation)),
+                      onTap: () {
+                        HiveHelper.saveIsPartner(true);
+                        Get.offAllNamed(Routes.partnerNavigation);
+                      }),
                   _listTile(leading: AppImages.icGlobe, title: "language".tr),
                   _listTile(
                       leading: AppImages.icMoon,
@@ -53,15 +55,10 @@ class DrawerApp extends StatelessWidget {
                               activeColor: AppColors.primaryDarkModeColor,
                               activeTrackColor: AppColors.white4,
                               onChanged: (value) {
-                                Get.changeTheme(value
-                                    ? Apptheme.darkTheme
-                                    : Apptheme.lightTheme);
+                                Get.changeTheme(value ? Apptheme.darkTheme : Apptheme.lightTheme);
                                 HiveHelper.saveThemeModeInMemory(value);
                               }))),
-                  _listTile(
-                      leading: AppImages.icLogOut,
-                      title: "log_out".tr,
-                      onTap: () async => await _authenController.signOUt()),
+                  _listTile(leading: AppImages.icLogOut, title: "log_out".tr, onTap: () async => await _authenController.signOUt()),
                 ],
               )
             ],
@@ -71,11 +68,7 @@ class DrawerApp extends StatelessWidget {
     );
   }
 
-  ListTile _listTile(
-      {required String leading,
-      required String title,
-      Widget? trailing,
-      void Function()? onTap}) {
+  ListTile _listTile({required String leading, required String title, Widget? trailing, void Function()? onTap}) {
     return ListTile(
         leading: SvgPicture.asset(
           leading.getSVGImageAssets,
@@ -124,9 +117,8 @@ class DrawerApp extends StatelessWidget {
               ClipOval(
                 child: FadeInImage.assetNetwork(
                   placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                  image: _profileController.avaURL.toString(),
-                  imageErrorBuilder: (context, error, stackTrace) =>
-                      Image.asset(
+                  image: "${_profileController.avaURL}",
+                  imageErrorBuilder: (context, error, stackTrace) => Image.asset(
                     AppImages.imageDefautAvatar.getPNGImageAssets,
                     fit: BoxFit.cover,
                     width: 100.h,
@@ -140,7 +132,7 @@ class DrawerApp extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(top: 17.h),
                 child: Text(
-                  _profileController.displayName??"no_name".tr,
+                  _profileController.displayName ?? "no_name".tr,
                   style: AppTextStyle.tex20Medium(color: AppColors.white),
                 ),
               ),

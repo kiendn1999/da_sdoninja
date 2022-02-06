@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_sdoninja/app/data/hive/hive_helper.dart';
+import 'package:da_sdoninja/app/data/repository/user_info.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/widgets/circular_progess.dart';
 import 'package:da_sdoninja/app/widgets/snackbar.dart';
@@ -8,6 +11,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -30,12 +34,7 @@ class AuthController extends GetxController {
     // Once signed in, return the UserCredential
 
     EasyLoading.show(indicator: const CircularProgessApp());
-    await _auth.signInWithCredential(credential).whenComplete(() async {
-      await _saveUserInDatabase();
-      HiveHelper.saveIsFirstLogin(false);
-      Get.offAllNamed(Routes.customerNavigation);
-      EasyLoading.dismiss();
-    });
+    await _auth.signInWithCredential(credential).whenComplete(() => _handleWithProfileDataAfterLoginSuccess());
   }
 
   Future<void> signInWithFacebook() async {
@@ -47,27 +46,17 @@ class AuthController extends GetxController {
 
     // Once signed in, return the UserCredential
     EasyLoading.show(indicator: const CircularProgessApp());
-    await _auth.signInWithCredential(facebookAuthCredential).whenComplete(() async {
-      await _saveUserInDatabase();
-      HiveHelper.saveIsFirstLogin(false);
-      Get.offAllNamed(Routes.customerNavigation);
-      EasyLoading.dismiss();
-    });
+    await _auth.signInWithCredential(facebookAuthCredential).whenComplete(()  => _handleWithProfileDataAfterLoginSuccess());
   }
 
   Future<void> signInWithPhoneNumber({required String otpCode}) async {
     try {
       final AuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: _verificationId.toString(),
+        verificationId: _verificationId!,
         smsCode: otpCode,
       );
 
-      await _auth.signInWithCredential(credential).whenComplete(() async {
-        await _saveUserInDatabase();
-        HiveHelper.saveIsFirstLogin(false);
-        Get.offAllNamed(Routes.customerNavigation);
-        snackBar(message: "logged_in_successfully".tr);
-      });
+      await _auth.signInWithCredential(credential).whenComplete(() => _handleWithProfileDataAfterLoginSuccess());
     } catch (e) {
       snackBar(message: "login_failed".tr);
     }
@@ -80,12 +69,7 @@ class AuthController extends GetxController {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
-          await _auth.signInWithCredential(phoneAuthCredential).whenComplete(() async {
-            await _saveUserInDatabase();
-            HiveHelper.saveIsFirstLogin(false);
-            snackBar(message: "phone_number_automatically_verified".tr);
-            Get.offAllNamed(Routes.customerNavigation);
-          });
+          await _auth.signInWithCredential(phoneAuthCredential).whenComplete(()  => _handleWithProfileDataAfterLoginSuccess());
         },
         verificationFailed: (FirebaseAuthException authException) {
           snackBar(message: 'phone_number_verification_failed'.tr);
@@ -106,11 +90,25 @@ class AuthController extends GetxController {
     }
   }
 
-  _saveUserInDatabase() async {
-    await FirebaseFirestore.instance
+  _handleWithProfileDataAfterLoginSuccess() async {
+      await FirebaseFirestore.instance
         .collection('User')
         .doc(_auth.currentUser!.uid)
-        .set({"user_name": _auth.currentUser!.displayName, "avaURL": _auth.currentUser!.photoURL, "phone_number": _auth.currentUser!.phoneNumber});
+        .set({"user_name": _auth.currentUser!.displayName, "ava_url": _auth.currentUser!.photoURL, "phone_number": _auth.currentUser!.phoneNumber});
+      HiveHelper.saveIsFirstLogin(false);
+       await OneSignal.shared
+            .setExternalUserId(
+          UserCurrentInfo.userID!
+        )
+            .then((results) {
+          log("$results");
+        }).catchError((error) {
+          log("$error");
+        });
+      Get.offAllNamed(Routes.customerNavigation);
+      EasyLoading.dismiss();
+      snackBar(message: "logged_in_successfully".tr);
+     
   }
 
   Future<void> signOUt() async {

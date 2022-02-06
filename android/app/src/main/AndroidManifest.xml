@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kienflutter.sdoninja">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
    <application
         android:label="da_sdoninja"
         android:usesCleartextTraffic="true"
@@ -45,8 +48,8 @@
               android:resource="@drawable/launch_background"
               />
               <meta-data
-                android:name="com.google.firebase.messaging.default_notification_channel_id"
-                android:value="high_importance_channel" />
+                android:name="notify_ninja"
+                android:value="79070e18-6069-4341-8087-44371ecc691a" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -57,5 +60,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+            <activity
+                android:name="com.yalantis.ucrop.UCropActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 </manifest>

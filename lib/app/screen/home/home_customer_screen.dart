@@ -1,16 +1,19 @@
+import 'dart:math' as math;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:da_sdoninja/app/constant/string/string_array.dart';
 import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
 import 'package:da_sdoninja/app/constant/theme/app_images.dart';
 import 'package:da_sdoninja/app/constant/theme/app_radius.dart';
 import 'package:da_sdoninja/app/constant/theme/app_shadows.dart';
 import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
-import 'package:da_sdoninja/app/controller/page_controller/customer/home_custom_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/customer/honme_custom_controller.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/dropdown_button.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -21,36 +24,43 @@ class HomeCustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10.w),
-      child: Column(
-        children: [
-          _filterTool(
-            itemList: ["all_devices".tr, "motorcycle".tr, "car".tr, "computer".tr, "mobile_phone".tr, "electronic_device".tr, "refrigeration_device".tr, "electrical_equipment".tr],
-            lable: "question_tus".tr,
-            marginTop: 12.h,
-            widthDropDownButton: 190.w,
-            value: _homeCustomerController.dropdownDeviceValue,
-            onChanged: (newValue) {
-              _homeCustomerController.dropdownDeviceValue = newValue!;
-            },
-          ),
-          _searchStoreTextField(context),
-          _filterTool(
-            itemList: [
-              "near_you".tr,
-              "rating".tr,
-            ],
-            lable: "recommended_shops".tr,
-            widthDropDownButton: 147.w,
-            marginTop: 17.h,
-            value: _homeCustomerController.dropdownFilterValue,
-            onChanged: (newValue) {
-              _homeCustomerController.dropdownFilterValue = newValue!;
-            },
-          ),
-          _shopsListView(),
-        ],
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        _homeCustomerController.getLastPosition();
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10.w),
+        child: Column(
+          children: [
+            _filterTool(
+              itemList: storeTypes,
+              lable: "question_tus".tr,
+              marginTop: 12.h,
+              widthDropDownButton: 190.w,
+              value: _homeCustomerController.dropdownDeviceValue,
+              onChanged: (newValue) {
+                _homeCustomerController.dropdownDeviceValue = newValue!;
+                _homeCustomerController.getAllStore();
+              },
+            ),
+            _searchStoreTextField(),
+            _filterTool(
+              itemList: [
+                "near_you".tr,
+                "rating".tr,
+              ],
+              lable: "recommended_shops".tr,
+              widthDropDownButton: 147.w,
+              marginTop: 17.h,
+              value: _homeCustomerController.dropdownFilterValue,
+              onChanged: (newValue) {
+                _homeCustomerController.dropdownFilterValue = newValue!;
+              },
+            ),
+            _shopsListView(),
+          ],
+        ),
       ),
     );
   }
@@ -95,17 +105,17 @@ class HomeCustomerScreen extends StatelessWidget {
         margin: EdgeInsets.only(left: 10.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_shopName(index), _shopRating(index), _shopDistance(index), _buttonRow()],
+          children: [_shopName(index), _shopRating(index), _shopDistance(index), _buttonRow(index)],
         ),
       );
 
-  Container _buttonRow() => Container(
+  Container _buttonRow(int index) => Container(
         margin: EdgeInsets.only(top: 10.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             buttonWithRadius10(
-                onPressed: () {},
+                onPressed: () => _showHelpDialog(index),
                 color: AppColors.orange,
                 padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
                 child: Text(
@@ -124,6 +134,60 @@ class HomeCustomerScreen extends StatelessWidget {
         ),
       );
 
+  Future<Object?> _showHelpDialog(int index) {
+    return showAnimatedDialog(
+      context: Get.context!,
+      animationType: DialogTransitionType.slideFromTopFade,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return CustomDialogWidget(
+            contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            minWidth: 400,
+            elevation: 7,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Transform.rotate(
+                    angle: 180 * math.pi / 320,
+                    child: SvgPicture.asset(
+                      AppImages.icCall.getSVGImageAssets,
+                      width: 40.w,
+                      height: 40.h,
+                      color: Get.context!.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
+                    ),
+                  ),
+                  title: Text(
+                    "call_the_shop".tr,
+                    style: AppTextStyle.tex18Regular(),
+                  ),
+                  onTap: () {},
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  child: ListTile(
+                    leading: Image.asset(
+                      AppImages.icHelp.getPNGImageAssets,
+                      width: 40.w,
+                      height: 40.h,
+                      color: Get.context!.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
+                    ),
+                    title: Text(
+                      "submit_a_help_request".tr,
+                      style: AppTextStyle.tex18Regular(),
+                    ),
+                    onTap: () async => await _homeCustomerController.handleSendNotification(_homeCustomerController.stores[index], _homeCustomerController.address),
+                  ),
+                ),
+              ],
+            ),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10)));
+      },
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
   Container _shopDistance(int index) => Container(
         margin: EdgeInsets.only(top: 10.h),
         child: Row(
@@ -136,7 +200,7 @@ class HomeCustomerScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 8.w),
               child: Text(
-                "${1} km",
+                "${_homeCustomerController.stores[index].distance} km",
                 style: AppTextStyle.tex18Regular(),
               ),
             )
@@ -156,7 +220,7 @@ class HomeCustomerScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 8.w),
               child: Text(
-                "${_homeCustomerController.stores[index].rating!} (${_homeCustomerController.stores[index].ratingQuantity!})",
+                _homeCustomerController.stores[index].rating==null?"not_yet".tr:"${_homeCustomerController.stores[index].rating} (${_homeCustomerController.stores[index].ratingQuantity})",
                 style: AppTextStyle.tex18Regular(),
               ),
             )
@@ -199,23 +263,27 @@ class HomeCustomerScreen extends StatelessWidget {
       placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
       image: _homeCustomerController.stores[index].avaUrl!);
 
-  Widget _searchStoreTextField(BuildContext context) => textFormFieldApp(
+  Widget _searchStoreTextField() => textFormFieldApp(
         marginTop: 17.h,
         contentPadding: EdgeInsets.only(top: 13.h, bottom: 13.h, left: 26.w),
         hintText: "enter_name_to_search".tr,
         style: AppTextStyle.tex17Regular(),
         iconHeight: 23.h,
         textAlign: TextAlign.center,
+        controller: _homeCustomerController.storeNameTextFieldController,
         radius: AppRadius.radius90,
         suffixIcon: Container(
           margin: EdgeInsets.only(right: 26.w, left: 15.w),
           child: SvgPicture.asset(
             AppImages.icSearch.getSVGImageAssets,
-            color: context.isDarkMode ? AppColors.white : AppColors.black,
+            color: Get.context!.isDarkMode ? AppColors.white : AppColors.black,
             width: 23.w,
             height: 23.h,
           ),
         ),
+        onChanged: (p0) {
+          _homeCustomerController.getAllStore();
+        },
       );
 
   Widget _filterTool(

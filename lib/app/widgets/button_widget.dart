@@ -10,8 +10,7 @@ Widget buttonWithRadius10({
   Color? color,
   EdgeInsetsGeometry? margin,
 }) =>
-    Builder(
-        builder: (context) => Container(
+    Container(
             margin: margin,
             child: AppShadow.lightShadow(
                 child: ElevatedButton(
@@ -24,7 +23,7 @@ Widget buttonWithRadius10({
                 fixedSize: fixedSize,
                 visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
               ),
-            ))));
+            )));
 
 Widget buttonWithRadius90({
   required void Function() onPressed,
@@ -35,8 +34,7 @@ Widget buttonWithRadius90({
   Color? color,
   double marginTop = 0,
 }) =>
-    Builder(
-        builder: (context) => Container(
+    Container(
             margin: EdgeInsets.only(top: marginTop),
             child: AppShadow.lightShadow(
                 child: ElevatedButton(
@@ -48,7 +46,7 @@ Widget buttonWithRadius90({
                 primary: color,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius90)),
               ),
-            ))));
+            )));
 
 Widget outLineButtonWithRadius90({
   required void Function() onPressed,
@@ -59,8 +57,7 @@ Widget outLineButtonWithRadius90({
   Color? color,
   double marginTop = 0,
 }) =>
-    Builder(
-        builder: (context) => Container(
+    Container(
             margin: EdgeInsets.only(top: marginTop),
             child: AppShadow.lightShadow(
                 child: OutlinedButton(
@@ -70,4 +67,4 @@ Widget outLineButtonWithRadius90({
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
                 fixedSize: fixedSize,
               ),
-            ))));
+            )));

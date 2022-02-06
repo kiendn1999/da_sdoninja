@@ -17,5 +17,7 @@ class NavigateController extends GetxController {
     super.onInit();
     pageController = PageController();
   }
+
+  
 }
 

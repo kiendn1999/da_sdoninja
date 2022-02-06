@@ -7,6 +7,7 @@ class AppImages {
   static const imageOtpVerification = "image_otp_verification";
   static const imageDefautAvatar = "image_default_avatar";
   static const imageAvaShopDefault = "image_ava_shop_default";
+  static const imageLoad = "image_load";
 
   //Icon
   static const icLogoLogin = "ic_logo_login";
@@ -46,4 +47,5 @@ class AppImages {
   static const icPen = "ic_pen";
   static const icTrash = "ic_trash";
   static const icCall = "ic_call";
+  static const icHelp = "ic_help";
 }
