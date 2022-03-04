@@ -2,7 +2,9 @@ import 'package:da_sdoninja/app/constant/string/string_array.dart';
 import 'package:da_sdoninja/app/constant/theme/app_images.dart';
 import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/change_store_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/partner/manage_review_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/partner_order_controller.dart';
+import 'package:da_sdoninja/app/controller/page_controller/partner/schedule_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/update_store_controller.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
@@ -18,6 +20,8 @@ class ChangeStoreScreen extends StatelessWidget {
   final _changeStoreController = Get.find<ChangeStoreController>();
   final _partnerOrderController = Get.find<PartnerOrderController>();
   final UpdateStoreController _updateStoreController = Get.find();
+  final ManageReviewController _manageReviewController = Get.find();
+  final ScheduleController _scheduleController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +70,12 @@ class ChangeStoreScreen extends StatelessWidget {
         _changeStoreController.changeStore(_changeStoreController.stores[index].id!);
         _partnerOrderController.getOrdersOfAllStageOfStore(_changeStoreController.stores[index].id);
         _updateStoreController.getDataToDisplayOnMyStoreScreen(_changeStoreController.stores[index]);
+        _manageReviewController.currentIndex = 0;
+        _manageReviewController.storeID = _changeStoreController.stores[index].id!;
+        _manageReviewController.getAllReview();
+        _manageReviewController.getAllStatis();
+        _scheduleController.getInfoStore(_changeStoreController.stores[index].id!);
+        Get.back();
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
@@ -134,10 +144,14 @@ class ChangeStoreScreen extends StatelessWidget {
                 _changeStoreController.filterStoreType();
                 _changeStoreController.getAllStore();
                 _changeStoreController.stores.listen((stores) {
-                   _partnerOrderController.getOrdersOfAllStageOfStore(stores[0].id);
-                _updateStoreController.getDataToDisplayOnMyStoreScreen(stores[0]);
+                  _partnerOrderController.getOrdersOfAllStageOfStore(stores[0].id);
+                  _updateStoreController.getDataToDisplayOnMyStoreScreen(stores[0]);
+                  _manageReviewController.currentIndex = 0;
+                  _manageReviewController.storeID = stores[0].id!;
+                  _manageReviewController.getAllReview();
+                  _manageReviewController.getAllStatis();
+                  _scheduleController.getInfoStore(_changeStoreController.stores[0].id!);
                 });
-               
               },
             ),
           )

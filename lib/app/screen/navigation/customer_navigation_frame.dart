@@ -9,9 +9,7 @@ import 'package:da_sdoninja/app/data/model/item_bottombar_model.dart';
 import 'package:da_sdoninja/app/data/model/prediction.dart';
 import 'package:da_sdoninja/app/extension/geocoding_extension.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
-import 'package:da_sdoninja/app/screen/chat/customer_chat_screen.dart';
 import 'package:da_sdoninja/app/screen/home/home_customer_screen.dart';
-import 'package:da_sdoninja/app/screen/map/map_screen.dart';
 import 'package:da_sdoninja/app/screen/order/customer_oder_screen.dart';
 import 'package:da_sdoninja/app/widgets/autocomplete_place_textfield.dart';
 import 'package:da_sdoninja/app/widgets/bottombar.dart';
@@ -38,9 +36,9 @@ class CustomerNavigationFrame extends StatelessWidget {
           controller: _navigateController.pageController,
           children: [
             HomeCustomerScreen(),
-            MapScreen(),
+            // MapScreen(),
             CustomerOrderScreen(),
-            CustomerChatScreen(),
+            // CustomerChatScreen(),
           ],
           onPageChanged: (index) {
             _navigateController.currentIndex = index;
@@ -82,7 +80,7 @@ class CustomerNavigationFrame extends StatelessWidget {
                         getPlaceDetailWithLatLng: (Prediction prediction) async {
                           _homeCustomerController.latitude = double.parse(prediction.lat!);
                           _homeCustomerController.longitude = double.parse(prediction.lng!);
-                          _homeCustomerController.address = await GeocodingOnPosition.getAddressFromLatLng( _homeCustomerController.latitude, _homeCustomerController.longitude);
+                          _homeCustomerController.address = await GeocodingOnPosition.getAddressFromLatLng(_homeCustomerController.latitude, _homeCustomerController.longitude);
                           _homeCustomerController.getAllStore();
                         }, // this callback is called when isLatLngRequired is true
                         itmClick: (Prediction prediction) {
@@ -122,9 +120,9 @@ class CustomerNavigationFrame extends StatelessWidget {
     return Obx(() => bottomBarHomeScreen(
             items: [
               ItemBottomBar(pathIconSelected: AppImages.icHomeSelected, pathIconUnSelected: AppImages.icHome, lable: "home".tr),
-              ItemBottomBar(pathIconSelected: AppImages.icMapSelected, pathIconUnSelected: AppImages.icMap, lable: "map".tr),
+              //ItemBottomBar(pathIconSelected: AppImages.icMapSelected, pathIconUnSelected: AppImages.icMap, lable: "map".tr),
               ItemBottomBar(pathIconSelected: AppImages.icOrdersSelected, pathIconUnSelected: AppImages.icOrders, lable: "repair_order".tr),
-              ItemBottomBar(pathIconSelected: AppImages.icChatSelected, pathIconUnSelected: AppImages.icChat, lable: "message".tr),
+              // ItemBottomBar(pathIconSelected: AppImages.icChatSelected, pathIconUnSelected: AppImages.icChat, lable: "message".tr),
             ],
             currentIndex: _navigateController.currentIndex,
             onTap: (index) {

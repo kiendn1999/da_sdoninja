@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:da_sdoninja/app/constant/string/string_array.dart';
 import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
@@ -12,10 +14,13 @@ import 'package:da_sdoninja/app/widgets/button_widget.dart';
 import 'package:da_sdoninja/app/widgets/chip.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:marquee/marquee.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PartnerOrderScreen extends StatefulWidget {
   late final String currentStoreID;
@@ -86,53 +91,86 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
             itemCount: orders.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return AppShadow.lightShadow(
-                child: Card(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius15)),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                    child: Column(
-                      children: [
-                        _customerNameAndChat(orders[index], enableSaveButton: true),
-                        _listTileWithIconLeading(pathImage: AppImages.icStoreSelected, title: orders[index].customerAddress!),
-                        _listTileWithIconLeading(
-                            pathImage: AppImages.icClockSelected, iconColor: AppColors.black2, title: "request_date".trParams({"date": orders[index].requestDate!})),
-                        _listTileWithTextField(pathImage: AppImages.icDevice, hintText: "device_name".tr),
-                        _listTileWithTextField(
-                            pathImage: AppImages.icBrokenCause,
-                            hintText: "broken_cause".tr + "...",
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            maxLines: 3,
-                            textAlign: TextAlign.start),
-                        _listTileWithTextField(
-                            pathImage: AppImages.icRepairCost,
-                            hintText: "repair_cost".tr,
-                            keyboardType: TextInputType.number,
-                            unit: Container(
-                              margin: EdgeInsets.only(left: 10.w),
-                              child: Text(
-                                "VND",
-                                style: AppTextStyle.tex17Regular(),
-                              ),
-                            )),
-                        _listTileWithTextField(
-                            pathImage: AppImages.icRepairedDate,
-                            hintText: "estimated_completion_time".tr,
-                            keyboardType: TextInputType.number,
-                            unit: Container(
-                              margin: EdgeInsets.only(left: 10.w),
-                              child: Text(
-                                "day".tr,
-                                style: AppTextStyle.tex17Regular(),
-                              ),
-                            )),
-                        _buttonInStages(stageIndex)
-                      ],
+              return Form(
+                  key: _orderController.formKeysList[stageIndex - 2][index],
+                  child: AppShadow.lightShadow(
+                    child: Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius15)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                        child: Column(
+                          children: [
+                            _customerNameAndChat(
+                              orders[index],
+                              stageIndex,
+                              index,
+                              enableSaveButton: true,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Flexible(child: _listTileWithIconLeading(pathImage: AppImages.icStoreSelected, title: orders[index].customerAddress!)),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10.w),
+                                  child: GestureDetector(
+                                    onTap: () => MapsLauncher.launchQuery(orders[index].customerAddress!),
+                                    child: SvgPicture.asset(
+                                      AppImages.icDirect.getSVGImageAssets,
+                                      width: 23.w,
+                                      height: 23.h,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            _listTileWithIconLeading(
+                                pathImage: AppImages.icClockSelected, iconColor: AppColors.black2, title: "request_date".trParams({"date": orders[index].requestDate!})),
+                            _listTileWithTextField(
+                                pathImage: AppImages.icDevice,
+                                controller: _orderController.deviceNameFieldControllerList[stageIndex - 2][index],
+                                hintText: "device_name".tr,
+                                validator: (value) => _orderController.validateDeviceName(value!)),
+                            _listTileWithTextField(
+                                pathImage: AppImages.icBrokenCause,
+                                controller: _orderController.brokenCauseFieldControllerList[stageIndex - 2][index],
+                                hintText: "broken_cause".tr + "...",
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                maxLines: 3,
+                                textAlign: TextAlign.start,
+                                validator: (value) => _orderController.validateBrokenCause(value!)),
+                            _listTileWithTextField(
+                                pathImage: AppImages.icRepairCost,
+                                controller: _orderController.costFieldControllerList[stageIndex - 2][index],
+                                hintText: "repair_cost".tr,
+                                keyboardType: TextInputType.number,
+                                unit: Container(
+                                  margin: EdgeInsets.only(left: 10.w),
+                                  child: Text(
+                                    "VND",
+                                    style: AppTextStyle.tex17Regular(),
+                                  ),
+                                ),
+                                validator: (value) => _orderController.validatePrice(value!)),
+                            _listTileWithTextField(
+                                pathImage: AppImages.icRepairedDate,
+                                controller: _orderController.estimateTimeFieldControllerList[stageIndex - 2][index],
+                                hintText: "estimated_completion_time".tr,
+                                keyboardType: TextInputType.number,
+                                unit: Container(
+                                  margin: EdgeInsets.only(left: 10.w),
+                                  child: Text(
+                                    "day".tr,
+                                    style: AppTextStyle.tex17Regular(),
+                                  ),
+                                ),
+                                validator: (value) => _orderController.validateEstimateTime(value!)),
+                            _buttonInStages(stageIndex, orders[index], index)
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              );
+                  ));
             },
             separatorBuilder: (context, index) => SizedBox(
               height: 8.h,
@@ -161,25 +199,40 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                     child: Column(
                       children: [
-                        _customerNameAndChat(orders[index]),
-                        _listTileWithIconLeading(pathImage: AppImages.icStoreSelected, title: orders[index].customerAddress!),
+                        _customerNameAndChat(orders[index], stageIndex, index),
+                        Row(
+                          children: [
+                            Expanded(child: _listTileWithIconLeading(pathImage: AppImages.icStoreSelected, title: orders[index].customerAddress!)),
+                            Container(
+                              margin: EdgeInsets.only(left: 10.w),
+                              child: GestureDetector(
+                                onTap: () => MapsLauncher.launchQuery(orders[index].customerAddress!),
+                                child: SvgPicture.asset(
+                                  AppImages.icDirect.getSVGImageAssets,
+                                  width: 23.w,
+                                  height: 23.h,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                         _listTileWithIconLeading(
                             pathImage: AppImages.icClockSelected, iconColor: AppColors.black2, title: "request_date".trParams({"date": orders[index].requestDate!})),
                         stageIndex == 1
                             ? const SizedBox.shrink()
                             : Column(
                                 children: [
-                                  _listTileWithIconLeading(pathImage: AppImages.icDevice, title: "device_name".tr + ": ${orders[index].deviceName}"),
-                                  _listTileWithIconLeading(pathImage: AppImages.icBrokenCause, title: "broken_cause".tr + ": ${orders[index].brokenCause}"),
-                                  _listTileWithIconLeading(pathImage: AppImages.icRepairCost, title: "repair_cost".tr + ": ${orders[index].repairCost} VND"),
+                                  _listTileWithIconLeading(pathImage: AppImages.icDevice, title: "device_name".tr + ": ${orders[index].deviceName ?? "undefined".tr}"),
+                                  _listTileWithIconLeading(pathImage: AppImages.icBrokenCause, title: "broken_cause".tr + ": ${orders[index].brokenCause ?? "undefined".tr}"),
+                                  _listTileWithIconLeading(pathImage: AppImages.icRepairCost, title: "repair_cost".tr + ": ${orders[index].repairCost ?? "undefined".tr} VND"),
                                   _listTileWithIconLeading(
                                       pathImage: AppImages.icRepairedDate,
                                       title: stageIndex < 5
-                                          ? "estimated_completion_time".tr + ": ${orders[index].estimatedCompletionTime} " + "day".tr
+                                          ? "estimated_completion_time".tr + ": ${orders[index].estimatedCompletionTime ?? "undefined".tr} " + "day".tr
                                           : "repair_completed_date".trParams({"date": orders[index].repairCompletedDate!})),
                                 ],
                               ),
-                        _buttonInStages(stageIndex)
+                        _buttonInStages(stageIndex, orders[index], index)
                       ],
                     ),
                   ),
@@ -192,7 +245,7 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
           );
   }
 
-  Widget _buttonInStages(int stageIndex) {
+  Widget _buttonInStages(int stageIndex, OrderModel order, int index) {
     switch (stageIndex) {
       case 0:
         return const SizedBox.shrink();
@@ -203,12 +256,12 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
             _button(
               lable: "refuse".tr,
               color: AppColors.red,
-              onPressed: () {},
+              onPressed: () => _showDialogConfirm("are_you_sure_to_decline_this_request".tr, order, "refuse"),
             ),
             _button(
               lable: "accept".tr,
               color: AppColors.green,
-              onPressed: () {},
+              onPressed: () => _showDialogConfirm("are_you_sure_you_accept_this_request".tr, order, stageList[2]),
             )
           ],
         );
@@ -219,12 +272,15 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
             _button(
               lable: "cancel_repair".tr,
               color: AppColors.red,
-              onPressed: () {},
+              onPressed: () => _showDialogConfirm("are_you_sure_to_cancel_this_repair".tr, order, stageList[0]),
             ),
             _button(
               lable: "notify_guests".tr,
               color: AppColors.green,
-              onPressed: () {},
+              onPressed: () {
+                if (_orderController.formKeysList[stageIndex - 2][index].currentState!.validate())
+                  _showDialogConfirm("have_you_checked_carefully".tr, order, stageList[3], stageIndex, index);
+              },
             ),
           ],
         );
@@ -235,12 +291,15 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
             _button(
               lable: "cancel_repair".tr,
               color: AppColors.red,
-              onPressed: () {},
+              onPressed: () => _showDialogConfirm("are_you_sure_to_cancel_this_repair".tr, order, stageList[0]),
             ),
             _button(
               lable: "notify_guests_again".tr,
               color: AppColors.green,
-              onPressed: () {},
+              onPressed: () {
+                if (_orderController.formKeysList[stageIndex - 2][index].currentState!.validate())
+                  _showDialogConfirm("have_you_checked_carefully".tr, order, stageList[3], stageIndex, index);
+              },
             ),
           ],
         );
@@ -251,12 +310,12 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
             _button(
               lable: "cancel_repair".tr,
               color: AppColors.red,
-              onPressed: () {},
+              onPressed: () => _showDialogConfirm("are_you_sure_to_cancel_this_repair".tr, order, stageList[0]),
             ),
             _button(
               lable: "start_the_repair".tr,
               color: AppColors.green,
-              onPressed: () {},
+              onPressed: () => _showDialogConfirm("will_you_start_the_repair".tr, order, stageList[5]),
             ),
           ],
         );
@@ -264,18 +323,58 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
         return _button(
           lable: "fixed".tr,
           color: AppColors.green,
-          onPressed: () {},
+          onPressed: () => _showDialogConfirm("are_you_sure_the_repair_is_done".tr, order, stageList[6]),
         );
       case 6:
         return _button(
           lable: "received_money".tr,
           color: AppColors.green,
-          onPressed: () {},
+          onPressed: () => _showDialogConfirm("are_you_sure_you_got_the_money".tr, order, stageList[7]),
         );
       case 7:
         return const SizedBox.shrink();
     }
     return const SizedBox.shrink();
+  }
+
+  Future<Object?> _showDialogConfirm(String dialogTitle, OrderModel order, String stage, [int? stageIndex, int? index]) {
+    return showAnimatedDialog(
+      context: context,
+      animationType: DialogTransitionType.slideFromTopFade,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            dialogTitle,
+            style: AppTextStyle.tex18Regular(),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  if (stage == "refuse") _orderController.deleteOrder(order);
+                  if (stage == "checked") _orderController.informToCustomer(order, stageIndex!, index!);
+                  if (stage == "fixing")
+                    _orderController.startRepair(order);
+                  else
+                    _orderController.changeStageOfOrder(order, stage);
+                  Get.back();
+                },
+                child: Text(
+                  "yes".tr,
+                  style: AppTextStyle.tex16Medium(),
+                )),
+            TextButton(onPressed: () => Get.back(), child: Text("no".tr, style: AppTextStyle.tex16Medium())),
+          ],
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10)),
+          titlePadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+          contentPadding: EdgeInsets.zero,
+          insetPadding: EdgeInsets.symmetric(horizontal: 40.w),
+          elevation: 7,
+        );
+      },
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 500),
+    );
   }
 
   _button({required String lable, required void Function() onPressed, Color? color}) {
@@ -290,7 +389,7 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
         color: color);
   }
 
-  Row _customerNameAndChat(OrderModel order, {bool enableSaveButton = false}) {
+  Row _customerNameAndChat(OrderModel order, int stageIndex, int index, {bool enableSaveButton = false}) {
     return Row(
       children: [
         Expanded(
@@ -339,16 +438,22 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
         ),
         Container(
           margin: EdgeInsets.only(left: 20.w),
-          child: SvgPicture.asset(
-            AppImages.icOrderChat.getSVGImageAssets,
-            width: 22.w,
-            height: 22.w,
+          child: GestureDetector(
+            onTap: () => launch("tel://${order.customerPhone}"),
+            child: SvgPicture.asset(
+              AppImages.icCall.getSVGImageAssets,
+              width: 27.w,
+              height: 27.w,
+            ),
           ),
         ),
         Visibility(
           visible: enableSaveButton,
           child: TextButton(
-            onPressed: () => FocusManager.instance.primaryFocus?.unfocus(),
+            onPressed: () {
+              _orderController.saveInfoCheck(order, stageIndex, index);
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
             child: Text(
               "save".tr,
               style: AppTextStyle.tex18Bold(color: AppColors.green),
@@ -369,6 +474,7 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
     Color? iconColor,
     String? hintText,
     int maxLines = 1,
+    TextEditingController? controller,
     TextAlign textAlign = TextAlign.center,
     Widget unit = const SizedBox.shrink(),
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
@@ -393,6 +499,8 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
                     contentPadding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 10.w),
                     maxLines: maxLines,
                     textAlign: textAlign,
+                    controller: controller,
+                    validator: validator,
                     keyboardType: keyboardType,
                     hintText: hintText,
                     style: AppTextStyle.tex18Regular())),
@@ -419,7 +527,7 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
             height: 22.h,
             color: iconColor,
           ),
-          Expanded(
+          Flexible(
             child: Container(
                 margin: EdgeInsets.only(left: 5.h),
                 child: Text(
@@ -427,7 +535,7 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
                   textAlign: TextAlign.justify,
                   style: AppTextStyle.tex17Regular(),
                 )),
-          )
+          ),
         ],
       ),
     );

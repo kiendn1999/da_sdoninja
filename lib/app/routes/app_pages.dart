@@ -3,7 +3,6 @@ import 'package:da_sdoninja/app/bindings/common/login_phone_binding.dart';
 import 'package:da_sdoninja/app/bindings/common/otp_binding.dart';
 import 'package:da_sdoninja/app/bindings/common/profile_binding.dart';
 import 'package:da_sdoninja/app/bindings/customer/customer_navigate_binding.dart';
-import 'package:da_sdoninja/app/bindings/customer/customer_review_binding.dart';
 import 'package:da_sdoninja/app/bindings/customer/store_detail_binding.dart';
 import 'package:da_sdoninja/app/bindings/customer/write_review_binding.dart';
 import 'package:da_sdoninja/app/bindings/partner/add_store_binding.dart';
@@ -34,9 +33,9 @@ class AppPages {
     GetPage(name: Routes.customerNavigation, page: () =>  CustomerNavigationFrame(), binding: CustomerNavigationBinding()),
     GetPage(name: Routes.partnerNavigation, page: () =>   PartnerNavigationFrame(), binding: PartnerNavigationBinding()),
     GetPage(name: Routes.storeDetail, page: () =>   StoreDetailScreen(), binding: StoreDetailBinding()),
-    GetPage(name: Routes.customerReview, page: () =>   CustomerReviewScreen(), binding: CustomerReviewBinding()),
+    GetPage(name: Routes.customerReview, page: () =>   CustomerReviewScreen()),
     GetPage(name: Routes.manageStore, page: () =>   ChangeStoreScreen(), binding: ManageStoreBinding()),
-    GetPage(name: Routes.conversation, page: () => const  ConversationScreen(), binding: ConversationBinding()),
+   // GetPage(name: Routes.conversation, page: () => const  ConversationScreen(), binding: ConversationBinding()),
     GetPage(name: Routes.profile, page: () =>   ProfileScreen(), binding: ProfileBinding()),
     GetPage(name: Routes.writeReview, page: () =>   WriteReviewScreen(), binding: WriteReviewBinding()),
     GetPage(name: Routes.addNewStore, page: () =>   AddStoreScreen(), binding: AddStoreBinding()),

@@ -1,13 +1,14 @@
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveHelper {
   static const String _boxAppKey = "setting";
   static const String _darkModeKey = "darkMode";
   static const String _isFirstLoginKey = "isFirstLogin";
-  static const String _langeuageKey = "language";
+  static const String _languageKey = "language";
   static const String _currentStoreKey = "currentStoreID";
   static const String _isPartnerKey = "isPartner";
-  static final _boxApp = Hive.box(_boxAppKey);
+  static final boxApp = Hive.box(_boxAppKey);
 
    static initHive() async {
     //command line
@@ -20,28 +21,34 @@ class HiveHelper {
   //   return await boxApp.put(keyUser, userObj);
   // }
 
-  static bool get getThemeMode  => _boxApp.get(_darkModeKey, defaultValue:false);
+  static bool get getThemeMode  => boxApp.get(_darkModeKey, defaultValue:false);
 
    static  saveThemeModeInMemory(bool isDarkMode)  {
-    return  _boxApp.put(_darkModeKey, isDarkMode);
+    return  boxApp.put(_darkModeKey, isDarkMode);
   }
 
-  static bool get isFirstLogin  => _boxApp.get(_isFirstLoginKey, defaultValue:true);
+  static bool get isFirstLogin  => boxApp.get(_isFirstLoginKey, defaultValue:true);
 
    static  saveIsFirstLogin(bool isFirstLogin)  {
-    return  _boxApp.put(_isFirstLoginKey, isFirstLogin);
+    return  boxApp.put(_isFirstLoginKey, isFirstLogin);
   }
 
-  static String get currentStoreID  => _boxApp.get(_currentStoreKey, defaultValue: "");
+  static String get currentStoreID  => boxApp.get(_currentStoreKey, defaultValue: "");
 
    static  saveCurrentStoreID(String currentStoreID)  {
-    return  _boxApp.put(_currentStoreKey, currentStoreID);
+    return  boxApp.put(_currentStoreKey, currentStoreID);
   }
 
-   static bool get isPartner  => _boxApp.get(_isPartnerKey, defaultValue: false);
+   static String get languageCode  => boxApp.get(_languageKey, defaultValue: Get.deviceLocale?.languageCode);
+
+   static  saveLanguageCode(String languageCode)  {
+    return  boxApp.put(_languageKey, languageCode);
+  }
+
+   static bool get isPartner  => boxApp.get(_isPartnerKey, defaultValue: false);
 
    static  saveIsPartner(bool isPartner)  {
-    return  _boxApp.put(_isPartnerKey, isPartner);
+    return  boxApp.put(_isPartnerKey, isPartner);
   }
 
 

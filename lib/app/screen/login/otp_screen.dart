@@ -22,7 +22,7 @@ class OtpVerificationScreen extends StatefulWidget {
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   late final AuthController _authenController;
-  late final ProfileController  _profileController;
+  late final ProfileController _profileController;
 
   final TextEditingController _otpTextFieldController = TextEditingController();
 

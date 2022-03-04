@@ -7,19 +7,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class TextChipController extends NavigateController {
-  
-  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final NotifyApiService _notifyApiService = NotifyApiService();
+  final NotifyApiService notifyApiService = NotifyApiService();
 
-  late Query _collectionReference;
+  final CollectionReference _collectionReference = FirebaseFirestore.instance.collection("Order");
+  late Query _query;
   late RxList<RxList<OrderModel>> listOfListOrder = RxList<RxList<OrderModel>>.generate(8, (index) => <OrderModel>[].obs);
 
   void getOrdersOfAllStage(String? currentID, String filterTypeString) {
-   pageController = PageController(initialPage: currentIndex);
-    _collectionReference = _firebaseFirestore.collection("Order").where(filterTypeString, isEqualTo: currentID).orderBy("request_date", descending: true);
-    listOfListOrder.asMap().forEach((index, element) => element.bindStream(_getAllOrder(stageList[index])));
+    pageController = PageController(initialPage: currentIndex);
+    _query = _collectionReference.where(filterTypeString, isEqualTo: currentID).orderBy("request_date", descending: true);
+    listOfListOrder.asMap().forEach((index, element) => element.bindStream(_getAllOrderOfOneStage(stageList[index])));
   }
 
-  Stream<List<OrderModel>> _getAllOrder(String stage) =>
-      _collectionReference.where('stage', isEqualTo: stage).snapshots().map((query) => query.docs.map((item) => OrderModel.fromMap(item)).toList());
+  Stream<List<OrderModel>> _getAllOrderOfOneStage(String stage) =>
+      _query.where('stage', isEqualTo: stage).snapshots().map((query) => query.docs.map((item) => OrderModel.fromMap(item)).toList());
+
+  Future<void> changeStageOfOrder(OrderModel order, String stage) async {
+    await _collectionReference.doc(order.id).update({"stage": stage});
+  }
+
+
+  Future<void> deleteOrder(OrderModel order) async {
+    await _collectionReference.doc(order.id).delete();
+  }
+
+  Future<void> updateOrder(String orderID, Map<String, dynamic> infoUpdate) async {
+    await _collectionReference.doc(orderID).update(infoUpdate);
+  }
 }

@@ -70,7 +70,7 @@ class LocationDetectController extends GetxController {
     });
   }
 
-  Future<void> getLastPosition() async {
+  Future<void> getCurrentPosition() async {
     if (addressTextFieldController.text.isEmpty) {
       Position? position = await Geolocator.getLastKnownPosition();
       latitude = position!.latitude;

@@ -19,38 +19,36 @@ Widget textFormFieldApp(
         void Function(String)? onChanged,
         TextInputType? keyboardType,
         String? Function(String?)? validator}) =>
-    Container(
-      margin: EdgeInsets.only(top: marginTop),
-      child: TextFormField(
-        textAlign: textAlign,
-        validator: validator,
-        onSaved: onSaved,
-        controller: controller,
-        initialValue: initialValue,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        maxLines: maxLines,
-        style: style,
-        keyboardType: keyboardType,
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(radius),
-              borderSide: BorderSide(color: Get.context!.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
-          hintText: hintText,
-          suffixIconConstraints: BoxConstraints(minHeight: iconHeight),
-          suffixIcon: suffixIcon,
-          errorStyle: errorStyle,
-          hintStyle: style,
-          contentPadding: contentPadding,
-          errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(radius),
-              borderSide: BorderSide(color: Get.context!.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
-          focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(radius),
-              borderSide: BorderSide(color: Get.context!.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(radius),
-              borderSide: BorderSide(color: Get.context!.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+    Builder(builder: (context) {
+      return Container(
+        margin: EdgeInsets.only(top: marginTop),
+        child: TextFormField(
+          textAlign: textAlign,
+          validator: validator,
+          onSaved: onSaved,
+          controller: controller,
+          initialValue: initialValue,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          maxLines: maxLines,
+          style: style,
+          keyboardType: keyboardType,
+          onChanged: onChanged,
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+            hintText: hintText,
+            suffixIconConstraints: BoxConstraints(minHeight: iconHeight),
+            suffixIcon: suffixIcon,
+            errorStyle: errorStyle,
+            hintStyle: style,
+            contentPadding: contentPadding,
+            errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+            focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
+          ),
         ),
-      ),
-    );
+      );
+    });

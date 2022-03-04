@@ -33,7 +33,7 @@ class AuthController extends GetxController {
 
     // Once signed in, return the UserCredential
 
-    EasyLoading.show(indicator: const CircularProgessApp());
+    EasyLoading.show(indicator: const CircularProgressApp());
     await _auth.signInWithCredential(credential).whenComplete(() => _handleWithProfileDataAfterLoginSuccess());
   }
 
@@ -45,7 +45,7 @@ class AuthController extends GetxController {
     final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
     // Once signed in, return the UserCredential
-    EasyLoading.show(indicator: const CircularProgessApp());
+    EasyLoading.show(indicator: const CircularProgressApp());
     await _auth.signInWithCredential(facebookAuthCredential).whenComplete(()  => _handleWithProfileDataAfterLoginSuccess());
   }
 
@@ -63,7 +63,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> verifyPhoneNumber({required String phoneNumber}) async {
-    EasyLoading.show(indicator: const CircularProgessApp());
+    EasyLoading.show(indicator: const CircularProgressApp());
     if (phoneNumber.substring(0, 3) != "+84") phoneNumber = "+84" + phoneNumber.substring(1);
     try {
       await _auth.verifyPhoneNumber(

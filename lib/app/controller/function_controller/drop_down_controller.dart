@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 mixin DropDownController on GetxController{
      final RxString _dropdownDeviceValue = storeTypes[0].obs;
-   final RxString _dropdownFilterValue = "near_you".tr.obs;
+   final RxString _dropdownSortValue = sortTypes[0].obs;
 
      String get dropdownDeviceValue => _dropdownDeviceValue.value;
 
@@ -11,10 +11,10 @@ mixin DropDownController on GetxController{
     _dropdownDeviceValue.value = dropdownValue;
   }
 
-  String get dropdownFilterValue => _dropdownFilterValue.value;
+  String get dropdownSortValue => _dropdownSortValue.value;
 
-  set dropdownFilterValue(String dropdownFilterValue) {
-    _dropdownFilterValue.value = dropdownFilterValue;
+  set dropdownSortValue(String dropdownSortValue) {
+    _dropdownSortValue.value = dropdownSortValue;
   }
 
 

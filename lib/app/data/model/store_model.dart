@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoreModel {
@@ -9,14 +7,14 @@ class StoreModel {
   String? avaUrl;
   String? closingTime;
   List<String>? dayClosed;
-   List<String> storeServices;
+  List<String> storeServices;
   String? introduce;
   double? distance;
   bool? openStore;
   String? openTime;
   String? ownerID;
   String? phoneNumber;
-  double? rating;
+  num? rating;
   int? ratingQuantity;
   String? storeName;
   List<String> storeType;
@@ -35,10 +33,10 @@ class StoreModel {
     this.openTime,
     this.ownerID,
     this.phoneNumber,
-    this.rating,
+    this.rating=0,
     this.ratingQuantity,
     this.storeName,
-     this.storeType = const <String>[],
+    this.storeType = const <String>[],
   });
 
   StoreModel.updateInfo({
@@ -49,10 +47,10 @@ class StoreModel {
     this.introduce,
     this.phoneNumber,
     this.storeName,
-     this.storeType = const <String>[],
+    this.storeType = const <String>[],
   });
 
-  factory StoreModel.fromMap(DocumentSnapshot data, [ double? distance]) {
+  factory StoreModel.fromMap(DocumentSnapshot data, [double? distance]) {
     return StoreModel(
       id: data.id,
       address: data['address'],
@@ -76,7 +74,6 @@ class StoreModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'address': address,
       'position': position,
       'ava_url': avaUrl,
@@ -96,7 +93,7 @@ class StoreModel {
     };
   }
 
-    Map<String, dynamic> toMapUpdateInfo() {
+  Map<String, dynamic> toMapUpdateInfo() {
     return {
       'address': address,
       'position': position,
@@ -108,5 +105,4 @@ class StoreModel {
       'store_type': storeType,
     };
   }
-
 }

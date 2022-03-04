@@ -41,7 +41,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
-        widget.controller.getLastPosition();
+        widget.controller.getCurrentPosition();
       },
       child: SingleChildScrollView(
         child: Obx(() => AbsorbPointer(
@@ -287,9 +287,11 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                   Checkbox(
                       value: widget.controller.isStoreTypeChecked(storeTypesToRegister[index]),
                       onChanged: (value) => widget.controller.checkStoreType(storeTypesToRegister[index])),
-                  Text(
-                    storeTypesToRegister[index].tr,
-                    style: AppTextStyle.tex16Regular(),
+                  Flexible(
+                    child: Text(
+                      storeTypesToRegister[index].tr,
+                      style: AppTextStyle.tex16Regular(),
+                    ),
                   ),
                 ],
               ),
@@ -380,15 +382,11 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                 width: Get.width,
                 height: 200.h,
                 fit: BoxFit.cover,
-                imageErrorBuilder: (context, error, stackTrace) => SizedBox(
+                imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                      AppImages.imageAvaShopDefault.getPNGImageAssets,
+                      fit: BoxFit.cover,
                       width: Get.width,
                       height: 200.h,
-                      child: Image.asset(
-                        AppImages.imageAvaShopDefault.getPNGImageAssets,
-                        fit: BoxFit.cover,
-                        width: Get.width,
-                        height: 200.h,
-                      ),
                     ),
                 placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
                 image: "${widget.currentStore!.avaUrl}"),

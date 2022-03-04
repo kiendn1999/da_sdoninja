@@ -4,19 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
 import 'package:da_sdoninja/app/controller/page_controller/common/location_detect_cotroller.dart';
 import 'package:da_sdoninja/app/data/model/store_model.dart';
-import 'package:da_sdoninja/app/data/repository/user_info.dart';
-import 'package:da_sdoninja/app/widgets/snackbar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/widgets.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:sms_autofill/sms_autofill.dart';
-
-import '../../widgets/circular_progess.dart';
 
 class CrUStoreController extends LocationDetectController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -113,36 +108,7 @@ class CrUStoreController extends LocationDetectController {
     return null;
   }
 
-  Future<void> submitWithInfo() async {
-    if (formKey.currentState!.validate() && storeTypeCheckedList.isNotEmpty && isDoneTermAndPolicyCheckBox.value) {
-      EasyLoading.show(indicator: const CircularProgessApp());
-      myLocation = geo.point(latitude: latitude, longitude: longitude);
-      await uploadImgageAva();
-      collectionReference
-          .add(StoreModel(
-                  avaUrl: imageUrl,
-                  address: addressTextFieldController.text,
-                  closingTime: "5:00 PM",
-                  introduce: introduceTextFieldController.text,
-                  openStore: true,
-                  openTime: "7:30 AM",
-                  ownerID: UserCurrentInfo.userID,
-                  phoneNumber: phoneTextFieldController.text,
-                  position: myLocation.data,
-                  storeName: nameTextFieldController.text,
-                  storeServices: storeServiceList,
-                  storeType: storeTypeCheckedList)
-              .toMap())
-          .whenComplete(() {
-        EasyLoading.dismiss();
-        snackBar(message: "successfully_created_a_new_store".tr);
-      }).catchError((error) {
-        EasyLoading.dismiss();
-        snackBar(message: "new_store_creation_failed".tr);
-        throw error;
-      });
-    }
-  }
+  Future<void> submitWithInfo() async {}
 
   Future<void> uploadImgageAva() async {
     if (imageStoreAva != null) {
@@ -153,7 +119,7 @@ class CrUStoreController extends LocationDetectController {
   }
 
   Future getImage(int typeGC) async {
-    final XFile? pickedImage = await _picker.pickImage(source: typeGC == 1 ? ImageSource.gallery : ImageSource.camera);
+    final XFile? pickedImage = await _picker.pickImage(source: typeGC == 1 ? ImageSource.gallery : ImageSource.camera).whenComplete(() => null);
     _filename = path.basename(pickedImage!.path);
     imageStoreAva = await _cropImage(File(pickedImage.path));
     didPickImage.value = true;

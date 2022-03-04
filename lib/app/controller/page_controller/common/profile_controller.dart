@@ -24,7 +24,7 @@ class ProfileController extends GetxController {
   }
 
   updateProfile(String name, String phoneNumber) async {
-    EasyLoading.show(indicator: const CircularProgessApp());
+    EasyLoading.show(indicator: const CircularProgressApp());
     if (phoneNumber.substring(0, 3) != "+84") phoneNumber = "+84" + phoneNumber.substring(1);
     if (name != displayName) {
       await UserCurrentInfo.currentUser!.updateDisplayName(name);

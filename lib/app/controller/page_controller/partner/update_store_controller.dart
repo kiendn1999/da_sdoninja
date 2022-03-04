@@ -13,19 +13,19 @@ class UpdateStoreController extends CrUStoreController {
     addressTextFieldController = TextEditingController(text: store.address);
   }
   
-   Future<void> updateWithInfo(StoreModel stotre) async {
+   Future<void> updateWithInfo(StoreModel store) async {
     if (checkInvalidFormUpdate) {
-      EasyLoading.show(indicator: const CircularProgessApp());
+      EasyLoading.show(indicator: const CircularProgressApp());
       myLocation = geo.point(latitude: latitude, longitude: longitude);
       await uploadImgageAva();
-      collectionReference.doc(stotre.id)
+      collectionReference.doc(store.id)
           .update(StoreModel.updateInfo(
                   avaUrl: imageUrl,
-                  address: addressTextFieldController.text,
-                  introduce: introduceTextFieldController.text,
-                  phoneNumber: phoneTextFieldController.text,
-                  position: stotre.address == addressTextFieldController.text ? stotre.position: myLocation.data,
-                  storeName: nameTextFieldController.text,
+                  address: addressTextFieldController.text.trim(),
+                  introduce: introduceTextFieldController.text.trim(),
+                  phoneNumber: phoneTextFieldController.text.trim(),
+                  position: store.address == addressTextFieldController.text ? store.position: myLocation.data,
+                  storeName: nameTextFieldController.text.trim(),
                   storeServices: storeServiceList,
                   storeType: storeTypeCheckedList)
               .toMapUpdateInfo())

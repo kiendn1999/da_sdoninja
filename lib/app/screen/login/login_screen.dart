@@ -91,7 +91,7 @@ class LoginScreen extends StatelessWidget {
             const TextSpan(text: "SD"),
             WidgetSpan(
               child: AppShadow.boldShadow(
-                  child: CircularProgessApp(
+                  child: CircularProgressApp(
                 width: 60.h,
                 height: 60.h,
                 color: AppColors.primaryDarkModeColor,

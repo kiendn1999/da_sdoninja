@@ -8,9 +8,13 @@ import 'package:da_sdoninja/app/data/hive/hive_helper.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
+
+import '../constant/theme/app_radius.dart';
 
 class DrawerApp extends StatelessWidget {
   final _authenController = Get.find<AuthController>();
@@ -44,7 +48,7 @@ class DrawerApp extends StatelessWidget {
                         HiveHelper.saveIsPartner(true);
                         Get.offAllNamed(Routes.partnerNavigation);
                       }),
-                  _listTile(leading: AppImages.icGlobe, title: "language".tr),
+                  _listTile(leading: AppImages.icGlobe, title: "language".tr, onTap: () => _showHelpDialog()),
                   _listTile(
                       leading: AppImages.icMoon,
                       title: "dark_mode".tr,
@@ -65,6 +69,50 @@ class DrawerApp extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<Object?> _showHelpDialog() {
+    return showAnimatedDialog(
+      context: Get.context!,
+      animationType: DialogTransitionType.slideFromTopFade,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ValueListenableBuilder(
+            valueListenable: Hive.box('setting').listenable(),
+            builder: (context, box, widget) => CustomDialogWidget(
+                contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                minWidth: 400,
+                elevation: 7,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RadioListTile<String>(
+                      title: Text('vietnamese'.tr),
+                      value: 'vi',
+                      groupValue: HiveHelper.languageCode,
+                      onChanged: (value) {
+                        Get.updateLocale(Locale(value!));
+                        HiveHelper.saveLanguageCode(value);
+                        Get.back();
+                      },
+                    ),
+                    RadioListTile<String>(
+                      title: Text('english'.tr),
+                      value: 'en',
+                      groupValue: HiveHelper.languageCode,
+                      onChanged: (value) {
+                        Get.updateLocale(Locale(value!));
+                        HiveHelper.saveLanguageCode(value);
+                        Get.back();
+                      },
+                    ),
+                  ],
+                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10))));
+      },
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 500),
     );
   }
 

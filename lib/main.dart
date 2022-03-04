@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:da_sdoninja/app/constant/string/key_id.dart';
 import 'package:da_sdoninja/app/data/hive/hive_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
+
 import 'app/bindings/common/initial_binding.dart';
 import 'app/constant/theme/app_theme.dart';
 import 'app/notifications/notificationservice.dart';
@@ -22,6 +24,7 @@ void main() async {
   await Firebase.initializeApp();
   await HiveHelper.initHive();
   NotificationService().initNotification();
+
   runApp(SdoNinjaApp());
 }
 
@@ -47,7 +50,7 @@ class SdoNinjaApp extends StatelessWidget {
               getPages: AppPages.pages,
               builder: EasyLoading.init(),
               onInit: initState,
-              locale: const Locale('vi'),
+              locale: Locale(HiveHelper.languageCode),
               translationsKeys: AppTranslation.translations,
             ));
   }
@@ -59,24 +62,16 @@ class SdoNinjaApp extends StatelessWidget {
   Future<void> configOneSignel() async {
     tz.initializeTimeZones();
     await OneSignal.shared.setAppId(oneSignalAppID);
+    OneSignal.shared.setLanguage(HiveHelper.languageCode);
 
-    // OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-    //   print('NOTIFICATION OPENED HANDLER CALLED WITH: ${result}');
-    //   NotificationService().showNotification(1, "title", "body", 10);
-    // });
-    //  OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-    //   print('NOTIFICATION OPENED HANDLER CALLED WITH: ${result}');
-    //   NotificationService().showNotification(1, "title", "body", 10);
-    // });
-
-    OneSignal.shared.setLanguage("vi");
+    OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      print(result.notification.additionalData!["route"]);
+      Get.offAllNamed(result.notification.additionalData!["route"]);
+    });
 
     OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent event) {
-     // print('FOREGROUND HANDLER CALLED WITH: ${event}');
-
-      /// Display Notification, send null to not display
-      event.complete(null);
-      NotificationService().showNotification(1, event.notification.title!, event.notification.body!, 10);
+      event.complete(event.notification);
+      //NotificationService().showNotification(1, event.notification.title!, event.notification.body!, 10);
     });
   }
 

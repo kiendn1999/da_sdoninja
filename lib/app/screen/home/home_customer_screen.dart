@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:da_sdoninja/app/constant/string/string_array.dart';
 import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
@@ -17,7 +18,9 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:marquee/marquee.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeCustomerScreen extends StatelessWidget {
   final _homeCustomerController = Get.find<HomeCustomerController>();
@@ -27,7 +30,7 @@ class HomeCustomerScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
-        _homeCustomerController.getLastPosition();
+        _homeCustomerController.getCurrentPosition();
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w),
@@ -46,16 +49,14 @@ class HomeCustomerScreen extends StatelessWidget {
             ),
             _searchStoreTextField(),
             _filterTool(
-              itemList: [
-                "near_you".tr,
-                "rating".tr,
-              ],
+              itemList: sortTypes,
               lable: "recommended_shops".tr,
               widthDropDownButton: 147.w,
               marginTop: 17.h,
-              value: _homeCustomerController.dropdownFilterValue,
+              value: _homeCustomerController.dropdownSortValue,
               onChanged: (newValue) {
-                _homeCustomerController.dropdownFilterValue = newValue!;
+                _homeCustomerController.dropdownSortValue = newValue!;
+                _homeCustomerController.getAllStore();
               },
             ),
             _shopsListView(),
@@ -66,19 +67,25 @@ class HomeCustomerScreen extends StatelessWidget {
   }
 
   Expanded _shopsListView() => Expanded(
-        child: Container(
-          margin: EdgeInsets.only(top: 17.h),
-          child: Obx(() => ListView.separated(
-                separatorBuilder: (BuildContext context, int index) => SizedBox(
-                  height: 7.h,
+        child: Obx(() => _homeCustomerController.stores.isEmpty
+            ? Image.asset(
+                AppImages.imageLoad.getGIFImageAssets,
+                width: Get.width,
+                height: 400.h,
+              )
+            : Container(
+                margin: EdgeInsets.only(top: 17.h),
+                child: ListView.separated(
+                  separatorBuilder: (BuildContext context, int index) => SizedBox(
+                    height: 7.h,
+                  ),
+                  itemCount: _homeCustomerController.stores.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return _shopsItem(index);
+                  },
                 ),
-                itemCount: _homeCustomerController.stores.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return _shopsItem(index);
-                },
               )),
-        ),
       );
 
   _shopsItem(int index) => AppShadow.lightShadow(
@@ -86,14 +93,17 @@ class HomeCustomerScreen extends StatelessWidget {
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius15)),
           child: InkWell(
-            onTap: () => Get.toNamed(Routes.storeDetail),
+            onTap: () => Get.toNamed(
+              Routes.storeDetail,
+              arguments: _homeCustomerController.stores[index].id,
+            ),
             borderRadius: BorderRadius.circular(AppRadius.radius15),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.radius15),
               child: Padding(
                 padding: EdgeInsets.only(right: 10.w),
                 child: Row(
-                  children: [_shopsAvatar(index), Expanded(child: _shopInfor(index))],
+                  children: [_shopsAvatar(index), Expanded(child: _shopInfo(index))],
                 ),
               ),
             ),
@@ -101,7 +111,7 @@ class HomeCustomerScreen extends StatelessWidget {
         ),
       );
 
-  Container _shopInfor(int index) => Container(
+  Container _shopInfo(int index) => Container(
         margin: EdgeInsets.only(left: 10.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,15 +125,17 @@ class HomeCustomerScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             buttonWithRadius10(
-                onPressed: () => _showHelpDialog(index),
-                color: AppColors.orange,
+                onPressed: () {
+                  if (_homeCustomerController.checkIsOpenStore(index)) _showHelpDialog(index);
+                },
+                color: !_homeCustomerController.checkIsOpenStore(index) ? AppColors.black4 : AppColors.orange,
                 padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
                 child: Text(
                   "help_me".tr,
                   style: AppTextStyle.tex18Bold(),
                 )),
             buttonWithRadius10(
-                onPressed: () {},
+                onPressed: () => MapsLauncher.launchQuery(_homeCustomerController.stores[index].address!),
                 color: AppColors.green,
                 padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
                 child: Text(
@@ -161,7 +173,10 @@ class HomeCustomerScreen extends StatelessWidget {
                     "call_the_shop".tr,
                     style: AppTextStyle.tex18Regular(),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    launch("tel://${_homeCustomerController.stores[index].phoneNumber}");
+                    Get.back();
+                  },
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 5.h),
@@ -220,7 +235,9 @@ class HomeCustomerScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 8.w),
               child: Text(
-                _homeCustomerController.stores[index].rating==null?"not_yet".tr:"${_homeCustomerController.stores[index].rating} (${_homeCustomerController.stores[index].ratingQuantity})",
+                _homeCustomerController.stores[index].rating == 0
+                    ? "not_yet".tr
+                    : "${_homeCustomerController.stores[index].rating} (${_homeCustomerController.stores[index].ratingQuantity})",
                 style: AppTextStyle.tex18Regular(),
               ),
             )
@@ -250,18 +267,37 @@ class HomeCustomerScreen extends StatelessWidget {
         ),
       );
 
-  FadeInImage _shopsAvatar(int index) => FadeInImage.assetNetwork(
-      width: 120.w,
-      height: 145.h,
-      fit: BoxFit.cover,
-      imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-            AppImages.imageAvaShopDefault.getPNGImageAssets,
-            fit: BoxFit.cover,
-            width: 120.h,
+  Stack _shopsAvatar(int index) {
+    return Stack(
+      children: [
+        FadeInImage.assetNetwork(
+            width: 120.w,
             height: 145.h,
+            fit: BoxFit.cover,
+            imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                  AppImages.imageAvaShopDefault.getPNGImageAssets,
+                  fit: BoxFit.cover,
+                  width: 120.h,
+                  height: 145.h,
+                ),
+            placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
+            image: _homeCustomerController.stores[index].avaUrl!),
+        Visibility(
+          visible: !_homeCustomerController.checkIsOpenStore(index),
+          child: Container(
+            width: 120.w,
+            height: 145.h,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(AppRadius.radius10), bottomLeft: Radius.circular(AppRadius.radius10)),
+                color: AppColors.black.withOpacity(0.55)),
+            child: Center(
+              child: Text("temporarily_closed".tr, style: AppTextStyle.tex16Regular(color: AppColors.white), textAlign: TextAlign.center),
+            ),
           ),
-      placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
-      image: _homeCustomerController.stores[index].avaUrl!);
+        )
+      ],
+    );
+  }
 
   Widget _searchStoreTextField() => textFormFieldApp(
         marginTop: 17.h,
