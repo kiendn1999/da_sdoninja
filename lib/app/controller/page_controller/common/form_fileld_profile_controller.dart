@@ -6,8 +6,7 @@ import 'package:sms_autofill/sms_autofill.dart';
 class FormFieldProfileController extends GetxController {
   final GlobalKey<FormState> updateProfileFormKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  late TextEditingController userNameTextFieldController;
-  late TextEditingController phomeNumberTextFieldController;
+  late TextEditingController userNameTextFieldController, phomeNumberTextFieldController;
   final SmsAutoFill autoFill = SmsAutoFill();
   final RxBool _isEdit = false.obs;
   bool _isValid = true;
@@ -47,7 +46,7 @@ class FormFieldProfileController extends GetxController {
       _isEdit.value = !_isEdit.value;
       return true;
     }
-    if(_isEdit.value==false)_isEdit.value =  !_isEdit.value;
+    if (_isEdit.value == false) _isEdit.value = !_isEdit.value;
     return false;
   }
 }

@@ -1,4 +1,4 @@
-import 'package:da_sdoninja/app/constant/app_colors.dart';
+import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,25 +10,29 @@ Widget textFormFieldApp(
         double radius = 10,
         TextEditingController? controller,
         void Function(String?)? onSaved,
-        int? maxLines,
+        int maxLines = 1,
         double iconHeight = 0.0,
+        String? initialValue,
         TextAlign textAlign = TextAlign.start,
         TextStyle? style,
         TextStyle? errorStyle,
+        void Function(String)? onChanged,
         TextInputType? keyboardType,
         String? Function(String?)? validator}) =>
-    Builder(
-      builder: (context) => Container(
+    Builder(builder: (context) {
+      return Container(
         margin: EdgeInsets.only(top: marginTop),
         child: TextFormField(
           textAlign: textAlign,
           validator: validator,
           onSaved: onSaved,
           controller: controller,
+          initialValue: initialValue,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           maxLines: maxLines,
           style: style,
           keyboardType: keyboardType,
+          onChanged: onChanged,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
@@ -46,5 +50,5 @@ Widget textFormFieldApp(
                 borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor)),
           ),
         ),
-      ),
-    );
+      );
+    });

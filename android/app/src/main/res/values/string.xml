@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">SDONINJA</string>
-  <string name="facebook_app_id">303853661756974</string>
-  <string name="fb_login_protocol_scheme">fb303853661756974</string>
+  <string name="facebook_app_id">1074734533407932</string>
+  <string name="fb_login_protocol_scheme">fb1074734533407932</string>
 </resources>

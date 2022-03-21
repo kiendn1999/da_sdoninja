@@ -1,16 +1,20 @@
-import 'package:da_sdoninja/app/constant/app_colors.dart';
-import 'package:da_sdoninja/app/constant/app_images.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
-import 'package:da_sdoninja/app/constant/app_theme.dart';
+import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
+import 'package:da_sdoninja/app/constant/theme/app_images.dart';
+import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
+import 'package:da_sdoninja/app/constant/theme/app_theme.dart';
 import 'package:da_sdoninja/app/controller/page_controller/common/authen_controller.dart';
 import 'package:da_sdoninja/app/controller/page_controller/common/profile_controller.dart';
 import 'package:da_sdoninja/app/data/hive/hive_helper.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
+
+import '../constant/theme/app_radius.dart';
 
 class DrawerApp extends StatelessWidget {
   final _authenController = Get.find<AuthController>();
@@ -32,10 +36,19 @@ class DrawerApp extends StatelessWidget {
                   _listTile(
                     leading: AppImages.icSearch,
                     title: "search_repair_shop".tr,
-                    onTap: () => Get.offAllNamed(Routes.customerNavigation),
+                    onTap: () {
+                      HiveHelper.saveIsPartner(false);
+                      Get.offAllNamed(Routes.customerNavigation);
+                    },
                   ),
-                  _listTile(leading: AppImages.icStore, title: "my_repair_shop".tr, onTap: () => Get.offAllNamed(Routes.partnerNavigation)),
-                  _listTile(leading: AppImages.icGlobe, title: "language".tr),
+                  _listTile(
+                      leading: AppImages.icStore,
+                      title: "my_repair_shop".tr,
+                      onTap: () {
+                        HiveHelper.saveIsPartner(true);
+                        Get.offAllNamed(Routes.partnerNavigation);
+                      }),
+                  _listTile(leading: AppImages.icGlobe, title: "language".tr, onTap: () => _showHelpDialog()),
                   _listTile(
                       leading: AppImages.icMoon,
                       title: "dark_mode".tr,
@@ -56,6 +69,50 @@ class DrawerApp extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<Object?> _showHelpDialog() {
+    return showAnimatedDialog(
+      context: Get.context!,
+      animationType: DialogTransitionType.slideFromTopFade,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ValueListenableBuilder(
+            valueListenable: Hive.box('setting').listenable(),
+            builder: (context, box, widget) => CustomDialogWidget(
+                contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                minWidth: 400,
+                elevation: 7,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RadioListTile<String>(
+                      title: Text('vietnamese'.tr),
+                      value: 'vi',
+                      groupValue: HiveHelper.languageCode,
+                      onChanged: (value) {
+                        Get.updateLocale(Locale(value!));
+                        HiveHelper.saveLanguageCode(value);
+                        Get.back();
+                      },
+                    ),
+                    RadioListTile<String>(
+                      title: Text('english'.tr),
+                      value: 'en',
+                      groupValue: HiveHelper.languageCode,
+                      onChanged: (value) {
+                        Get.updateLocale(Locale(value!));
+                        HiveHelper.saveLanguageCode(value);
+                        Get.back();
+                      },
+                    ),
+                  ],
+                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10))));
+      },
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 500),
     );
   }
 
@@ -107,10 +164,10 @@ class DrawerApp extends StatelessWidget {
             children: [
               ClipOval(
                 child: FadeInImage.assetNetwork(
-                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                  image: _profileController.avaURL.toString(),
+                  placeholder: AppImages.imageDefaultAvatar.getPNGImageAssets,
+                  image: "${_profileController.avaURL}",
                   imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                    AppImages.imageDefautAvatar.getPNGImageAssets,
+                    AppImages.imageDefaultAvatar.getPNGImageAssets,
                     fit: BoxFit.cover,
                     width: 100.h,
                     height: 100.h,
@@ -123,7 +180,7 @@ class DrawerApp extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(top: 17.h),
                 child: Text(
-                  _profileController.displayName.toString(),
+                  _profileController.displayName ?? "no_name".tr,
                   style: AppTextStyle.tex20Medium(color: AppColors.white),
                 ),
               ),

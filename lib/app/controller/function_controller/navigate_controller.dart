@@ -15,7 +15,9 @@ class NavigateController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    pageController = PageController();
+    pageController = PageController(initialPage: 0);
   }
+
+  
 }
 

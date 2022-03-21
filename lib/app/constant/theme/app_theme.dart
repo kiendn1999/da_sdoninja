@@ -1,11 +1,16 @@
-import 'package:da_sdoninja/app/constant/app_button_theme.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'app_button_theme.dart';
 import 'app_colors.dart';
+import 'app_text_style.dart';
 
 class Apptheme {
   static final ThemeData lightTheme = ThemeData.light().copyWith(
-      appBarTheme: const AppBarTheme(color: AppColors.primaryLightModeColor),
+      appBarTheme: const AppBarTheme(
+        color: AppColors.primaryLightModeColor,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
       elevatedButtonTheme: AppButtonTheme.elevatedButtonPrimaryLightTheme,
       outlinedButtonTheme: AppButtonTheme.outlineButtonPrimaryLightTheme,
       snackBarTheme: SnackBarThemeData(backgroundColor: AppColors.primaryLightModeColor),
@@ -30,7 +35,10 @@ class Apptheme {
           focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.primaryLightModeColor))));
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
-      appBarTheme: const AppBarTheme(color: AppColors.primaryDarkModeColor),
+      appBarTheme: const AppBarTheme(
+        color: AppColors.primaryDarkModeColor,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
       elevatedButtonTheme: AppButtonTheme.elevatedButtonPrimaryDarkTheme,
       checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateProperty.all(AppColors.primaryDarkModeColor),

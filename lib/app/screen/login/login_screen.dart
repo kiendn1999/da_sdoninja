@@ -1,7 +1,7 @@
-import 'package:da_sdoninja/app/constant/app_colors.dart';
-import 'package:da_sdoninja/app/constant/app_images.dart';
-import 'package:da_sdoninja/app/constant/app_shadows.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
+import 'package:da_sdoninja/app/constant/theme/app_images.dart';
+import 'package:da_sdoninja/app/constant/theme/app_shadows.dart';
+import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/common/authen_controller.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:da_sdoninja/app/routes/app_routes.dart';
@@ -91,7 +91,7 @@ class LoginScreen extends StatelessWidget {
             const TextSpan(text: "SD"),
             WidgetSpan(
               child: AppShadow.boldShadow(
-                  child: CircularProgessApp(
+                  child: CircularProgressApp(
                 width: 60.h,
                 height: 60.h,
                 color: AppColors.primaryDarkModeColor,

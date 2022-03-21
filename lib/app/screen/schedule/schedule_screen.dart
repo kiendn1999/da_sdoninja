@@ -1,18 +1,32 @@
-import 'package:da_sdoninja/app/constant/app_colors.dart';
-import 'package:da_sdoninja/app/constant/app_images.dart';
-import 'package:da_sdoninja/app/constant/app_text_style.dart';
+import 'package:da_sdoninja/app/constant/theme/app_colors.dart';
+import 'package:da_sdoninja/app/constant/theme/app_images.dart';
+import 'package:da_sdoninja/app/constant/theme/app_text_style.dart';
 import 'package:da_sdoninja/app/controller/page_controller/partner/schedule_controller.dart';
-import 'package:da_sdoninja/app/extension/datetime_extension.dart';
 import 'package:da_sdoninja/app/extension/image_assets_path_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class ScheduleScreen extends StatelessWidget {
+class ScheduleScreen extends StatefulWidget {
+  late final String currentStoreID;
+  ScheduleScreen({
+    Key? key,
+    required this.currentStoreID,
+  }) : super(key: key);
+  @override
+  State<ScheduleScreen> createState() => _ScheduleScreenState();
+}
+
+class _ScheduleScreenState extends State<ScheduleScreen> {
   final _scheduleController = Get.find<ScheduleController>();
 
-  late DateTime _date;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _scheduleController.getInfoStore(widget.currentStoreID);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +59,7 @@ class ScheduleScreen extends StatelessWidget {
                   style: AppTextStyle.tex20Regular(),
                 ),
                 GestureDetector(
-                  onTap: () async {
-                    _date = (await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      cancelText: "cancle".tr,
-                      fieldLabelText: "enter_date".tr,
-                      helpText: "select_closing_date".tr,
-                      fieldHintText: "month_date_year".tr,
-                      errorFormatText: "malformed_date".tr,
-                      errorInvalidText: "out_of_range".tr,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2030),
-                    ))!;
-                    _scheduleController.addClosedDate(_date);
-                  },
+                  onTap: () async => await _scheduleController.addDateClose(widget.currentStoreID),
                   child: Transform.scale(
                     scale: 1.h,
                     child: const Icon(
@@ -79,7 +79,7 @@ class ScheduleScreen extends StatelessWidget {
                         return _closeDateItem(index);
                       },
                       shrinkWrap: true,
-                      itemCount: _scheduleController.closedDateList.length,
+                      itemCount: _scheduleController.store.value.dayClosed!.length,
                       separatorBuilder: (context, index) => SizedBox(
                         height: 15.h,
                       ),
@@ -97,11 +97,11 @@ class ScheduleScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          _scheduleController.closedDateList[index].formatDateDefault,
+          _scheduleController.store.value.dayClosed![index],
           style: AppTextStyle.tex18Regular(),
         ),
         GestureDetector(
-          onTap: () => _scheduleController.deleteClosedDate(_scheduleController.closedDateList[index]),
+          onTap: () => _scheduleController.deleteDateClose(widget.currentStoreID, _scheduleController.store.value.dayClosed![index]),
           child: SvgPicture.asset(
             AppImages.icTrash.getSVGImageAssets,
             width: 23.w,
@@ -125,13 +125,7 @@ class ScheduleScreen extends StatelessWidget {
           Row(
             children: [
               TextButton(
-                  onPressed: () async {
-                    _scheduleController.startTime = await _seclectAndShowTimePicker(
-                      context,
-                      helpText: "choose_opening_time".tr,
-                      initialTime: _scheduleController.startTime,
-                    );
-                  },
+                  onPressed: () async => await _scheduleController.updateOpenTime(widget.currentStoreID),
                   child: Obx(() => Text(
                         _scheduleController.startTime.format(context),
                         style: AppTextStyle.tex20Regular(color: AppColors.pink),
@@ -141,13 +135,7 @@ class ScheduleScreen extends StatelessWidget {
                 style: AppTextStyle.tex20Regular(),
               ),
               TextButton(
-                  onPressed: () async {
-                    _scheduleController.endTime = await _seclectAndShowTimePicker(
-                      context,
-                      helpText: "choose_closing_time".tr,
-                      initialTime: _scheduleController.endTime,
-                    );
-                  },
+                  onPressed: () async => await _scheduleController.updateCloseTime(widget.currentStoreID),
                   child: Obx(() => Text(
                         _scheduleController.endTime.format(context),
                         style: AppTextStyle.tex20Regular(color: AppColors.blue2),
@@ -157,18 +145,6 @@ class ScheduleScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<TimeOfDay> _seclectAndShowTimePicker(BuildContext context, {String? helpText, required TimeOfDay initialTime}) async {
-    return (await showTimePicker(
-      context: context,
-      helpText: helpText,
-      cancelText: "cancle".tr,
-      errorInvalidText: "enter_a_valid_time".tr,
-      hourLabelText: "hour".tr,
-      minuteLabelText: "minute".tr,
-      initialTime: initialTime,
-    ))!;
   }
 
   Container _openStore() {
@@ -186,7 +162,7 @@ class ScheduleScreen extends StatelessWidget {
               child: Obx(() => Switch(
                   value: _scheduleController.isStoreOpening,
                   onChanged: (value) {
-                    _scheduleController.isStoreOpening = value;
+                    _scheduleController.openOrCloseStore(widget.currentStoreID, value);
                   })))
         ],
       ),

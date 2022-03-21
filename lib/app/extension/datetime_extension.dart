@@ -5,7 +5,7 @@ extension DateTimeExtension on DateTime {
 
   String get formatMonthYearString => DateFormat('MMM, yyyy').format(this);
 
-  String get formatDateTimeString => DateFormat('dd/MM/yyyy HH:mm').format(this);
+  String get formatDateTimeString => DateFormat('dd/MM/yyyy HH:mm aaa').format(this);
 
   String get formatDateTimeStringNotification => DateFormat('dd MMM yyyy HH:mm aaa').format(this);
 

@@ -1,5 +1,5 @@
-import 'package:da_sdoninja/app/constant/app_radius.dart';
-import 'package:da_sdoninja/app/constant/app_shadows.dart';
+import 'package:da_sdoninja/app/constant/theme/app_radius.dart';
+import 'package:da_sdoninja/app/constant/theme/app_shadows.dart';
 import 'package:flutter/material.dart';
 
 Widget buttonWithRadius10({
@@ -10,21 +10,20 @@ Widget buttonWithRadius10({
   Color? color,
   EdgeInsetsGeometry? margin,
 }) =>
-    Builder(
-        builder: (context) => Container(
-            margin: margin,
-            child: AppShadow.lightShadow(
-                child: ElevatedButton(
-              onPressed: onPressed,
-              child: child,
-              style: ElevatedButton.styleFrom(
-                padding: padding,
-                minimumSize: Size.zero,
-                primary: color,
-                fixedSize: fixedSize,
-                visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
-              ),
-            ))));
+    Container(
+        margin: margin,
+        child: AppShadow.lightShadow(
+            child: ElevatedButton(
+          onPressed: onPressed,
+          child: child,
+          style: ElevatedButton.styleFrom(
+            padding: padding,
+            minimumSize: Size.zero,
+            primary: color,
+            fixedSize: fixedSize,
+            visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
+          ),
+        )));
 
 Widget buttonWithRadius90({
   required void Function() onPressed,
@@ -35,20 +34,19 @@ Widget buttonWithRadius90({
   Color? color,
   double marginTop = 0,
 }) =>
-    Builder(
-        builder: (context) => Container(
-            margin: EdgeInsets.only(top: marginTop),
-            child: AppShadow.lightShadow(
-                child: ElevatedButton(
-              onPressed: onPressed,
-              child: child,
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-                fixedSize: fixedSize,
-                primary: color,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius90)),
-              ),
-            ))));
+    Container(
+        margin: EdgeInsets.only(top: marginTop),
+        child: AppShadow.lightShadow(
+            child: ElevatedButton(
+          onPressed: onPressed,
+          child: child,
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+            fixedSize: fixedSize,
+            primary: color,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius90)),
+          ),
+        )));
 
 Widget outLineButtonWithRadius90({
   required void Function() onPressed,
@@ -59,15 +57,14 @@ Widget outLineButtonWithRadius90({
   Color? color,
   double marginTop = 0,
 }) =>
-    Builder(
-        builder: (context) => Container(
-            margin: EdgeInsets.only(top: marginTop),
-            child: AppShadow.lightShadow(
-                child: OutlinedButton(
-              onPressed: onPressed,
-              child: child,
-              style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-                fixedSize: fixedSize,
-              ),
-            ))));
+    Container(
+        margin: EdgeInsets.only(top: marginTop),
+        child: AppShadow.lightShadow(
+            child: OutlinedButton(
+          onPressed: onPressed,
+          child: child,
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+            fixedSize: fixedSize,
+          ),
+        )));

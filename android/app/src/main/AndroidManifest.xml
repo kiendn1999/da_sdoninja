@@ -1,10 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kienflutter.sdoninja">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <queries>
+    <intent>
+      <action android:name="android.intent.action.DIAL" />
+      <data android:scheme="tel" />
+    </intent>
+  </queries>
    <application
-        android:label="da_sdoninja"
+        android:label="SDONINJA"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
  <activity android:name="com.facebook.FacebookActivity"
@@ -44,9 +53,6 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
-              <meta-data
-                android:name="com.google.firebase.messaging.default_notification_channel_id"
-                android:value="high_importance_channel" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -57,5 +63,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+            <activity
+                android:name="com.yalantis.ucrop.UCropActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 </manifest>
