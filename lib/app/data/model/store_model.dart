@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
 class StoreModel {
   String? id;
@@ -23,7 +24,7 @@ class StoreModel {
     this.id,
     this.address,
     this.position,
-    this.avaUrl,
+    this.avaUrl="",
     this.closingTime,
     this.dayClosed = const <String>[],
     this.storeServices = const <String>[],
@@ -34,8 +35,8 @@ class StoreModel {
     this.ownerID,
     this.phoneNumber,
     this.rating=0,
-    this.ratingQuantity,
-    this.storeName,
+    this.ratingQuantity=0,
+    this.storeName = "summoning",
     this.storeType = const <String>[],
   });
 

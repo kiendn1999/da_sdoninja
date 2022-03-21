@@ -25,6 +25,7 @@ import 'package:get/get.dart';
 import 'package:marquee/marquee.dart';
 
 import '../../controller/page_controller/partner/manage_review_controller.dart';
+import '../../controller/page_controller/partner/partner_order_controller.dart';
 
 class PartnerNavigationFrame extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,6 +35,7 @@ class PartnerNavigationFrame extends StatelessWidget {
   final UpdateStoreController _updateStoreController = Get.find();
   final ManageReviewController _manageReviewController = Get.find();
   final ScheduleController _scheduleController = Get.find();
+  final _orderController = Get.find<PartnerOrderController>();
 
   @override
   Widget build(BuildContext context) {
@@ -172,19 +174,19 @@ class PartnerNavigationFrame extends StatelessWidget {
             icon: AspectRatio(
               aspectRatio: 1 / 1,
               child: ClipOval(
-                child: FadeInImage.assetNetwork(
-                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                  image: "${_profileController.avaURL}",
-                  imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                    AppImages.imageDefautAvatar.getPNGImageAssets,
-                    fit: BoxFit.cover,
-                    width: 35.h,
-                    height: 35.h,
-                  ),
-                  fit: BoxFit.cover,
-                  width: 35.h,
-                  height: 35.h,
-                ),
+                child: Obx(() => FadeInImage.assetNetwork(
+                      placeholder: AppImages.imageDefaultAvatar.getPNGImageAssets,
+                      image: "${_profileController.avaURL}",
+                      imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                        AppImages.imageDefaultAvatar.getPNGImageAssets,
+                        fit: BoxFit.cover,
+                        width: 35.h,
+                        height: 35.h,
+                      ),
+                      fit: BoxFit.cover,
+                      width: 35.h,
+                      height: 35.h,
+                    )),
               ),
             ))
       ],

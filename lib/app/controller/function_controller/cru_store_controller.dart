@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,8 +36,8 @@ class CrUStoreController extends LocationDetectController {
   late GeoFirePoint myLocation;
 
   @override
-  void onInit() async {
-    super.onInit();
+  Future<void> onInit() async {
+    await super.onInit();
     collectionReference = FirebaseFirestore.instance.collection("Store");
   }
 
@@ -54,10 +56,8 @@ class CrUStoreController extends LocationDetectController {
 
   checkStoreType(String storeType) {
     if (storeTypeCheckedList.contains(storeType))
-      // ignore: curly_braces_in_flow_control_structures
       storeTypeCheckedList.remove(storeType);
     else
-      // ignore: curly_braces_in_flow_control_structures
       storeTypeCheckedList.add(storeType);
   }
 
@@ -67,10 +67,8 @@ class CrUStoreController extends LocationDetectController {
 
   checkStoreService(String storeService) {
     if (storeServiceList.contains(storeService))
-      // ignore: curly_braces_in_flow_control_structures
       storeServiceList.remove(storeService);
     else
-      // ignore: curly_braces_in_flow_control_structures
       storeServiceList.add(storeService);
   }
 
@@ -157,15 +155,5 @@ class CrUStoreController extends LocationDetectController {
     }
     if (_isEdit.value == false) _isEdit.value = !_isEdit.value;
     return false;
-  }
-
-  @override
-  void onClose() {
-    // TODO: implement onClose
-    super.onClose();
-    nameTextFieldController.dispose();
-    addressTextFieldController.dispose();
-    phoneTextFieldController.dispose();
-    introduceTextFieldController.dispose();
   }
 }

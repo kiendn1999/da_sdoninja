@@ -29,13 +29,14 @@ class CustomerOrderController extends TextChipController {
         contentVI = "đã thanh toán phí sửa chữa ${order.deviceName}";
         break;
       default:
+
     }
     await notifyApiService.pushNotify(NotifyModel(
       externalUserID: order.storeOwnerID,
       route: Routes.partnerNavigation,
-      largeIcon: order.customerAva,
-      nameInHeading: order.storeName,
-      nameInContent: order.customerName,
+      largeIcon: order.customer!.value.avaUrl,
+      nameInHeading: order.store!.value.storeName,
+      nameInContent: order.customer!.value.userName,
       contentEng: contentEng,
       contentVI: contentVI,
     ).toMapActive());

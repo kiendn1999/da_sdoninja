@@ -20,8 +20,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:marquee/marquee.dart';
+import 'package:skeletons/skeletons.dart';
 
 import '../../controller/page_controller/customer/customer_navigate_controller.dart';
+import '../../data/model/store_model.dart';
 
 class CustomerOrderScreen extends StatefulWidget {
   @override
@@ -57,7 +59,8 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                 onPageChanged: (index) {
                   _orderController.currentIndex = index;
                 },
-                itemBuilder: (context, stageIndex) => Obx(() => _orderListView(_orderController.listOfListOrder[stageIndex], stageIndex)),
+                itemBuilder: (context, stageIndex) =>
+                    Obx(() => _orderListView(_orderController.listOfListOrder[stageIndex], /* _orderController.listOfListStore[stageIndex], */ stageIndex)),
               ),
             ),
           )
@@ -67,7 +70,7 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
   }
 
   _orderListView(List<OrderModel> orders, int stageIndex) {
-    return orders.isEmpty
+    return orders.isEmpty 
         ? Center(
             child: Image.asset(
               AppImages.imageLoad.getGIFImageAssets,
@@ -87,7 +90,8 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                     child: Column(
                       children: [
-                        _storeNameAndChat(orders[index]),
+                      
+                        Obx(()=>  _storeNameAndChat(orders[index].store!.value)),
                         _listTileWithIconLeading(
                             pathImage: AppImages.icClockSelected, iconColor: AppColors.black2, title: "request_date".trParams({"date": orders[index].requestDate!})),
                         stageIndex == 1
@@ -243,38 +247,47 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
         color: color);
   }
 
-  Row _storeNameAndChat(OrderModel order) {
+  Row _storeNameAndChat(StoreModel store) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () => Get.toNamed(Routes.storeDetail, arguments: order.storeId),
+          onTap: () => Get.toNamed(Routes.storeDetail, arguments: store.id),
           child: Row(
             children: [
-              ClipOval(
-                child: FadeInImage.assetNetwork(
-                  placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
-                  image: order.storeAva!,
-                  imageErrorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.error,
+              Skeleton(
+                 isLoading:store.avaUrl!.isEmpty,
+                    skeleton: SkeletonAvatar(
+                      style: SkeletonAvatarStyle(height: 28.h, width: 28.h, shape: BoxShape.circle),
+                    ),
+                child: ClipOval(
+                  child: FadeInImage.assetNetwork(
+                    placeholder: AppImages.imageAvaShopDefault.getPNGImageAssets,
+                    image: store.avaUrl!,
+                    imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                      AppImages.imageAvaShopDefault.getPNGImageAssets,
+                      fit: BoxFit.cover,
+                      width: 28.h,
+                      height: 28.h,
+                    ),
+                    fit: BoxFit.cover,
+                    width: 28.h,
+                    height: 28.h,
                   ),
-                  fit: BoxFit.cover,
-                  width: 28.h,
-                  height: 28.h,
                 ),
               ),
               Container(
                 margin: EdgeInsets.only(left: 5.w),
                 constraints: BoxConstraints(maxWidth: 250.w),
                 child: AutoSizeText(
-                  order.storeName!,
+                  store.storeName!.tr,
                   maxLines: 1,
                   minFontSize: 17,
                   style: AppTextStyle.tex17Regular(),
                   overflowReplacement: SizedBox(
                     height: 25.h,
                     child: Marquee(
-                      text: order.storeName!,
+                      text: store.storeName!.tr,
                       scrollAxis: Axis.horizontal,
                       blankSpace: 10,
                       velocity: 100.0,

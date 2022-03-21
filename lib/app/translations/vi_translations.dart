@@ -189,5 +189,9 @@ final Map<String, String> vi = {
   "temporarily_closed": "Tạm đóng cửa",
   "vietnamese": "Tiếng Việt",
   "english": "Tiếng Anh",
-  "you_dont_have_a_store_yet": "Bạn chưa có tiệm nào, hãy tạo một tiệm mới!!!"
+  "you_dont_have_a_store_yet": "Bạn chưa có tiệm nào, hãy tạo một tiệm mới!!!",
+  "you_need_to_add_a_phone_number": "Bạn cần thêm số điện thoại vào hồ sơ để sử dụng tính năng này",
+  "add_phone_number": "Thêm số điện thoại",
+  "not_now": "Chưa phải bây giờ",
+  "This_feature_is_under_development":"Tính năng này đang được phát triển và sẽ có sớm."
 };

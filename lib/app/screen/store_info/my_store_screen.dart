@@ -147,6 +147,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
         visible: widget.currentStore!.id != null ? false : true,
         child: buttonWithRadius10(
             onPressed: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               widget.controller.submitWithInfo();
             },
             child: Text(
@@ -396,7 +397,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
           color: (context.isDarkMode ? AppColors.black : AppColors.white).withOpacity(0.5),
           child: IconButton(
             iconSize: 25.h,
-            onPressed: _showHelpDialog,
+            onPressed: _showMediaDialog,
             padding: EdgeInsets.zero,
             constraints: BoxConstraints(minHeight: 35.h, minWidth: 35.w),
             icon: Icon(
@@ -409,7 +410,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
     );
   }
 
-  Future<Object?> _showHelpDialog() {
+  Future<Object?> _showMediaDialog() {
     return showAnimatedDialog(
       context: Get.context!,
       animationType: DialogTransitionType.slideFromTopFade,
@@ -461,5 +462,9 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
     // TODO: implement dispose
     super.dispose();
     widget.controller.didPickImage.value = false;
+    widget.controller.nameTextFieldController.dispose();
+    widget.controller.addressTextFieldController.dispose();
+    widget.controller.phoneTextFieldController.dispose();
+    widget.controller.introduceTextFieldController.dispose();
   }
 }

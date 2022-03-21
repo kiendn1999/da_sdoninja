@@ -54,9 +54,9 @@ class ManageReviewController extends ReviewChipController {
         await notifyApiService.pushNotify(NotifyModel(
           externalUserID: review.userID,
           route: Routes.customerNavigation,
-          largeIcon: review.storeAva,
-          nameInHeading: review.userName,
-          nameInContent: review.storeName,
+          largeIcon: review.store!.value.avaUrl,
+          nameInHeading: review.customer!.value.userName,
+          nameInContent: review.store!.value.storeName,
           contentEng: contentEng,
           contentVI: contentVI,
         ).toMapActive());

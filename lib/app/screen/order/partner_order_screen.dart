@@ -20,6 +20,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:marquee/marquee.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PartnerOrderScreen extends StatefulWidget {
@@ -393,53 +394,62 @@ class _PartnerOrderScreenState extends State<PartnerOrderScreen> {
     return Row(
       children: [
         Expanded(
-          child: Row(
-            children: [
-              ClipOval(
-                child: FadeInImage.assetNetwork(
-                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-                  image: order.customerAva!,
-                  imageErrorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.error,
-                  ),
-                  fit: BoxFit.cover,
-                  width: 28.h,
-                  height: 28.h,
-                ),
-              ),
-              Flexible(
-                child: Container(
-                  margin: EdgeInsets.only(left: 5.w),
-                  child: AutoSizeText(
-                    order.customerName!,
-                    maxLines: 1,
-                    minFontSize: 17,
-                    style: AppTextStyle.tex17Regular(),
-                    overflowReplacement: SizedBox(
-                      height: 25.h,
-                      child: Marquee(
-                        text: order.customerName!,
-                        scrollAxis: Axis.horizontal,
-                        blankSpace: 10,
-                        velocity: 100.0,
-                        style: AppTextStyle.tex17Regular(),
-                        pauseAfterRound: const Duration(seconds: 1),
-                        accelerationDuration: const Duration(seconds: 1),
-                        accelerationCurve: Curves.linear,
-                        decelerationDuration: const Duration(milliseconds: 500),
-                        decelerationCurve: Curves.easeOut,
+          child: Obx(() => Row(
+                children: [
+                  Skeleton(
+                    isLoading: order.customer!.value.avaUrl!.isEmpty,
+                    skeleton: SkeletonAvatar(
+                      style: SkeletonAvatarStyle(height: 28.h, width: 28.h, shape: BoxShape.circle),
+                    ),
+                    child: ClipOval(
+                      child: FadeInImage.assetNetwork(
+                        placeholder: AppImages.imageDefaultAvatar.getPNGImageAssets,
+                        image: order.customer!.value.avaUrl!,
+                        imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                          AppImages.imageDefaultAvatar.getPNGImageAssets,
+                          fit: BoxFit.cover,
+                          width: 28.h,
+                          height: 28.h,
+                        ),
+                        fit: BoxFit.cover,
+                        width: 28.h,
+                        height: 28.h,
                       ),
                     ),
                   ),
-                ),
-              ),
-            ],
-          ),
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 5.w),
+                      child: AutoSizeText(
+                        order.customer!.value.userName!.tr,
+                        maxLines: 1,
+                        minFontSize: 17,
+                        style: AppTextStyle.tex17Regular(),
+                        overflowReplacement: SizedBox(
+                          height: 25.h,
+                          child: Marquee(
+                            text: order.customer!.value.userName!.tr,
+                            scrollAxis: Axis.horizontal,
+                            blankSpace: 10,
+                            velocity: 100.0,
+                            style: AppTextStyle.tex17Regular(),
+                            pauseAfterRound: const Duration(seconds: 1),
+                            accelerationDuration: const Duration(seconds: 1),
+                            accelerationCurve: Curves.linear,
+                            decelerationDuration: const Duration(milliseconds: 500),
+                            decelerationCurve: Curves.easeOut,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )),
         ),
         Container(
           margin: EdgeInsets.only(left: 20.w),
           child: GestureDetector(
-            onTap: () => launch("tel://${order.customerPhone}"),
+            onTap: () => launch("tel://${order.customer!.value.phoneNumber}"),
             child: SvgPicture.asset(
               AppImages.icCall.getSVGImageAssets,
               width: 27.w,

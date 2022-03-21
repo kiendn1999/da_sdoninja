@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:tiengviet/tiengviet.dart';
 
 import '../../../data/model/notify_model.dart';
+import '../../../data/model/store_model.dart';
 import '../../../data/network/api/notify_api.dart';
 import '../../../routes/app_routes.dart';
 import '../../../widgets/snackbar.dart';
@@ -35,6 +36,7 @@ class WriteReviewController extends GetxController {
   String _ratingTypeOld = "five";
   int _ratingTypeCount = 0;
   int _ratingTypeCountOld = 0;
+  final Rx<StoreModel> store = StoreModel().obs;
 
   final Rx<ReviewModel> review = ReviewModel().obs;
   final Rx<StatisModel> statis = StatisModel().obs;
@@ -57,6 +59,10 @@ class WriteReviewController extends GetxController {
     isCommented.value = order.isCommented!;
     _query = _collectionReferenceReview.where("order_id", isEqualTo: order.id);
     _queryStatis = _collectionReferenceStatis.where("store_id", isEqualTo: order.storeId);
+    store.bindStream(_getStore(order.storeId!));
+    store.listen((p0) async {
+      if(p0.rating==0)  await _collectionReferenceStatis.add(StatisModel(storeID: order.storeId).toMap());
+    });
     statis.bindStream(_getStatis());
     if (isCommented.value) {
       review.bindStream(_getReview());
@@ -65,7 +71,7 @@ class WriteReviewController extends GetxController {
         setSatisfactionLevel(review.rating!);
       });
     } else
-     setSatisfactionLevel(5);
+      setSatisfactionLevel(5);
   }
 
   Stream<ReviewModel> _getReview() {
@@ -90,29 +96,25 @@ class WriteReviewController extends GetxController {
       await notifyApiService.pushNotify(NotifyModel(
         externalUserID: order.storeOwnerID,
         route: Routes.partnerNavigation,
-        largeIcon: order.customerAva,
-        nameInHeading: order.storeName,
-        nameInContent: order.customerName,
+        largeIcon: order.customer!.value.avaUrl,
+        nameInHeading: order.store!.value.storeName,
+        nameInContent: order.customer!.value.userName,
         contentEng: contentEng,
         contentVI: contentVI,
       ).toMapActive());
 
       await _collectionReferenceReview.add(ReviewModel(
-              content: reviewTextFieldController.text.trim(),
-              deviceName: order.deviceName,
-              brokenCause: order.brokenCause,
-              orderID: order.id,
-              price: int.parse(order.repairCost!),
-              rating: _ratingReview.toInt(),
-              reviewDate: DateTime.now().toString(),
-              storeID: order.storeId,
-              storeName: order.storeName,
-              storeAva: order.storeAva,
-              storeOwnerID: order.storeOwnerID,
-              userAva: order.customerAva,
-              userID: order.customerId,
-              userName: order.customerName)
-          .toMap());
+        content: reviewTextFieldController.text.trim(),
+        deviceName: order.deviceName,
+        brokenCause: order.brokenCause,
+        orderID: order.id,
+        price: int.parse(order.repairCost!),
+        rating: _ratingReview.toInt(),
+        reviewDate: DateTime.now().toString(),
+        storeID: order.storeId,
+        storeOwnerID: order.storeOwnerID,
+        userID: order.customerId,
+      ).toMap());
 
       _satisfactionNewLevelUpdate(_ratingReview);
 
@@ -132,6 +134,8 @@ class WriteReviewController extends GetxController {
     snackBar(message: "submit_a_successful_review".tr);
     EasyLoading.dismiss();
   }
+
+  Stream<StoreModel> _getStore(String storeID) => _collectionReferenceStore.doc(storeID).snapshots().map((query) => StoreModel.fromMap(query));
 
   updateReview(OrderModel order) async {
     _all = statis.value.all!;

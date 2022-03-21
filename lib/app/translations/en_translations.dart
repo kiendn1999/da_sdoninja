@@ -187,5 +187,9 @@ final Map<String, String> en = {
   "temporarily_closed": "Temporarily closed",
   "vietnamese": "Vietnamese",
   "english": "English",
-  "you_dont_have_a_store_yet": "You don't have a store yet, create a new one!!!"
+  "you_dont_have_a_store_yet": "You don't have a store yet, create a new one!!!",
+  "you_need_to_add_a_phone_number":"You need to add a phone number to your profile to use this feature",
+  "add_phone_number":"Add phone number",
+  "not_now":"Not now",
+  "This_feature_is_under_development":"This feature is under development and will be available soon."
 };

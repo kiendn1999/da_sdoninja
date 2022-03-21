@@ -17,9 +17,9 @@ class LocationDetectController extends GetxController {
   );
 
   @override
-  void onInit() async {
+  Future<void> onInit() async {
     super.onInit();
-    requestPermission();
+   await requestPermission();
   }
 
   @override
@@ -28,7 +28,7 @@ class LocationDetectController extends GetxController {
     super.onClose();
   }
 
-  requestPermission() async {
+  Future<void> requestPermission() async {
     bool serviceEnabled;
 
     LocationPermission permission;

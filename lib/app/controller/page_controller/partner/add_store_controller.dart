@@ -9,9 +9,9 @@ import '../../../widgets/snackbar.dart';
 
 class AddStoreController extends CrUStoreController {
   @override
-  void onInit() {
+  Future<void> onInit() async {
     // TODO: implement onInit
-    super.onInit();
+   await super.onInit();
     super.getCurrentPosition();
     super.getLocation();
   }

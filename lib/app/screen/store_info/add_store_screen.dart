@@ -17,7 +17,7 @@ class AddStoreScreen extends StatelessWidget {
       appBar: appBarPopular(centerTitle: true, title: Text("add_a_new_store".tr)),
       endDrawer: DrawerApp(),
       body: MyStoreScreen(
-        currentStore: StoreModel(),
+        currentStore: StoreModel(storeName: ""),
         controller: _addStoreController,
       ),
     ));

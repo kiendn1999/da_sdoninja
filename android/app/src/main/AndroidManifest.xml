@@ -11,9 +11,9 @@
     </intent>
   </queries>
    <application
-        android:label="da_sdoninja"
+        android:label="SDONINJA"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
  <activity android:name="com.facebook.FacebookActivity"

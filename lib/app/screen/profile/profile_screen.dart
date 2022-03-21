@@ -8,9 +8,12 @@ import 'package:da_sdoninja/app/widgets/appbar.dart';
 import 'package:da_sdoninja/app/widgets/drawer.dart';
 import 'package:da_sdoninja/app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
+import '../../constant/theme/app_radius.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -122,18 +125,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       margin: EdgeInsets.only(top: 30.h),
       child: GestureDetector(
-        onTap: () {},
+        onTap: _showMediaDialog,
         child: Stack(
           children: [
             CircleAvatar(
               radius: 80.h,
               backgroundColor: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
               child: ClipOval(
-                child: FadeInImage.assetNetwork(
-                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
+                child:_profileController.didPickImage.value ? Image.file(
+                _profileController.imageUserAva!,
+                fit: BoxFit.cover,
+                width: 150.h,
+                height: 150.h,
+              ): FadeInImage.assetNetwork(
+                  placeholder: AppImages.imageDefaultAvatar.getPNGImageAssets,
                   image: "${_profileController.avaURL}",
                   imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                    AppImages.imageDefautAvatar.getPNGImageAssets,
+                    AppImages.imageDefaultAvatar.getPNGImageAssets,
                     fit: BoxFit.cover,
                     width: 150.h,
                     height: 150.h,
@@ -177,6 +185,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   size: 25.h,
                 ))
           ])),
+    );
+  }
+
+   Future<Object?> _showMediaDialog() {
+    return showAnimatedDialog(
+      context: Get.context!,
+      animationType: DialogTransitionType.slideFromTopFade,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return CustomDialogWidget(
+            contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            minWidth: 400,
+            elevation: 7,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(
+                    Icons.camera_enhance,
+                    color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
+                  ),
+                  title: Text(
+                    "take_a_photo".tr,
+                    style: AppTextStyle.tex18Regular(),
+                  ),
+                  onTap: () => _profileController.getImage(2),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.photo_library_rounded,
+                      color: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor,
+                    ),
+                    title: Text(
+                      "choose_from_the_collection".tr,
+                      style: AppTextStyle.tex18Regular(),
+                    ),
+                    onTap: () => _profileController.getImage(1),
+                  ),
+                ),
+              ],
+            ),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10)));
+      },
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 500),
     );
   }
 }

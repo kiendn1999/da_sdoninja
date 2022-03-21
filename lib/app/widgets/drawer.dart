@@ -164,10 +164,10 @@ class DrawerApp extends StatelessWidget {
             children: [
               ClipOval(
                 child: FadeInImage.assetNetwork(
-                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
+                  placeholder: AppImages.imageDefaultAvatar.getPNGImageAssets,
                   image: "${_profileController.avaURL}",
                   imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                    AppImages.imageDefautAvatar.getPNGImageAssets,
+                    AppImages.imageDefaultAvatar.getPNGImageAssets,
                     fit: BoxFit.cover,
                     width: 100.h,
                     height: 100.h,

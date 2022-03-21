@@ -11,6 +11,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:skeletons/skeletons.dart';
 
 import 'button_widget.dart';
 
@@ -35,24 +36,24 @@ class ReviewList extends StatelessWidget {
       itemCount: itemCount,
       physics: physics,
       itemBuilder: (context, index) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _avatarImage(index),
-            Flexible(
-              child: Container(
-                margin: EdgeInsets.only(
-                  left: 10.w,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [_customerName(index), _ratingAndDate(index, context), _reviewContent(index), _devieAndPrice(index), _respondFromStore(index, context)],
-                ),
-              ),
-            )
-          ],
-        );
+        return Obx(() => Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _avatarImage(index),
+                Flexible(
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      left: 10.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [_customerName(index), _ratingAndDate(index, context), _reviewContent(index), _devieAndPrice(index), _respondFromStore(index, context)],
+                    ),
+                  ),
+                )
+              ],
+            ));
       },
     );
   }
@@ -81,7 +82,7 @@ class ReviewList extends StatelessWidget {
                           manageReviewController!.respondTextFieldController.text = reviews[index].respond!;
                           _showReplyDialog(context,
                               buttonTitle: "save".tr,
-                              dialogTitle: "edit_reply_to".trParams({"name": reviews[index].userName!}),
+                              dialogTitle: "edit_reply_to".trParams({"name": reviews[index].customer!.value.userName!}),
                               onPressed: () => manageReviewController!.updateRespond(reviews[index]));
                         },
                         child: SvgPicture.asset(
@@ -170,7 +171,7 @@ class ReviewList extends StatelessWidget {
             child: TextButton(
               onPressed: () => _showReplyDialog(context,
                   buttonTitle: "send".tr,
-                  dialogTitle: "reply_to".trParams({"name": reviews[index].userName!}),
+                  dialogTitle: "reply_to".trParams({"name": reviews[index].customer!.value.userName!}),
                   onPressed: () => manageReviewController!.submitRespond(reviews[index])),
               child: Text(
                 "reply".tr,
@@ -246,7 +247,7 @@ class ReviewList extends StatelessWidget {
 
   Text _customerName(int index) {
     return Text(
-      reviews[index].userName!,
+      reviews[index].customer!.value.userName!,
       style: AppTextStyle.tex14Regular(),
     );
   }
@@ -283,17 +284,26 @@ class ReviewList extends StatelessWidget {
     );
   }
 
-  ClipOval _avatarImage(int index) {
-    return ClipOval(
-      child: FadeInImage.assetNetwork(
-        placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
-        image: reviews[index].userAva!,
-        imageErrorBuilder: (context, error, stackTrace) => const Icon(
-          Icons.error,
+   _avatarImage(int index) {
+    return Skeleton(
+      isLoading: reviews[index].customer!.value.avaUrl!.isEmpty,
+      skeleton: SkeletonAvatar(
+        style: SkeletonAvatarStyle(height: 28.h, width: 28.h, shape: BoxShape.circle),
+      ),
+      child: ClipOval(
+        child: FadeInImage.assetNetwork(
+          placeholder: AppImages.imageDefaultAvatar.getPNGImageAssets,
+          image: reviews[index].customer!.value.avaUrl!,
+          imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+            AppImages.imageDefaultAvatar.getPNGImageAssets,
+            fit: BoxFit.cover,
+            width: 30.h,
+            height: 30.h,
+          ),
+          fit: BoxFit.cover,
+          width: 30.h,
+          height: 30.h,
         ),
-        fit: BoxFit.cover,
-        width: 30.h,
-        height: 30.h,
       ),
     );
   }

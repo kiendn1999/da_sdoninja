@@ -46,10 +46,11 @@ class AuthController extends GetxController {
 
     // Once signed in, return the UserCredential
     EasyLoading.show(indicator: const CircularProgressApp());
-    await _auth.signInWithCredential(facebookAuthCredential).whenComplete(()  => _handleWithProfileDataAfterLoginSuccess());
+    await _auth.signInWithCredential(facebookAuthCredential).whenComplete(() => _handleWithProfileDataAfterLoginSuccess());
   }
 
   Future<void> signInWithPhoneNumber({required String otpCode}) async {
+    EasyLoading.show(indicator: const CircularProgressApp());
     try {
       final AuthCredential credential = PhoneAuthProvider.credential(
         verificationId: _verificationId!,
@@ -58,8 +59,10 @@ class AuthController extends GetxController {
 
       await _auth.signInWithCredential(credential).whenComplete(() => _handleWithProfileDataAfterLoginSuccess());
     } catch (e) {
+      EasyLoading.dismiss();
       snackBar(message: "login_failed".tr);
     }
+      EasyLoading.dismiss();
   }
 
   Future<void> verifyPhoneNumber({required String phoneNumber}) async {
@@ -69,9 +72,10 @@ class AuthController extends GetxController {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
-          await _auth.signInWithCredential(phoneAuthCredential).whenComplete(()  => _handleWithProfileDataAfterLoginSuccess());
+          await _auth.signInWithCredential(phoneAuthCredential).whenComplete(() async => await _handleWithProfileDataAfterLoginSuccess());
         },
         verificationFailed: (FirebaseAuthException authException) {
+          EasyLoading.dismiss();
           snackBar(message: 'phone_number_verification_failed'.tr);
         },
         codeAutoRetrievalTimeout: (String verificationId) {
@@ -86,29 +90,25 @@ class AuthController extends GetxController {
         },
       );
     } catch (e) {
+      EasyLoading.dismiss();
       snackBar(message: "failed_to_verify_phone_number".tr);
     }
   }
 
-  _handleWithProfileDataAfterLoginSuccess() async {
-      await FirebaseFirestore.instance
+  Future<void> _handleWithProfileDataAfterLoginSuccess() async {
+    await FirebaseFirestore.instance
         .collection('User')
         .doc(_auth.currentUser!.uid)
         .set({"user_name": _auth.currentUser!.displayName, "ava_url": _auth.currentUser!.photoURL, "phone_number": _auth.currentUser!.phoneNumber});
-      HiveHelper.saveIsFirstLogin(false);
-       await OneSignal.shared
-            .setExternalUserId(
-          UserCurrentInfo.userID!
-        )
-            .then((results) {
-          log("$results");
-        }).catchError((error) {
-          log("$error");
-        });
-      Get.offAllNamed(Routes.customerNavigation);
-      EasyLoading.dismiss();
-      snackBar(message: "logged_in_successfully".tr);
-     
+    HiveHelper.saveIsFirstLogin(false);
+    await OneSignal.shared.setExternalUserId(UserCurrentInfo.userID!).then((results) {
+      log("$results");
+    }).catchError((error) {
+      log("$error");
+    });
+    Get.offAllNamed(Routes.customerNavigation);
+    EasyLoading.dismiss();
+    snackBar(message: "logged_in_successfully".tr);
   }
 
   Future<void> signOUt() async {

@@ -39,18 +39,12 @@ class HomeCustomerController extends LocationDetectController with DropDownContr
   RxList<StoreModel> stores = <StoreModel>[].obs;
 
   @override
-  void onInit() async {
-    super.onInit();
+  Future<void> onInit() async {
+    await super.onInit();
     _collectionReferenceStore = _firebaseFirestore.collection("Store");
     _collectionReferenceOrder = _firebaseFirestore.collection("Order");
     getCurrentPosition();
     getLocation();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-    storeNameTextFieldController.dispose();
   }
 
   @override
@@ -159,14 +153,10 @@ class HomeCustomerController extends LocationDetectController with DropDownContr
     _collectionReferenceOrder
         .add(OrderModel(
                 customerAddress: customerAddress,
-                customerAva: UserCurrentInfo.avaURL,
                 customerId: UserCurrentInfo.userID,
-                customerName: UserCurrentInfo.userName,
                 requestDate: DateTime.now().toString(),
                 stage: "pending",
-                storeAva: store.avaUrl,
                 storeId: store.id,
-                storeName: store.storeName,
                 storeOwnerID: store.ownerID,
                 storeType: dropdownDeviceValue)
             .toMap())

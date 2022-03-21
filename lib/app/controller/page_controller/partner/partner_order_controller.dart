@@ -92,9 +92,9 @@ class PartnerOrderController extends TextChipController {
     await notifyApiService.pushNotify(NotifyModel(
       externalUserID: order.customerId,
       route: Routes.customerNavigation,
-      largeIcon: order.storeAva,
-      nameInHeading: order.customerName,
-      nameInContent: order.storeName,
+      largeIcon: order.store!.value.avaUrl,
+      nameInHeading: order.customer!.value.userName,
+      nameInContent: order.store!.value.storeName,
       contentEng: contentEng,
       contentVI: contentVI,
     ).toMapActive());
@@ -120,9 +120,9 @@ class PartnerOrderController extends TextChipController {
     await notifyApiService.pushNotify(NotifyModel(
       externalUserID: order.customerId,
       route: Routes.customerNavigation,
-      largeIcon: order.storeAva,
-      nameInHeading: order.customerName,
-      nameInContent: order.storeName,
+      largeIcon: order.store!.value.avaUrl,
+      nameInHeading: order.customer!.value.userName,
+      nameInContent: order.store!.value.storeName,
       contentEng: contentEng,
       contentVI: contentVI,
     ).toMapActive());
@@ -142,9 +142,9 @@ class PartnerOrderController extends TextChipController {
     await notifyApiService.pushNotify(NotifyModel(
       externalUserID: order.customerId,
       route: Routes.customerNavigation,
-      largeIcon: order.storeAva,
-      nameInHeading: order.customerName,
-      nameInContent: order.storeName,
+      largeIcon: order.store!.value.avaUrl,
+      nameInHeading: order.customer!.value.userName,
+      nameInContent: order.store!.value.storeName,
       contentEng: contentEng,
       contentVI: contentVI,
     ).toMapActive());
@@ -156,9 +156,9 @@ class PartnerOrderController extends TextChipController {
     await notifyApiService.pushNotify(NotifyModel(
       externalUserID: order.customerId,
       route: Routes.customerNavigation,
-      largeIcon: order.storeAva,
-      nameInHeading: order.customerName,
-      nameInContent: order.storeName,
+      largeIcon: order.store!.value.avaUrl,
+      nameInHeading: order.customer!.value.userName,
+      nameInContent: order.store!.value.storeName,
       contentEng: "declined your request",
       contentVI: "đã từ chối yêu cầu của bạn",
     ).toMapActive());

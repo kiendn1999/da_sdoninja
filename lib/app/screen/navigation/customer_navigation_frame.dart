@@ -97,11 +97,11 @@ class CustomerNavigationFrame extends StatelessWidget {
             icon: AspectRatio(
               aspectRatio: 1 / 1,
               child: ClipOval(
-                child: FadeInImage.assetNetwork(
-                  placeholder: AppImages.imageDefautAvatar.getPNGImageAssets,
+                child: Obx(()=>FadeInImage.assetNetwork(
+                  placeholder: AppImages.imageDefaultAvatar.getPNGImageAssets,
                   image: _profileController.avaURL ?? "",
                   imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                    AppImages.imageDefautAvatar.getPNGImageAssets,
+                    AppImages.imageDefaultAvatar.getPNGImageAssets,
                     fit: BoxFit.cover,
                     width: 35.h,
                     height: 35.h,
@@ -109,7 +109,7 @@ class CustomerNavigationFrame extends StatelessWidget {
                   fit: BoxFit.cover,
                   width: 35.h,
                   height: 35.h,
-                ),
+                )),
               ),
             ))
       ],

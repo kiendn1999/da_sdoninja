@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:da_sdoninja/app/data/model/store_model.dart';
+import 'package:da_sdoninja/app/data/model/user_model.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import 'package:da_sdoninja/app/extension/datetime_extension.dart';
 
 class ReviewModel {
@@ -11,13 +15,15 @@ class ReviewModel {
   String? respond;
   String? reviewDate;
   String? storeID;
-  String? storeName;
-  String? storeAva;
+  // String? storeName;
+  // String? storeAva;
   String? storeOwnerID;
-  String? userAva;
+  //String? userAva;
   String? userID;
-  String? userName;
+  //String? userName;
   String? brokenCause;
+   Rx<StoreModel>? store = StoreModel().obs;
+  Rx<UserModel>? customer = UserModel().obs;
 
   ReviewModel({
     this.id,
@@ -29,12 +35,14 @@ class ReviewModel {
     this.respond,
     this.reviewDate,
     this.storeID,
-    this.storeName,
-    this.storeAva,
+    // this.storeName,
+    // this.storeAva,
     this.storeOwnerID,
-    this.userAva,
+   // this.userAva,
+    this.store,
+    this.customer,
     this.userID,
-    this.userName,
+   // this.userName,
     this.brokenCause
   });
 
@@ -48,17 +56,17 @@ class ReviewModel {
       'respond': respond,
       'review_date': reviewDate,
       'store_id': storeID,
-      'store_name':storeName,
-      'store_ava':storeAva,
+      // 'store_name':storeName,
+      // 'store_ava':storeAva,
       'store_owner_id': storeOwnerID,
-      'user_ava': userAva,
+     // 'user_ava': userAva,
       'user_id': userID,
-      'user_name': userName,
+      //'user_name': userName,
       'broken_cause': brokenCause
     };
   }
 
-  factory ReviewModel.fromMap(DocumentSnapshot data) {
+  factory ReviewModel.fromMap(DocumentSnapshot data, [Rx<StoreModel>? store, Rx<UserModel>? customer]) {
     return ReviewModel(
       id: data.id,
       content: data['content'],
@@ -69,13 +77,16 @@ class ReviewModel {
       respond: data['respond'],
       reviewDate: data['review_date'] == null ? null : DateTime.parse(data['review_date']).formatDateTimeString,
       storeID: data['store_id'],
-      storeName: data['store_name'],
-      storeAva: data['store_ava'],
+      // storeName: data['store_name'],
+      // storeAva: data['store_ava'],
       storeOwnerID: data['store_owner_id'],
-      userAva: data['user_ava'],
+    //  userAva: data['user_ava'],
+       store: store,
+      customer: customer,
       userID: data['user_id'],
-      userName: data['user_name'],
+    //  userName: data['user_name'],
       brokenCause: data['broken_cause'],
     );
   }
+
 }

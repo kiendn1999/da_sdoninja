@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'dart:math' as math;
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -23,6 +25,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../constant/theme/app_radius.dart';
 import '../../controller/page_controller/customer/customer_review_controller.dart';
 import '../../controller/page_controller/customer/honme_custom_controller.dart';
+import '../../data/repository/user_info.dart';
 
 class StoreDetailScreen extends StatefulWidget {
   const StoreDetailScreen({
@@ -76,12 +79,15 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                   children: [
                     _buttonBottomBar(
                       onPressed: () {
-                        if (_storeDetailController.checkIsOpenStore()) _showHelpDialog();
+                        if (_storeDetailController.checkIsOpenStore()) if (UserCurrentInfo.phoneNumber != null)
+                          _showHelpDialog();
+                        else
+                          _showDialogCheckHavePhoneNumber();
                       },
                       title: "help_me".tr,
                       color: !_storeDetailController.checkIsOpenStore() ? AppColors.black4 : AppColors.orange,
                     ),
-                    _buttonBottomBar(onPressed: () {}, title: "chat".tr, color: AppColors.blue2),
+                    _buttonBottomBar(onPressed: _showChatDialog, title: "chat".tr, color: AppColors.blue2),
                     _buttonBottomBar(
                         onPressed: () async => await _storeDetailController.shareStoreInfo(),
                         title: "share".tr,
@@ -151,6 +157,38 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
     );
   }
 
+  Future<Object?> _showDialogCheckHavePhoneNumber() {
+    return showAnimatedDialog(
+      context: Get.context!,
+      animationType: DialogTransitionType.slideFromTopFade,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'you_need_to_add_a_phone_number'.tr,
+            style: AppTextStyle.tex18Regular(),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Get.back(),
+                child: Text(
+                  "not_now".tr,
+                  style: AppTextStyle.tex16Medium(),
+                )),
+            TextButton(onPressed: () => Get.toNamed(Routes.profile), child: Text("add_phone_number".tr, style: AppTextStyle.tex16Medium())),
+          ],
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10)),
+          titlePadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+          contentPadding: EdgeInsets.zero,
+          insetPadding: EdgeInsets.symmetric(horizontal: 35.w),
+          elevation: 7,
+        );
+      },
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
   Widget _buttonBottomBar({required void Function() onPressed, required String title, Color? color}) {
     return buttonWithRadius10(
         onPressed: onPressed,
@@ -197,7 +235,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
               pathImage: AppImages.icStoreSelected, title: "introduce".tr, iconColor: context.isDarkMode ? AppColors.primaryDarkModeColor : AppColors.primaryLightModeColor),
           _introduceContent(),
           Visibility(
-            visible: _storeDetailController.store.value.rating == null ? false : true,
+            visible: _storeDetailController.store.value.rating == 0 ? false : true,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -378,6 +416,43 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
               ))
         ],
       ),
+    );
+  }
+
+  Future<Object?> _showChatDialog() {
+    return showAnimatedDialog(
+      context: context,
+      animationType: DialogTransitionType.slideFromTopFade,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            title: Text(
+              "This_feature_is_under_development".tr,
+              style: AppTextStyle.tex20Regular(),
+              textAlign: TextAlign.justify,
+            ),
+            titlePadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
+            insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
+            elevation: 7,
+            actionsPadding: EdgeInsets.only(bottom: 5.h),
+            actions: [
+              Center(
+                child: buttonWithRadius10(
+                  onPressed: () => Get.back(),
+                  child: Text(
+                    "OK".tr,
+                    style: AppTextStyle.tex17Medium(),
+                  ),
+                  color: AppColors.blue2,
+                  padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                ),
+              )
+            ],
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.radius10)));
+      },
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 500),
     );
   }
 
